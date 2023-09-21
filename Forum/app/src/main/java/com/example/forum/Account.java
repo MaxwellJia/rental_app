@@ -1,12 +1,17 @@
 package com.example.forum;
 
 public class Account {
-    public String getName() {
-        return name;
+    String account;
+    String password;
+    Account left;
+    Account right;
+
+    public String getAccount() {
+        return account;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -17,30 +22,49 @@ public class Account {
         this.password = password;
     }
 
-    String name;
-    String password;
-    Account leftchild;
-    Account rightchild;
+    public Account getLeft() {
+        return left;
+    }
+
+    public void setLeft(Account left) {
+        this.left = left;
+    }
+
+    public Account getRight() {
+        return right;
+    }
+
+    public void setRight(Account right) {
+        this.right = right;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
 
 
     public Account() {
     }
 
-    public Account(String name, String password) {
-        this.name = name;
+    public Account(String account, String password, Account left, Account right, int height) {
+        this.account = account;
         this.password = password;
-        leftchild=null;
-        rightchild=null;
+        this.left = left;
+        this.right = right;
+        this.height = height;
     }
 
-    public Account getBalanceFactor(){
-        return this;
-    }
+    int height;
 
-    public Account add(Account account){
-        return this;
-    }
-    public Account delete(Account account){
-        return this;
+    Account(String account, String password) {
+        this.account = account;
+        this.password = password;
+        this.height = 1;
     }
 }
+
