@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Account {
++ name
++ password
++ leftchild
++ rightchild
+
++ getName()
++ setName(String name)
++ String getPassword()
++ setPassword(String password)
++ getBalanceFactor()
++ add(Account account)
++ delete(Account account)
+}
+
+class MainActivity{
++ onCreate(Bundle savedInstanceState)
++ jump(View v)
+}
+
+class LogIn{
++ onCreate(Bundle savedInstanceState)
++ applyLogin(View v)
+}
+
+MainActivity ..> LogIn: + jump(View v)
+
+@enduml
