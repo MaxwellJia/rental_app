@@ -8,10 +8,18 @@ class Account {
 + Account leftchild
 + Account rightchild
 
++ getAccount()
++ setAccount(String account)
++ getPassword()
++ setPassword(String password)
++ getLeft()
++ setLeft()
++ getRight()
++ setRight()
+
 + getName()
 + setName(String name)
 + String getPassword()
-+ setPassword(String password)
 + getBalanceFactor()
 + add(Account account)
 + delete(Account account)
