@@ -15,15 +15,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
     }
 
     public void jump(View v){
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://ga-23s2-a5f8f-default-rtdb.firebaseio.com/");
-        DatabaseReference myRef = database.getReference("message");
-
+        DatabaseReference myRef = database.getReference("essage");
         myRef.setValue("Hello, helloleoo!");
+
+
+
     }
 
     public void buttonFun(){
