@@ -110,4 +110,25 @@ public class AccountTree {
 
         return node;
     }
+
+    // Search for a node by account name and return it
+    public Account search(String account) {
+        return search(root, account);
+    }
+
+    private Account search(Account node, String account) {
+        if (node == null) {
+            return null; // Account not found
+        }
+
+        int cmp = account.compareTo(node.account);
+
+        if (cmp < 0) {
+            return search(node.left, account);
+        } else if (cmp > 0) {
+            return search(node.right, account);
+        } else {
+            return node; // Found the node with the specified account name
+        }
+    }
 }
