@@ -12,7 +12,9 @@ import android.widget.Toast;
 public class LogIn extends AppCompatActivity {
     private User[] users = {
             new User("comp2100@anu.edu.au", "comp2100"),
-            new User("comp6442@anu.edu.au", "comp6442")
+            new User("comp6442@anu.edu.au", "comp6442"),
+            new User("1", "1")
+
     };
 
     @Override
@@ -31,10 +33,9 @@ public class LogIn extends AppCompatActivity {
 
                 // 验证用户名和密码
                 if (isValidUser(enteredUsername, enteredPassword)) {
-                    Intent intent = new Intent(LogIn.this, MainActivity.class);
+                    Intent intent = new Intent(LogIn.this, Main_Page.class);
                     intent.putExtra("USER_LOGGED_IN", true);
                     startActivity(intent);
-                    finish();
                 } else {
                     Toast.makeText(LogIn.this, "Yout account or password is invalid", Toast.LENGTH_SHORT).show();
 
