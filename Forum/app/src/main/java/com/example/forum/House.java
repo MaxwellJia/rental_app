@@ -1,5 +1,4 @@
 package com.example.forum;
-
 public class House {
     String district;
     int price;
