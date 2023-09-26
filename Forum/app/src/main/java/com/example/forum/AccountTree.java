@@ -112,11 +112,11 @@ public class AccountTree {
     }
 
     // Search for a node by account name and return it
-    public Account search(String account) {
+    public String search(String account) {
         return search(root, account);
     }
 
-    private Account search(Account node, String account) {
+    private String search(Account node, String account) {
         if (node == null) {
             return null; // Account not found
         }
@@ -128,7 +128,7 @@ public class AccountTree {
         } else if (cmp > 0) {
             return search(node.right, account);
         } else {
-            return node; // Found the node with the specified account name
+            return node.password; // Found the node with the specified account name
         }
     }
 }
