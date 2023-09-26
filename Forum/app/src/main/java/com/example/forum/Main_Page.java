@@ -49,6 +49,10 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
+    public void applySearch(){
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

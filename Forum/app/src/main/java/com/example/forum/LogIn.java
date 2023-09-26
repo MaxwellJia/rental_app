@@ -46,8 +46,6 @@ public class LogIn extends AppCompatActivity {
         String enteredUsername = usernameEditText.getText().toString();
         String enteredPassword = passwordEditText.getText().toString();
 
-        boolean isValid = false;
-
         FirebaseApp.initializeApp(this);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
@@ -98,4 +96,5 @@ public class LogIn extends AppCompatActivity {
             }
         });
     }
+
 }
