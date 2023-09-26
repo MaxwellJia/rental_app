@@ -2,234 +2,229 @@ package com.example.forum;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-public class HouseAVLTree {
-    public Node getHouseRoot() {
-        return houseRoot;
-    }
 
-    public void setHouseRoot(Node houseRoot) {
-        this.houseRoot = houseRoot;
-    }
+public class HouseAVLTree  {
+    public House root;
 
-    private Node houseRoot;
+    // Constructor
 
-    private class Node {
-        House house;
-
-
-        Node left;
-        Node right;
-
-        public House getHouse() {
-            return house;
-        }
-
-        public void setHouse(House house) {
-            this.house = house;
-        }
-
-        public Node getLeft() {
-            return left;
-        }
-
-        public void setLeft(Node left) {
-            this.left = left;
-        }
-
-        public Node getRight() {
-            return right;
-        }
-
-        public void setRight(Node right) {
-            this.right = right;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public void setHeight(int height) {
-            this.height = height;
-        }
-
-        public int getSize() {
-            return size;
-        }
-
-        public void setSize(int size) {
-            this.size = size;
-        }
-
-        int height;
-        int size;
-
-        Node(House house) {
-            this.house = house;
-            this.height = 1;
-            this.size = 1;
-        }
-    }
     @JsonCreator
     public HouseAVLTree() {
     }
 
+    public HouseAVLTree(House root) {
+        this.root = root;
+    }
+
+    // Insert a new House object with duplicate prices allowed
     public void insert(House house) {
-        houseRoot = insert(houseRoot, house);
+        root = insert(root, house);
     }
 
-    private Node insert(Node node, House house) {
+    private House insert(House node, House house) {
         if (node == null) {
-            return new Node(house);
+            return house;
         }
 
-        int cmp = house.price - node.house.price;
-
-        if (cmp <= 0) {
-            // Handle duplicates by inserting on the left subtree
-            node.left = insert(node.left, house);
+        if (house.getPrice() <= node.getPrice()) {
+            node.setLeft(insert(node.getLeft(), house));
         } else {
-            node.right = insert(node.right, house);
+            node.setRight(insert(node.getRight(), house));
         }
 
-        // Update height and size of this node
-        node.height = 1 + Math.max(height(node.left), height(node.right));
-        node.size = 1 + size(node.left) + size(node.right);
+        // Update height
+        node.setHeight(Math.max(getHeight(node.getLeft()), getHeight(node.getRight())) + 1);
 
-        // Perform balancing
-        return balance(node);
-    }
+        // Perform balance check and rotation
+        int balance = getBalance(node);
 
-    public void delete(int price) {
-        houseRoot = delete(houseRoot, price);
-    }
-
-    private Node delete(Node node, int price) {
-        if (node == null) {
-            return null;
-        }
-
-        int cmp = price - node.house.price;
-
-        if (cmp < 0) {
-            node.left = delete(node.left, price);
-        } else if (cmp > 0) {
-            node.right = delete(node.right, price);
-        } else {
-            // Node with this price found
-            if (node.left == null) {
-                return node.right;
-            } else if (node.right == null) {
-                return node.left;
+        // Left Heavy
+        if (balance > 1) {
+            if (house.getPrice() <= node.getLeft().getPrice()) {
+                return rotateRight(node);
             } else {
-                Node minNode = findMin(node.right);
-                node.house = minNode.house;
-                node.right = delete(node.right, minNode.house.price);
+                node.setLeft(rotateLeft(node.getLeft()));
+                return rotateRight(node);
             }
         }
 
-        // Update height and size of this node
-        node.height = 1 + Math.max(height(node.left), height(node.right));
-        node.size = 1 + size(node.left) + size(node.right);
+        // Right Heavy
+        if (balance < -1) {
+            if (house.getPrice() > node.getRight().getPrice()) {
+                return rotateLeft(node);
+            } else {
+                node.setRight(rotateRight(node.getRight()));
+                return rotateLeft(node);
+            }
+        }
 
-        // Perform balancing
-        return balance(node);
+        return node;
     }
 
-    public List<House> getHousesInPriceRange(int lowerBound, int upperBound) {
+    // Delete a House object based on its price
+    public void delete(int price) {
+        root = delete(root, price);
+    }
+
+    private House delete(House node, int price) {
+        if (node == null) {
+            return node;
+        }
+
+        if (price < node.getPrice()) {
+            node.setLeft(delete(node.getLeft(), price));
+        } else if (price > node.getPrice()) {
+            node.setRight(delete(node.getRight(), price));
+        } else {
+            // Node to be deleted found
+            if ((node.getLeft() == null) || (node.getRight() == null)) {
+                House temp = (node.getLeft() != null) ? node.getLeft() : node.getRight();
+
+                if (temp == null) {
+                    temp = node;
+                    node = null;
+                } else {
+                    node = temp;
+                }
+            } else {
+                House temp = minValueNode(node.getRight());
+                node.setPrice(temp.getPrice());
+                node.setRight(delete(node.getRight(), temp.getPrice()));
+            }
+        }
+
+        if (node == null) {
+            return node;
+        }
+
+        // Update height
+        node.setHeight(Math.max(getHeight(node.getLeft()), getHeight(node.getRight())) + 1);
+
+        // Perform balance check and rotation
+        int balance = getBalance(node);
+
+        // Left Heavy
+        if (balance > 1) {
+            if (getBalance(node.getLeft()) >= 0) {
+                return rotateRight(node);
+            } else {
+                node.setLeft(rotateLeft(node.getLeft()));
+                return rotateRight(node);
+            }
+        }
+
+        // Right Heavy
+        if (balance < -1) {
+            if (getBalance(node.getRight()) <= 0) {
+                return rotateLeft(node);
+            } else {
+                node.setRight(rotateRight(node.getRight()));
+                return rotateLeft(node);
+            }
+        }
+
+        return node;
+    }
+
+    // Search for houses with a given price
+    public List<House> searchByPrice(int price) {
         List<House> result = new ArrayList<>();
-        getHousesInPriceRange(houseRoot, lowerBound, upperBound, result);
+        searchByPrice(root, price, result);
         return result;
     }
 
-    private void getHousesInPriceRange(Node node, int lowerBound, int upperBound, List<House> result) {
+    private void searchByPrice(House node, int price, List<House> result) {
         if (node == null) {
             return;
         }
 
-        int cmpLower = lowerBound - node.house.price;
-        int cmpUpper = upperBound - node.house.price;
+        if (price == node.getPrice()) {
+            result.add(node);
+        }
 
-        if (cmpLower <=0) {
-            getHousesInPriceRange(node.left, lowerBound, upperBound, result);
-        }
-        if (cmpLower <= 0 && cmpUpper >= 0) {
-            result.add(node.house);
-        }
-        if (cmpUpper >= 0) {
-            getHousesInPriceRange(node.right, lowerBound, upperBound, result);
+        if (price <= node.getPrice()) {
+            searchByPrice(node.getLeft(), price, result);
+        } else {
+            searchByPrice(node.getRight(), price, result);
         }
     }
 
-    private Node balance(Node node) {
-        int balance = getBalance(node);
+    // Search for houses within a price range
+    public List<House> searchByPriceRange(int lowerBound, int upperBound) {
+        List<House> result = new ArrayList<>();
+        searchByPriceRange(root, lowerBound, upperBound, result);
+        return result;
+    }
 
-        if (balance > 1) {
-            if (getBalance(node.right) < 0) {
-                node.right = rotateRight(node.right);
-            }
-            return rotateLeft(node);
-        }
-        if (balance < -1) {
-            if (getBalance(node.left) > 0) {
-                node.left = rotateLeft(node.left);
-            }
-            return rotateRight(node);
+    private void searchByPriceRange(House node, int lowerBound, int upperBound, List<House> result) {
+        if (node == null) {
+            return;
         }
 
-        return node;
+        int price = node.getPrice();
+
+        if (price >= lowerBound && price <= upperBound) {
+            result.add(node);
+        }
+
+        if (price > lowerBound) {
+            searchByPriceRange(node.getLeft(), lowerBound, upperBound, result);
+        }
+
+        if (price < upperBound) {
+            searchByPriceRange(node.getRight(), lowerBound, upperBound, result);
+        }
     }
 
-    private int height(Node node) {
-        return (node == null) ? 0 : node.height;
+    // Utility functions for AVL tree operations
+    private int getHeight(House node) {
+        if (node == null) {
+            return 0;
+        }
+        return node.getHeight();
     }
 
-    private int size(Node node) {
-        return (node == null) ? 0 : node.size;
+    private int getBalance(House node) {
+        if (node == null) {
+            return 0;
+        }
+        return getHeight(node.getLeft()) - getHeight(node.getRight());
     }
 
-    private int getBalance(Node node) {
-        return (node == null) ? 0 : height(node.right) - height(node.left);
-    }
+    private House rotateRight(House y) {
+        House x = y.getLeft();
+        House T2 = x.getRight();
 
-    private Node rotateLeft(Node y) {
-        Node x = y.right;
-        Node T2 = x.left;
+        x.setRight(y);
+        y.setLeft(T2);
 
-        x.left = y;
-        y.right = T2;
-
-        y.height = 1 + Math.max(height(y.left), height(y.right));
-        x.height = 1 + Math.max(height(x.left), height(x.right));
-
-        y.size = 1 + size(y.left) + size(y.right);
-        x.size = 1 + size(x.left) + size(x.right);
+        y.setHeight(Math.max(getHeight(y.getLeft()), getHeight(y.getRight())) + 1);
+        x.setHeight(Math.max(getHeight(x.getLeft()), getHeight(x.getRight())) + 1);
 
         return x;
     }
 
-    private Node rotateRight(Node x) {
-        Node y = x.left;
-        Node T2 = y.right;
+    private House rotateLeft(House x) {
+        House y = x.getRight();
+        House T2 = y.getLeft();
 
-        y.right = x;
-        x.left = T2;
+        y.setLeft(x);
+        x.setRight(T2);
 
-        x.height = 1 + Math.max(height(x.left), height(x.right));
-        y.height = 1 + Math.max(height(y.left), height(y.right));
-
-        x.size = 1 + size(x.left) + size(x.right);
-        y.size = 1 + size(y.left) + size(y.right);
+        x.setHeight(Math.max(getHeight(x.getLeft()), getHeight(x.getRight())) + 1);
+        y.setHeight(Math.max(getHeight(y.getLeft()), getHeight(y.getRight())) + 1);
 
         return y;
     }
 
-    private Node findMin(Node node) {
-        while (node.left != null) {
-            node = node.left;
+    private House minValueNode(House node) {
+        House current = node;
+        while (current.getLeft() != null) {
+            current = current.getLeft();
         }
-        return node;
+        return current;
     }
 }
