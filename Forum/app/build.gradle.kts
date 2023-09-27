@@ -48,6 +48,8 @@ dependencies {
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation("androidx.navigation:navigation-fragment:2.7.3")
     implementation("androidx.navigation:navigation-ui:2.7.3")
