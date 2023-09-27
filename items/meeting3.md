@@ -1,6 +1,6 @@
 # [Team Name]
 MyPlace
-## Team Meeting [1] - Week [8] - [25-09-2023] (15:30-18:30)
+## Team Meeting [3] - Week [8] - [25-09-2023] (15:30-18:30)
 **Absent:** No
 <br>
 **Lead/scribe:** Xiaochen Lu
