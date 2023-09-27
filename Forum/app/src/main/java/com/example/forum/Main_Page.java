@@ -1,5 +1,6 @@
 package com.example.forum;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,12 +35,48 @@ public class Main_Page extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
-
     private RecyclerView recyclerView;
-    private List<String> dataList;
+
     private Adapter<RecyclerView.ViewHolder> adapter; // 使用 RecyclerView.Adapter
     private ArrayAdapter<String> arrayAdapter;
     private int lastVisibleItemPosition = 0;
+
+    // data list after search
+    private List<String> filteredDataList;
+
+    private List<String> dataList = new ArrayList<>();
+
+    // load data that we are going to show
+    private void loadData(){
+        // 添加一些示例数据
+        dataList.add("Item 1 800");
+        dataList.add("Item 2 700");
+        dataList.add("Item 3");
+        dataList.add("Item 4");
+        dataList.add("Item 5");
+        dataList.add("Item 1");
+        dataList.add("Item 2");
+        dataList.add("Item 3");
+        dataList.add("Item 4");
+        dataList.add("Item 5");
+        dataList.add("Item 1");
+        dataList.add("Item 2");
+        dataList.add("Item 3");
+        dataList.add("Item 4");
+        dataList.add("Item 5");
+        dataList.add("Item 1");
+        dataList.add("Item 2");
+        dataList.add("Item 3");
+        dataList.add("Item 4");
+        dataList.add("Item 5");
+        dataList.add("Item 1");
+        dataList.add("Item 2");
+        dataList.add("Item 3");
+        dataList.add("Item 4");
+        dataList.add("Item 5");
+        dataList.add("Bruce");
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,38 +105,15 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+        // load necessary data
+        loadData();
+
         // 初始化RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 添加一些示例数据
-        dataList = new ArrayList<>();
-        dataList.add("Item 1 800");
-        dataList.add("Item 2 700");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Bruce");
+
 
         // 创建RecyclerView.Adapter并设置到RecyclerView
         adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -147,6 +161,7 @@ public class Main_Page extends AppCompatActivity {
 
         // apply search function
         fillAuto();
+
     }
 
     private void loadMoreData() {
@@ -163,6 +178,7 @@ public class Main_Page extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    /** To help users to fill out the search blank automatically */
     public void fillAuto() {
 
         // achieve search list view function
@@ -205,6 +221,7 @@ public class Main_Page extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                showContentIfEmpty();
                 adapter1.getFilter().filter(s, new Filter.FilterListener() {
                     @Override
                     public void onFilterComplete(int count) {
@@ -217,6 +234,54 @@ public class Main_Page extends AppCompatActivity {
             }
         });
     }
+
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        String item = filteredDataList.get(position);
+        ((TextView) holder.itemView).setText(item);
+    }
+
+    public int getItemCount() {
+        return filteredDataList.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void applySearch(View view){
+        dataList.clear();
+        loadData();
+        // initialize data after searching
+        filteredDataList = new ArrayList<>(dataList);
+
+        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
+        String query = multiAutoCompleteTextView.getText().toString().trim();
+
+        // 如果查询文本为空，则显示所有数据，否则显示与查询文本匹配的数据
+        if (query.isEmpty()) {
+            filteredDataList = new ArrayList<>(dataList);
+        } else {
+            filteredDataList = new ArrayList<>();
+            for (String item : dataList) {
+                if (item.toLowerCase().contains(query.toLowerCase())) {
+                    filteredDataList.add(item);
+                }
+            }
+        }
+        dataList = filteredDataList;
+        adapter.notifyDataSetChanged(); // 通知适配器数据已更改
+    }
+
+    /** Show all options if the search block is empty */
+    @SuppressLint("NotifyDataSetChanged")
+    public void showContentIfEmpty(){
+        dataList.clear();
+        loadData();
+        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
+        String query = multiAutoCompleteTextView.getText().toString().trim();
+        if (query.isEmpty()){
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
