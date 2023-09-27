@@ -7,9 +7,10 @@ MyPlace
 
 ## Agreed Procedure
 Stand up Procedure: 
-- Each team member briefly shares their thought on this project.
-- The App topic and Main function.
-- Check the project requirement.
+- Share achievements and sufferings
+- Solve problems together
+- Plan what to do next
+
 
 
 
@@ -18,8 +19,8 @@ Stand up Procedure:
 ## Agenda Items
 | Number   |        Item |
 |:---------|------------:|
-| 1 | Come up with the main layout of the app |
-| 2 | Figure out the main functions of the app |
+| 1 |The App topic and Main function.  |
+| 2 | Check the project requirement.|
 
 ## Meeting Minutes
 - Decided to make a rental software
@@ -29,8 +30,8 @@ Stand up Procedure:
 ## Action Items
 | Task                                   | Assigned To |  Due Date  |
 |:---------------------------------------|:-----------:|:----------:|
-| [Task 1]                               |  [Linsheng Zhou, Wangtao Jia]   | [22-09-2023] |
-| [Task 2]                               |  [Xiaochen Lu,Xiangji Li]   | [22-09-2023] |
+| Come up with the main layout of the app     |  [Linsheng Zhou, Wangtao Jia]   | [22-09-2023] |
+| Figure out the main functions of the app     |  [Xiaochen Lu,Xiangji Li]   | [22-09-2023] |
 
 
 
