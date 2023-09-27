@@ -1,22 +1,16 @@
 package com.example.forum;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,21 +19,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter; // 导入 Adapter 类
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.example.forum.databinding.ActivityMainPageBinding;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main_Page extends AppCompatActivity {
 
@@ -49,6 +38,7 @@ public class Main_Page extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<String> dataList;
     private Adapter<RecyclerView.ViewHolder> adapter; // 使用 RecyclerView.Adapter
+    private ArrayAdapter<String> arrayAdapter;
     private int lastVisibleItemPosition = 0;
 
     @Override
@@ -109,6 +99,7 @@ public class Main_Page extends AppCompatActivity {
         dataList.add("Item 3");
         dataList.add("Item 4");
         dataList.add("Item 5");
+        dataList.add("Bruce");
 
         // 创建RecyclerView.Adapter并设置到RecyclerView
         adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -153,6 +144,9 @@ public class Main_Page extends AppCompatActivity {
                 }
             }
         });
+
+        // apply search function
+        applySearch();
     }
 
     private void loadMoreData() {
@@ -167,9 +161,6 @@ public class Main_Page extends AppCompatActivity {
 
         // 通知适配器数据已更新
         adapter.notifyDataSetChanged();
-
-        // apply search function
-        applySearch();
     }
 
     public void applySearch() {
@@ -177,20 +168,19 @@ public class Main_Page extends AppCompatActivity {
         // achieve search list view function
 
         MultiAutoCompleteTextView multiAutoCompleteTextView;
-        ListView listView;
-        ArrayList<String> dataList; // Initialize data source TODO: Input suitable data source and adapter
-        ArrayAdapter<String> adapter; // Initialize adapter
+        RecyclerView recyclerView1;
+         // Initialize data source TODO: Input suitable data source and adapter
+        ArrayAdapter<String> adapter1; // Initialize adapter
 
         multiAutoCompleteTextView = findViewById(R.id.input_search);
-        listView = findViewById(R.id.listview_houses);
+        recyclerView1 = findViewById(R.id.recyclerView);
 
-        dataList = new ArrayList<>(); // TODO:Add relative data
-        dataList.add("Bruce");
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
-        listView.setAdapter(adapter);
+         // TODO:Add relative data
+        adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
+        recyclerView1.setAdapter(adapter);
 
         // TODO:Set adapter and your own tokenizer
-        multiAutoCompleteTextView.setAdapter(adapter);
+        multiAutoCompleteTextView.setAdapter(adapter1);
         // set tokenizer, this can be changed later
         multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
             @Override
@@ -215,10 +205,10 @@ public class Main_Page extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s, new Filter.FilterListener() {
+                adapter1.getFilter().filter(s, new Filter.FilterListener() {
                     @Override
                     public void onFilterComplete(int count) {
-                        listView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                        recyclerView1.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
                     }
                 });
             }
