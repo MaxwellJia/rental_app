@@ -74,8 +74,8 @@ public class Main_Page extends AppCompatActivity {
 
         // 添加一些示例数据
         dataList = new ArrayList<>();
-        dataList.add("Item 1");
-        dataList.add("Item 2");
+        dataList.add("Item 1 800");
+        dataList.add("Item 2 700");
         dataList.add("Item 3");
         dataList.add("Item 4");
         dataList.add("Item 5");
@@ -146,7 +146,7 @@ public class Main_Page extends AppCompatActivity {
         });
 
         // apply search function
-        applySearch();
+        fillAuto();
     }
 
     private void loadMoreData() {
@@ -163,7 +163,7 @@ public class Main_Page extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void applySearch() {
+    public void fillAuto() {
 
         // achieve search list view function
 
