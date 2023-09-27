@@ -1,9 +1,9 @@
 # [Team Name]
 MyPlace
-## Team Meeting [1] - Week [7] - [18-09-2023] (14:00-16:00)
+## Team Meeting [3] - Week [8] - [25-09-2023] (15:30-18:30)
 **Absent:** No
 <br>
-**Lead/scribe:** Xiangji Li
+**Lead/scribe:** Xiaochen Lu
 
 ## Agreed Procedure
 Stand up Procedure: 
@@ -15,23 +15,24 @@ Stand up Procedure:
 
 
 
-
 ## Agenda Items
 | Number   |        Item |
 |:---------|------------:|
-| 1 |The App topic and Main function.  |
-| 2 | Check the project requirement.|
+| 1 | Add Navigation drawer acticity|
+| 2 | Construct the data structure|
+
 
 ## Meeting Minutes
-- Decided to make a rental software
-- Understand the main requirements of the project
+- Determines the main page style-Add Navigation drawer acticity
+- Determines the data structure(rental detail)
+
 
 
 ## Action Items
 | Task                                   | Assigned To |  Due Date  |
 |:---------------------------------------|:-----------:|:----------:|
-| Come up with the main layout of the app     |  [Linsheng Zhou, Wangtao Jia]   | [22-09-2023] |
-| Figure out the main functions of the app     |  [Xiaochen Lu,Xiangji Li]   | [22-09-2023] |
+| Construct AVL tree for data            |  [Linsheng Zhou, Wangtao Jia,Xiaochen Lu,Xiangji Li]   | [27-09-2023] |
+
 
 
 
