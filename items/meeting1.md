@@ -1,36 +1,36 @@
 # [Team Name]
-This following is a very simple team meeting template. You should expand it based on the scope and nature of your discussion.
-
-## Team Meeting [number] - Week [number] - [date] (start-end time)
-**Absent:**
+MyPlace
+## Team Meeting [1] - Week [7] - [18-09-2023] (14:00-16:00)
+**Absent:** No
 <br>
-**Lead/scribe:**
+**Lead/scribe:** Xiangji Li
 
 ## Agreed Procedure
 Stand up Procedure: 
-- {e.g. Each team member briefly shares their progress and any roadblocks.}
+- Each team member briefly shares their thought on this project.
+- The App topic and Main function.
+- Check the project requirement.
+
+
+
 
 
 ## Agenda Items
 | Number   |        Item |
 |:---------|------------:|
-| [number] | [item name] |
-| [number] | [item name] |
-| [number] | [item name] |
-| [number] | [item name] |
+| 1 | Come up with the main layout of the app |
+| 2 | Figure out the main functions of the app |
 
 ## Meeting Minutes
-- [Summary of the progress reports, discussions, decisions, and matters to be confirmed from the meeting.]
-- ...
-- ...
+- Decided to make a rental software
+- Understand the main requirements of the project
 
 
 ## Action Items
 | Task                                   | Assigned To |  Due Date  |
 |:---------------------------------------|:-----------:|:----------:|
-| [Task 1]                               |  [Name 1]   | [Due Date] |
-| [Task 2]                               |  [Name 2]   | [Due Date] |
-| [Task 3]                               |  [Name 3]   | [Due Date] |
+| [Task 1]                               |  [Linsheng Zhou, Wangtao Jia]   | [22-09-2023] |
+| [Task 2]                               |  [Xiaochen Lu,Xiangji Li]   | [22-09-2023] |
 
 
 
@@ -38,7 +38,7 @@ Stand up Procedure:
 The following dictates who will scribe in this and the next meeting.
 | Name |
 | :---: |
-| [Member name] |
-| [Member name] |
-| [Member name] |
-| [Member name] |
+| [Xiangji Li]] |
+| [Wangtao Jia] |
+| [Xiaochen Lu] |
+| [Linsheng Zhou] |
