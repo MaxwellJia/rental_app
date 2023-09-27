@@ -1,9 +1,9 @@
 # [Team Name]
 MyPlace
-## Team Meeting [1] - Week [7] - [22-09-2023] (11:30-18:30)
+## Team Meeting [1] - Week [8] - [25-09-2023] (15:30-18:30)
 **Absent:** No
 <br>
-**Lead/scribe:** Wangtao Jia
+**Lead/scribe:** Xiaochen Lu
 
 ## Agreed Procedure
 Stand up Procedure: 
@@ -18,24 +18,21 @@ Stand up Procedure:
 ## Agenda Items
 | Number   |        Item |
 |:---------|------------:|
-| 1 | Brief description of how each feature is built|
-| 2 | Have a schedule of development activities|
-| 3 | learn how to use firebase |
+| 1 | Add Navigation drawer acticity|
+| 2 | Construct the data structure|
 
 
 ## Meeting Minutes
-- Determines which functions should be prioritized
-- Determines the main execution process of the program
-- Successfully transferred data to firebase
+- Determines the main page style-Add Navigation drawer acticity
+- Determines the data structure(rental detail)
 
 
 
 ## Action Items
 | Task                                   | Assigned To |  Due Date  |
 |:---------------------------------------|:-----------:|:----------:|
-| Construct AVL tree for data            |  [Linsheng Zhou, Wangtao Jia]   | [25-09-2023] |
-| Improve Navigation drawer acticity     |  [Xiaochen Lu]   | [25-09-2023] |
-| Improve the login page                 |  [Linsheng Zhou,Xiangji Li]   | [25-09-2023] |
+| Construct AVL tree for data            |  [Linsheng Zhou, Wangtao Jia,Xiaochen Lu,Xiangji Li]   | [27-09-2023] |
+
 
 
 
