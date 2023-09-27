@@ -1,15 +1,15 @@
 # [Team Name]
 MyPlace
-## Team Meeting [1] - Week [7] - [18-09-2023] (14:00-16:00)
+## Team Meeting [1] - Week [7] - [22-09-2023] (11:30-18:30)
 **Absent:** No
 <br>
-**Lead/scribe:** Xiangji Li
+**Lead/scribe:** Wangtao Jia
 
 ## Agreed Procedure
 Stand up Procedure: 
-- Each team member briefly shares their thought on this project.
-- The App topic and Main function.
-- Check the project requirement.
+- Share achievements and sufferings
+- Solve problems together
+- Plan what to do next
 
 
 
@@ -18,19 +18,24 @@ Stand up Procedure:
 ## Agenda Items
 | Number   |        Item |
 |:---------|------------:|
-| 1 | Come up with the main layout of the app |
-| 2 | Figure out the main functions of the app |
+| 1 | Brief description of how each feature is built|
+| 2 | Have a schedule of development activities|
+| 3 | learn how to use firebase |
+
 
 ## Meeting Minutes
-- Decided to make a rental software
-- Understand the main requirements of the project
+- Determines which functions should be prioritized
+- Determines the main execution process of the program
+- Successfully transferred data to firebase
+
 
 
 ## Action Items
 | Task                                   | Assigned To |  Due Date  |
 |:---------------------------------------|:-----------:|:----------:|
-| [Task 1]                               |  [Linsheng Zhou, Wangtao Jia]   | [22-09-2023] |
-| [Task 2]                               |  [Xiaochen Lu,Xiangji Li]   | [22-09-2023] |
+| Construct AVL tree for data            |  [Linsheng Zhou, Wangtao Jia]   | [25-09-2023] |
+| Improve Navigation drawer acticity     |  [Xiaochen Lu]   | [25-09-2023] |
+| Improve the login page                 |  [Linsheng Zhou,Xiangji Li]   | [25-09-2023] |
 
 
 
