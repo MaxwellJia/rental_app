@@ -1,9 +1,9 @@
 # [Team Name]
 MyPlace
-## Team Meeting [3] - Week [8] - [25-09-2023] (15:30-18:30)
+## Team Meeting [4] - Week [8] - [27-09-2023] (12:00-18:30)
 **Absent:** No
 <br>
-**Lead/scribe:** Xiaochen Lu
+**Lead/scribe:** Linsheng Zhou
 
 ## Agreed Procedure
 Stand up Procedure: 
@@ -18,20 +18,20 @@ Stand up Procedure:
 ## Agenda Items
 | Number   |        Item |
 |:---------|------------:|
-| 1 | Add Navigation drawer acticity|
-| 2 | Construct the data structure|
+| 1 | Add some function in Navigation drawer acticity|
 
 
 ## Meeting Minutes
-- Determines the main page style-Add Navigation drawer acticity
-- Determines the data structure(rental detail)
+- Add recyclerView 
+- Add search function
+- Add more details for rental infor.
 
 
 
 ## Action Items
 | Task                                   | Assigned To |  Due Date  |
 |:---------------------------------------|:-----------:|:----------:|
-| Construct AVL tree for data            |  [Linsheng Zhou, Wangtao Jia,Xiaochen Lu,Xiangji Li]   | [27-09-2023] |
+| Escape Room          |  [Linsheng Zhou, Wangtao Jia,Xiaochen Lu,Xiangji Li]   | [28-09-2023] |
 
 
 

@@ -1,6 +1,6 @@
 # [Team Name]
 MyPlace
-## Team Meeting [1] - Week [7] - [22-09-2023] (11:30-18:30)
+## Team Meeting [2] - Week [7] - [22-09-2023] (11:30-18:30)
 **Absent:** No
 <br>
 **Lead/scribe:** Wangtao Jia
