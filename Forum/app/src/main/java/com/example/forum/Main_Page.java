@@ -35,47 +35,47 @@ public class Main_Page extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
-    private RecyclerView recyclerView;
+//    private RecyclerView recyclerView;
+//
+//    private Adapter<RecyclerView.ViewHolder> adapter; // 使用 RecyclerView.Adapter
+//    private ArrayAdapter<String> arrayAdapter;
+//    private int lastVisibleItemPosition = 0;
+//
+//    // data list after search
+//    private List<String> filteredDataList;
+//
+//    private List<String> dataList = new ArrayList<>();
 
-    private Adapter<RecyclerView.ViewHolder> adapter; // 使用 RecyclerView.Adapter
-    private ArrayAdapter<String> arrayAdapter;
-    private int lastVisibleItemPosition = 0;
-
-    // data list after search
-    private List<String> filteredDataList;
-
-    private List<String> dataList = new ArrayList<>();
-
-    // load data that we are going to show
-    private void loadData(){
-        // 添加一些示例数据
-        dataList.add("Item 1 800");
-        dataList.add("Item 2 700");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Bruce");
-    }
+////     load data that we are going to show
+//    private void loadData(){
+//        // 添加一些示例数据
+//        dataList.add("Item 1 800");
+//        dataList.add("Item 2 700");
+//        dataList.add("Item 3");
+//        dataList.add("Item 4");
+//        dataList.add("Item 5");
+//        dataList.add("Item 1");
+//        dataList.add("Item 2");
+//        dataList.add("Item 3");
+//        dataList.add("Item 4");
+//        dataList.add("Item 5");
+//        dataList.add("Item 1");
+//        dataList.add("Item 2");
+//        dataList.add("Item 3");
+//        dataList.add("Item 4");
+//        dataList.add("Item 5");
+//        dataList.add("Item 1");
+//        dataList.add("Item 2");
+//        dataList.add("Item 3");
+//        dataList.add("Item 4");
+//        dataList.add("Item 5");
+//        dataList.add("Item 1");
+//        dataList.add("Item 2");
+//        dataList.add("Item 3");
+//        dataList.add("Item 4");
+//        dataList.add("Item 5");
+//        dataList.add("Bruce");
+//    }
 
 
     @Override
@@ -105,181 +105,181 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-        // load necessary data
-        loadData();
-
-        // 初始化RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-        // 创建RecyclerView.Adapter并设置到RecyclerView
-        adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                // 创建ViewHolder并绑定布局
-                View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-                return new RecyclerView.ViewHolder(view) {};
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                // 绑定数据到ViewHolder
-                String item = dataList.get(position);
-                ((TextView) holder.itemView).setText(item);
-            }
-
-            @Override
-            public int getItemCount() {
-                return dataList.size();
-            }
-        };
-
-        recyclerView.setAdapter(adapter);
-
-        // 添加滚动监听器
-        boolean isLoading = false;
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-
-                // 获取当前可见的最后一个item的位置
-                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-
-                // 如果滚动到了倒数第二个item，触发加载更多数据的逻辑
-                if (lastVisibleItemPosition == dataList.size() - 2) {
-                    loadMoreData();
-                }
-            }
-        });
-
-        // apply search function
-        fillAuto();
-
+//
+////         load necessary data
+//        loadData();
+//
+//        // 初始化RecyclerView
+//        recyclerView = findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//
+//
+//        // 创建RecyclerView.Adapter并设置到RecyclerView
+//        adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+//            @NonNull
+//            @Override
+//            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                // 创建ViewHolder并绑定布局
+//                View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+//                return new RecyclerView.ViewHolder(view) {};
+//            }
+//
+//            @Override
+//            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+//                // 绑定数据到ViewHolder
+//                String item = dataList.get(position);
+//                ((TextView) holder.itemView).setText(item);
+//            }
+//
+//            @Override
+//            public int getItemCount() {
+//                return dataList.size();
+//            }
+//        };
+//
+//        recyclerView.setAdapter(adapter);
+//
+//        // 添加滚动监听器
+//        boolean isLoading = false;
+//
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//
+//                // 获取当前可见的最后一个item的位置
+//                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+//
+//                // 如果滚动到了倒数第二个item，触发加载更多数据的逻辑
+//                if (lastVisibleItemPosition == dataList.size() - 2) {
+//                    loadMoreData();
+//                }
+//            }
+//        });
+//
+//        // apply search function
+//        fillAuto();
+//
+//    }
+//
+//    private void loadMoreData() {
+//        // 加载更多数据的逻辑，例如加载下一页的数据
+//        // 注意：在这个方法中要避免在主线程中执行耗时操作
+//
+//        // 假设这里是加载下一页数据的示例
+//        int nextPageStartIndex = dataList.size();
+//        for (int i = nextPageStartIndex; i < nextPageStartIndex + 5; i++) {
+//            dataList.add("Item " + (i + 1));
+//        }
+//
+//        // 通知适配器数据已更新
+//        adapter.notifyDataSetChanged();
     }
 
-    private void loadMoreData() {
-        // 加载更多数据的逻辑，例如加载下一页的数据
-        // 注意：在这个方法中要避免在主线程中执行耗时操作
-
-        // 假设这里是加载下一页数据的示例
-        int nextPageStartIndex = dataList.size();
-        for (int i = nextPageStartIndex; i < nextPageStartIndex + 5; i++) {
-            dataList.add("Item " + (i + 1));
-        }
-
-        // 通知适配器数据已更新
-        adapter.notifyDataSetChanged();
-    }
-
-    /** To help users to fill out the search blank automatically */
-    public void fillAuto() {
-
-        // achieve search list view function
-
-        MultiAutoCompleteTextView multiAutoCompleteTextView;
-        RecyclerView recyclerView1;
-         // Initialize data source TODO: Input suitable data source and adapter
-        ArrayAdapter<String> adapter1; // Initialize adapter
-
-        multiAutoCompleteTextView = findViewById(R.id.input_search);
-        recyclerView1 = findViewById(R.id.recyclerView);
-
-         // TODO:Add relative data
-        adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
-        recyclerView1.setAdapter(adapter);
-
-        // TODO:Set adapter and your own tokenizer
-        multiAutoCompleteTextView.setAdapter(adapter1);
-        // set tokenizer, this can be changed later
-        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
-            @Override
-            public int findTokenStart(CharSequence text, int cursor) {
-                return 0;
-            }
-
-            @Override
-            public int findTokenEnd(CharSequence text, int cursor) {
-                return text.length();
-            }
-
-            @Override
-            public CharSequence terminateToken(CharSequence text) {
-                return text; // return text itself and don't add any separator
-            }
-        });
-
-        // Change and fill the textview
-        multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                showContentIfEmpty();
-                adapter1.getFilter().filter(s, new Filter.FilterListener() {
-                    @Override
-                    public void onFilterComplete(int count) {
-                        recyclerView1.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-                    }
-                });
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }
-
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String item = filteredDataList.get(position);
-        ((TextView) holder.itemView).setText(item);
-    }
-
-    public int getItemCount() {
-        return filteredDataList.size();
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void applySearch(View view){
-        dataList.clear();
-        loadData();
-        // initialize data after searching
-        filteredDataList = new ArrayList<>(dataList);
-
-        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
-        String query = multiAutoCompleteTextView.getText().toString().trim();
-
-        // 如果查询文本为空，则显示所有数据，否则显示与查询文本匹配的数据
-        if (query.isEmpty()) {
-            filteredDataList = new ArrayList<>(dataList);
-        } else {
-            filteredDataList = new ArrayList<>();
-            for (String item : dataList) {
-                if (item.toLowerCase().contains(query.toLowerCase())) {
-                    filteredDataList.add(item);
-                }
-            }
-        }
-        dataList = filteredDataList;
-        adapter.notifyDataSetChanged(); // 通知适配器数据已更改
-    }
-
-    /** Show all options if the search block is empty */
-    @SuppressLint("NotifyDataSetChanged")
-    public void showContentIfEmpty(){
-        dataList.clear();
-        loadData();
-        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
-        String query = multiAutoCompleteTextView.getText().toString().trim();
-        if (query.isEmpty()){
-            adapter.notifyDataSetChanged();
-        }
-    }
+//    /** To help users to fill out the search blank automatically */
+//    public void fillAuto() {
+//
+//        // achieve search list view function
+//
+//        MultiAutoCompleteTextView multiAutoCompleteTextView;
+//        RecyclerView recyclerView1;
+//         // Initialize data source TODO: Input suitable data source and adapter
+//        ArrayAdapter<String> adapter1; // Initialize adapter
+//
+//        multiAutoCompleteTextView = findViewById(R.id.input_search);
+//        recyclerView1 = findViewById(R.id.recyclerView);
+//
+//         // TODO:Add relative data
+//        adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
+//        recyclerView1.setAdapter(adapter);
+//
+//        // TODO:Set adapter and your own tokenizer
+//        multiAutoCompleteTextView.setAdapter(adapter1);
+//        // set tokenizer, this can be changed later
+//        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
+//            @Override
+//            public int findTokenStart(CharSequence text, int cursor) {
+//                return 0;
+//            }
+//
+//            @Override
+//            public int findTokenEnd(CharSequence text, int cursor) {
+//                return text.length();
+//            }
+//
+//            @Override
+//            public CharSequence terminateToken(CharSequence text) {
+//                return text; // return text itself and don't add any separator
+//            }
+//        });
+//
+//        // Change and fill the textview
+//        multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                showContentIfEmpty();
+//                adapter1.getFilter().filter(s, new Filter.FilterListener() {
+//                    @Override
+//                    public void onFilterComplete(int count) {
+//                        recyclerView1.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+//                    }
+//                });
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//        });
+//    }
+//
+//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+//        String item = filteredDataList.get(position);
+//        ((TextView) holder.itemView).setText(item);
+//    }
+//
+//    public int getItemCount() {
+//        return filteredDataList.size();
+//    }
+//
+//    @SuppressLint("NotifyDataSetChanged")
+//    public void applySearch(View view){
+//        dataList.clear();
+//        loadData();
+//        // initialize data after searching
+//        filteredDataList = new ArrayList<>(dataList);
+//
+//        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
+//        String query = multiAutoCompleteTextView.getText().toString().trim();
+//
+//        // 如果查询文本为空，则显示所有数据，否则显示与查询文本匹配的数据
+//        if (query.isEmpty()) {
+//            filteredDataList = new ArrayList<>(dataList);
+//        } else {
+//            filteredDataList = new ArrayList<>();
+//            for (String item : dataList) {
+//                if (item.toLowerCase().contains(query.toLowerCase())) {
+//                    filteredDataList.add(item);
+//                }
+//            }
+//        }
+//        dataList = filteredDataList;
+//        adapter.notifyDataSetChanged(); // 通知适配器数据已更改
+//    }
+//
+//    /** Show all options if the search block is empty */
+//    @SuppressLint("NotifyDataSetChanged")
+//    public void showContentIfEmpty(){
+//        dataList.clear();
+//        loadData();
+//        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
+//        String query = multiAutoCompleteTextView.getText().toString().trim();
+//        if (query.isEmpty()){
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
 
 
 
