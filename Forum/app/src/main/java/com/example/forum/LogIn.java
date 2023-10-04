@@ -74,6 +74,7 @@ public class LogIn extends AppCompatActivity {
                     } else {
                         if (enteredPassword.equals(password)) {
                             Intent intent = new Intent(getApplicationContext(), Main_Page.class);
+                            intent.putExtra("username",enteredUsername);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Wrong password! Try again!", Toast.LENGTH_SHORT).show();
