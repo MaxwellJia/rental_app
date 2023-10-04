@@ -18,6 +18,14 @@ import com.example.forum.databinding.ActivityMainPageBinding;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
+
 public class Main_Page extends AppCompatActivity {
     String user;
     private AppBarConfiguration mAppBarConfiguration;
@@ -25,6 +33,8 @@ public class Main_Page extends AppCompatActivity {
     TextView mySignature;
     TextView title;
     ImageView avatar;
+    String signature;
+    int imageId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +63,67 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+        // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title=headerView.findViewById(R.id.nametitle);
         mySignature=headerView.findViewById(R.id.mySignature);
-        title.setText("Welcome "+user+"!");
-        mySignature.setText("I'm looking for an apartment.");
         avatar=headerView.findViewById(R.id.avatar);
-        String imageName = "image1";
-        int resourceId = getResources().getIdentifier(imageName, "raw", getPackageName());
-        avatar.setImageResource(resourceId);
+        BufferedReader bufferedReader;
+        try {
+            bufferedReader=new BufferedReader(new InputStreamReader(getAssets().open("profile.csv"), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        boolean in=false;
+        String line;
+
+        while(true){
+            try {
+                if (!((line= bufferedReader.readLine())!=null)) break;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String[] tokens=line.split(";");
+            if(user.equals(tokens[0])){
+                in=true;
+                imageId=Integer.parseInt(tokens[1]);
+                signature=tokens[2];
+                break;
+            }
+        }
+        try {
+            bufferedReader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if(in){
+            title.setText("Welcome "+user+"!");
+            mySignature.setText(signature);
+
+            String imageName = "image"+imageId;
+            int resourceId = getResources().getIdentifier(imageName, "raw", getPackageName());
+            avatar.setImageResource(resourceId);
+        }else {//This a new user, randomly initialize elements
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("profile.csv", true))) {
+                // Append the new data as a new row
+                Random random=new Random();
+                int index=random.nextInt(10);
+                writer.write("user;"+index+";"+"I'm looking for a place.");
+                title.setText("Welcome "+user+"!");
+                signature="I'm looking for a place.";
+                imageId=index;
+                mySignature.setText(signature);
+                String imageName = "image"+imageId;
+                int resourceId = getResources().getIdentifier(imageName, "raw", getPackageName());
+                avatar.setImageResource(resourceId);
+                writer.newLine(); // Add a new line separator to start a new row
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
 
 
     }
