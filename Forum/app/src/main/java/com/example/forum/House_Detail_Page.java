@@ -12,6 +12,7 @@ public class House_Detail_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_detail_page);
 
+        House house = (House) getIntent().getExtras().getSerializable("HouseData");
 
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setImageResource(R.raw.sydneyopera0);
