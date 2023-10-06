@@ -221,6 +221,7 @@
 //}
 
 package com.example.forum.ui.home;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -232,15 +233,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
+import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.forum.HouseAdapter;
+import com.example.forum.HouseData;
 import com.example.forum.R;
 import com.example.forum.databinding.FragmentHomeBinding;
 
@@ -255,9 +262,11 @@ public class HomeFragment extends Fragment {
     private ArrayAdapter<String> arrayAdapter;
     private MultiAutoCompleteTextView multiAutoCompleteTextView;
     private int lastVisibleItemPosition = 0;
+    private RecyclerView recyclerViewhouse;
 
     private FragmentHomeBinding binding;
 
+//    private List<HouseData> houseList = new ArrayList<>();
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -265,8 +274,8 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textHome;
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         loadData();
 
         Button searchButton = binding.buttonSearch; // 根据您的按钮 ID 获取按钮
@@ -341,6 +350,85 @@ public class HomeFragment extends Fragment {
         });
 
         fillAuto();
+
+
+
+//        LinearLayout cardViewContainer = root.findViewById(R.id.cardViewContainer);
+//
+//        for (HouseData houseData : houseList) {
+//            // 创建一个新的 CardView
+//            CardView cardView = new CardView(requireContext());
+//            cardView.setLayoutParams(new CardView.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            ));
+//
+//            // 创建一个 LinearLayout 用于包裹标题和描述
+//            LinearLayout linearLayout = new LinearLayout(requireContext());
+//            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            ));
+//            linearLayout.setOrientation(LinearLayout.VERTICAL);
+//            linearLayout.setPadding(16, 16, 16, 16);
+//
+//            // 创建标题 TextView
+//            TextView titleTextView = new TextView(requireContext());
+//            titleTextView.setLayoutParams(new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            ));
+//            titleTextView.setText(houseData.getTitle());
+//            titleTextView.setTextSize(18);
+//            titleTextView.setTypeface(null, Typeface.BOLD);
+//
+//            // 创建描述 TextView
+//            TextView descriptionTextView = new TextView(requireContext());
+//            descriptionTextView.setLayoutParams(new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            ));
+//            descriptionTextView.setText(houseData.getDescription());
+//            descriptionTextView.setTextSize(14);
+//
+//            // 将标题和描述添加到 LinearLayout 中
+//            linearLayout.addView(titleTextView);
+//            linearLayout.addView(descriptionTextView);
+//
+//            // 将 LinearLayout 添加到 CardView 中
+//            cardView.addView(linearLayout);
+//
+//            // 将 CardView 添加到 LinearLayout（cardViewContainer）中
+//            cardViewContainer.addView(cardView);
+//        }
+// 使用视图对象查找RecyclerView
+        recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
+
+        // 初始化数据列表
+        List<HouseData> houseList = new ArrayList<>();
+        // 添加房源数据到 houseList
+        HouseData house1 = new HouseData("Beautiful House 1", "A lovely house with a garden.", 1200.0, "City A");
+        HouseData house2 = new HouseData("Cozy Cottage", "A charming cottage by the lake.", 800.0, "City B");
+        HouseData house3 = new HouseData("Spacious Villa", "A luxurious villa with a pool.", 2500.0, "City C");
+
+        // 将模拟数据添加到 houseList
+        houseList.add(house1);
+        houseList.add(house2);
+        houseList.add(house3);
+        houseList.add(house1);
+        houseList.add(house2);
+        houseList.add(house3);
+        System.out.println(houseList.size());
+        // 初始化适配器，这里你需要创建一个自定义适配器，比如 HouseAdapter
+        HouseAdapter adapter1 = new HouseAdapter(houseList);
+
+        // 设置适配器给 RecyclerView
+        recyclerViewhouse.setAdapter(adapter1);
+
+        // 使用线性布局管理器
+        recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
 
         return root;
     }
@@ -417,8 +505,12 @@ public class HomeFragment extends Fragment {
                 showContentIfEmpty();
                 if (s.length() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
+                    recyclerViewhouse.setVisibility(View.GONE);
+
                 } else {
                     recyclerView.setVisibility(View.GONE);
+                    recyclerViewhouse.setVisibility(View.VISIBLE);
+
                 }
                 arrayAdapter.getFilter().filter(s, new Filter.FilterListener() {
                     @Override
