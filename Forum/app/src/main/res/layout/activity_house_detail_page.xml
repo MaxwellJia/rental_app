@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".House_Detail_Page">
+
+    <ScrollView
+        android:layout_width="599dp"
+        android:layout_height="960dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="433dp"
+                android:src="@tools:sample/avatars"
+                tools:srcCompat="@tools:sample/backgrounds/scenic[0]" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="House Information"
+                android:textAlignment="center"
+                android:textColor="#E91E63"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="181dp"
+                android:text="Embracing a blend of traditional and contemporary design, this exquisite house captivates with its welcoming ivy-draped facade and vibrant blossoms. The interior radiates warmth and elegance, featuring a sunlit, spacious living room and a gourmet kitchen fitted with top-tier appliances. The cozy, yet sophisticated, dining area under a striking chandelier invites family gatherings, while the master bedroom serves as a luxurious retreat with its plush bedding and lavish en-suite bathroom. Additional bedrooms offer versatility and comfort for residents and guests alike. The backyard, a blend of lush greenery, a shimmering pool, and a charming patio, provides a private oasis for relaxation and entertainment. Every detail of this home is a testament to a harmonious balance of luxury and homely comfort." />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
