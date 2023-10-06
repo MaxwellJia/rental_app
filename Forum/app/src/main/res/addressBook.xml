@@ -1,0 +1,49 @@
+<addresses>
+    <province name="Canberra">
+        <suburb name="City">
+            <street>Allara Street</street>
+            <street>Boolee Street</street>
+            <street>Chifley Square</street>
+        </suburb>
+        <suburb name="Kingston">
+            <street>Eastlane</street>
+            <street>Forrest Drive</street>
+        </suburb>
+    </province>
+    <province name="Sydney">
+        <suburb name="Central">
+            <street>George Street</street>
+            <street>Pitt Street</street>
+            <street>Hay Street</street>
+        </suburb>
+        <suburb name="Bondi">
+            <street>Beach Road</street>
+            <street>Ocean Street</street>
+        </suburb>
+    </province>
+    <province name="Melbourne">
+        <suburb name="Downtown">
+            <street>Queen Street</street>
+            <street>Elizabeth Street</street>
+            <street>Bourke Street</street>
+            <street>Collins Street</street>
+        </suburb>
+        <suburb name="Richmond">
+            <street>Victoria Street</street>
+            <street>Church Street</street>
+            <street>Swan Street</street>
+        </suburb>
+    </province>
+    <province name="Brisbane">
+        <suburb name="Southbank">
+            <street>Grey Street</street>
+            <street>Little Stanley Street</street>
+        </suburb>
+        <suburb name="Fortitude Valley">
+            <street>James Street</street>
+            <street>Ann Street</street>
+            <street>Brunswick Street</street>
+        </suburb>
+    </province>
+    <!-- ... Continue with other provinces, suburbs, and streets as needed -->
+</addresses>
