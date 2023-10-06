@@ -2,12 +2,18 @@ package com.example.forum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +50,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonFun(){
+        Random random=new Random();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+
+                    List<String> valuesList= new ArrayList<>();
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        valuesList.add(item);
+                    }
+                    List<String> profileData=new ArrayList<>();
+                    DatabaseReference databaseReference11 = firebaseDatabase.getReference("Profile").child("1");
+                    for(String s:valuesList){
+                        String[] uu=s.split(";");
+                        String username=uu[0];
+                        profileData.add(username+";"+random.nextInt(10)+";"+"This is my description.");
+                    }
+                    databaseReference11.setValue(profileData);
+
+                    // You can use the jsonString as needed in your app
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+
 //        List<String> userURLs =new ArrayList<>();
 //        userURLs.add("comp2100@anu.edu.au;comp2100");
 //        userURLs.add("comp6442@anu.edu.au;comp6442");
