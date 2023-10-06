@@ -1,6 +1,9 @@
 package com.example.forum;
 
-public class HouseData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class HouseData implements Parcelable {
     private String title;
     private String description;
     private double price;
@@ -22,6 +25,17 @@ public class HouseData {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeDouble(price);
+        dest.writeString(location);
     }
 
     public String getDescription() {
@@ -48,5 +62,21 @@ public class HouseData {
         this.location = location;
     }
 
+    public static final Parcelable.Creator<HouseData> CREATOR = new Parcelable.Creator<HouseData>() {
+        public HouseData createFromParcel(Parcel in) {
+            return new HouseData(in);
+        }
+
+        public HouseData[] newArray(int size) {
+            return new HouseData[size];
+        }
+    };
+
+    private HouseData(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        price = in.readDouble();
+        location = in.readString();
+    }
     // 其他属性的 getter 和 setter 方法
 }
