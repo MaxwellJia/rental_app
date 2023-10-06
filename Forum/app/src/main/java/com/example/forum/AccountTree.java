@@ -9,7 +9,7 @@ public class AccountTree extends Tree {
     }
 
     public AccountTree() {
-
+        root=new Account("ggg","sdds");
     }
 
     public Account root;
