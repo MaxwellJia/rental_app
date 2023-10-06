@@ -1,87 +1,48 @@
 package com.example.forum;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
-import android.widget.MultiAutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.example.forum.databinding.ActivityMainPageBinding;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 public class Main_Page extends AppCompatActivity {
-
+    String user;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
-    private RecyclerView recyclerView;
-
-    private Adapter<RecyclerView.ViewHolder> adapter; // 使用 RecyclerView.Adapter
-    private ArrayAdapter<String> arrayAdapter;
-    private int lastVisibleItemPosition = 0;
-
-    // data list after search
-    private List<String> filteredDataList;
-
-    private List<String> dataList = new ArrayList<>();
-
-    // load data that we are going to show
-    private void loadData(){
-        // 添加一些示例数据
-        dataList.add("Item 1 800");
-        dataList.add("Item 2 700");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Bruce");
-    }
-
-
+    TextView mySignature;
+    TextView title;
+    ImageView avatar;
+    String signature;
+    int imageId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Intent intent=getIntent();
+        user=intent.getStringExtra("username");
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -106,183 +67,69 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        // load necessary data
-        loadData();
-
-        // 初始化RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-        // 创建RecyclerView.Adapter并设置到RecyclerView
-        adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                // 创建ViewHolder并绑定布局
-                View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-                return new RecyclerView.ViewHolder(view) {};
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                // 绑定数据到ViewHolder
-                String item = dataList.get(position);
-                ((TextView) holder.itemView).setText(item);
-            }
-
-            @Override
-            public int getItemCount() {
-                return dataList.size();
-            }
-        };
-
-        recyclerView.setAdapter(adapter);
-
-        // 添加滚动监听器
-        boolean isLoading = false;
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-
-                // 获取当前可见的最后一个item的位置
-                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-
-                // 如果滚动到了倒数第二个item，触发加载更多数据的逻辑
-                if (lastVisibleItemPosition == dataList.size() - 2) {
-                    loadMoreData();
-                }
-            }
-        });
-
-        // apply search function
-        fillAuto();
-
-    }
-
-    private void loadMoreData() {
-        // 加载更多数据的逻辑，例如加载下一页的数据
-        // 注意：在这个方法中要避免在主线程中执行耗时操作
-
-        // 假设这里是加载下一页数据的示例
-        int nextPageStartIndex = dataList.size();
-        for (int i = nextPageStartIndex; i < nextPageStartIndex + 5; i++) {
-            dataList.add("Item " + (i + 1));
+        // Get the 3 elements: avatar, title and signature line
+        View headerView = navigationView.getHeaderView(0);
+        title=headerView.findViewById(R.id.nametitle);
+        mySignature=headerView.findViewById(R.id.mySignature);
+        avatar=headerView.findViewById(R.id.avatar);
+        BufferedReader bufferedReader;
+        try {
+            bufferedReader=new BufferedReader(new InputStreamReader(getAssets().open("profile.csv"), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        boolean in=false;
+        String line;
 
-        // 通知适配器数据已更新
-        adapter.notifyDataSetChanged();
-    }
-
-    /** To help users to fill out the search blank automatically */
-    public void fillAuto() {
-
-        // achieve search list view function
-
-        MultiAutoCompleteTextView multiAutoCompleteTextView;
-        RecyclerView recyclerView1;
-         // Initialize data source TODO: Input suitable data source and adapter
-        ArrayAdapter<String> adapter1; // Initialize adapter
-
-        multiAutoCompleteTextView = findViewById(R.id.input_search);
-        recyclerView1 = findViewById(R.id.recyclerView);
-
-         // TODO:Add relative data
-        adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
-        recyclerView1.setAdapter(adapter);
-
-        // TODO:Set adapter and your own tokenizer
-        multiAutoCompleteTextView.setAdapter(adapter1);
-        // set tokenizer, this can be changed later
-        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
-            @Override
-            public int findTokenStart(CharSequence text, int cursor) {
-                return 0;
+        while(true){
+            try {
+                if (!((line= bufferedReader.readLine())!=null)) break;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            @Override
-            public int findTokenEnd(CharSequence text, int cursor) {
-                return text.length();
-            }
-
-            @Override
-            public CharSequence terminateToken(CharSequence text) {
-                return text; // return text itself and don't add any separator
-            }
-        });
-
-        // Change and fill the textview
-        multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /** Show all options if the search block is empty */
-                showContentIfEmpty();
-                adapter1.getFilter().filter(s, new Filter.FilterListener() {
-                    @Override
-                    public void onFilterComplete(int count) {
-                        recyclerView1.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-                    }
-                });
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }
-
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String item = filteredDataList.get(position);
-        ((TextView) holder.itemView).setText(item);
-    }
-
-    public int getItemCount() {
-        return filteredDataList.size();
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void applySearch(View view){
-        dataList.clear();
-        loadData();
-        // initialize data after searching
-        filteredDataList = new ArrayList<>(dataList);
-
-        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
-        String query = multiAutoCompleteTextView.getText().toString().trim();
-
-        // 如果查询文本为空，则显示所有数据，否则显示与查询文本匹配的数据
-        if (query.isEmpty()) {
-            filteredDataList = new ArrayList<>(dataList);
-        } else {
-            filteredDataList = new ArrayList<>();
-            for (String item : dataList) {
-                if (item.toLowerCase().contains(query.toLowerCase())) {
-                    filteredDataList.add(item);
-                }
+            String[] tokens=line.split(";");
+            if(user.equals(tokens[0])){
+                in=true;
+                imageId=Integer.parseInt(tokens[1]);
+                signature=tokens[2];
+                break;
             }
         }
-        dataList = filteredDataList;
-        adapter.notifyDataSetChanged(); // 通知适配器数据已更改
-    }
-
-    /** Show all options if the search block is empty */
-    @SuppressLint("NotifyDataSetChanged")
-    public void showContentIfEmpty(){
-        dataList.clear();
-        loadData();
-        MultiAutoCompleteTextView multiAutoCompleteTextView = findViewById(R.id.input_search);
-        String query = multiAutoCompleteTextView.getText().toString().trim();
-        if (query.isEmpty()){
-            adapter.notifyDataSetChanged();
+        try {
+            bufferedReader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        if(in){
+            title.setText("Welcome "+user+"!");
+            mySignature.setText(signature);
+
+            String imageName = "image"+imageId;
+            int resourceId = getResources().getIdentifier(imageName, "raw", getPackageName());
+            avatar.setImageResource(resourceId);
+        }else {//This a new user, randomly initialize elements
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("profile.csv", true))) {
+                // Append the new data as a new row
+                Random random=new Random();
+                int index=random.nextInt(10);
+                writer.write("user;"+index+";"+"I'm looking for a place.");
+                title.setText("Welcome "+user+"!");
+                signature="I'm looking for a place.";
+                imageId=index;
+                mySignature.setText(signature);
+                String imageName = "image"+imageId;
+                int resourceId = getResources().getIdentifier(imageName, "raw", getPackageName());
+                avatar.setImageResource(resourceId);
+                writer.newLine(); // Add a new line separator to start a new row
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
