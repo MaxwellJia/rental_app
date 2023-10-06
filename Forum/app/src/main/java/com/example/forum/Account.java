@@ -51,6 +51,7 @@ public class Account {
 
 
     public Account() {
+
     }
     @JsonCreator
     public Account(@JsonProperty("account") String account,@JsonProperty("password") String password,@JsonProperty("left") Account left, @JsonProperty("right")Account right, @JsonProperty("height")int height) {
@@ -63,10 +64,12 @@ public class Account {
 
     int height;
 
-    Account( String password, String account) {
+    Account( String account,String password) {
         this.account = account;
         this.password = password;
         this.height = 1;
+        this.left=null;
+        this.right=null;
     }
 }
 

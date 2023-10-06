@@ -57,8 +57,7 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                    ObjectMapper objectMapper=new ObjectMapper();
-                    // Convert the JSON data to a string
+
                     List<String> valuesList = new ArrayList<>();
 
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
@@ -66,16 +65,18 @@ public class LogIn extends AppCompatActivity {
                         valuesList.add(item);
                     }
 
-                    String[] u=valuesList.get(0).split(";");
-                    AccountTree at=new AccountTree(new Account(u[0],u[1]));
 
-                    for(int i=1;i<=valuesList.size()-1;i++){
+                    AccountTree at=new AccountTree();
+
+                    for(int i=0;i<=valuesList.size()-1;i++){
                         String[] pairs=valuesList.get(i).split(";");
                         at.insert(pairs[0],pairs[1]);
+
                     }
 
                     Account target= at.search(enteredUsername);
-                    if (target.password==null) {
+
+                    if (target==null) {
                         Toast.makeText(getApplicationContext(), "Username doesn't exist!", Toast.LENGTH_SHORT).show();
                     } else {
                         if (enteredPassword.equals(target.password)) {
