@@ -221,6 +221,7 @@ public class Main_Page extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /** Show all options if the search block is empty */
                 showContentIfEmpty();
                 adapter1.getFilter().filter(s, new Filter.FilterListener() {
                     @Override
