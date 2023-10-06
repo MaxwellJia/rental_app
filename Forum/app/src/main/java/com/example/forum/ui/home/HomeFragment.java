@@ -408,32 +408,38 @@ public class HomeFragment extends Fragment {
         multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                recyclerView.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 showContentIfEmpty();
+                if (s.length() > 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                }
                 arrayAdapter.getFilter().filter(s, new Filter.FilterListener() {
                     @Override
                     public void onFilterComplete(int count) {
-                        recyclerView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-                    }
+                        if (s.length() == 0) {
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            recyclerView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                        }                    }
                 });
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.length() == 0 && recyclerView.getVisibility() == View.VISIBLE) {
+                    recyclerView.setVisibility(View.GONE);
+                }
             }
         });
     }
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String item = filteredDataList.get(position);
-        ((TextView) holder.itemView).setText(item);
-    }
 
-    public int getItemCount() {
-        return filteredDataList.size();
-    }
 
 
     @SuppressLint("NotifyDataSetChanged")
