@@ -25,6 +25,8 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LogIn extends AppCompatActivity {
 
@@ -46,8 +48,10 @@ public class LogIn extends AppCompatActivity {
         String enteredUsername = usernameEditText.getText().toString();
         String enteredPassword = passwordEditText.getText().toString();
 
-        FirebaseApp.initializeApp(this);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -55,24 +59,26 @@ public class LogIn extends AppCompatActivity {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                     ObjectMapper objectMapper=new ObjectMapper();
                     // Convert the JSON data to a string
-                    String jsonString = null;
-                    try {
-                        jsonString = objectMapper.writeValueAsString(dataSnapshot.getValue());
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                    AccountTree at;
-                    try {
-                        at = objectMapper.readValue(jsonString, AccountTree.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
+                    List<String> valuesList = new ArrayList<>();
+
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        valuesList.add(item);
                     }
 
-                    String password= at.search(enteredUsername);
-                    if (password==null) {
+                    String[] u=valuesList.get(0).split(";");
+                    AccountTree at=new AccountTree(new Account(u[0],u[1]));
+
+                    for(int i=1;i<=valuesList.size()-1;i++){
+                        String[] pairs=valuesList.get(i).split(";");
+                        at.insert(pairs[0],pairs[1]);
+                    }
+
+                    Account target= at.search(enteredUsername);
+                    if (target.password==null) {
                         Toast.makeText(getApplicationContext(), "Username doesn't exist!", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (enteredPassword.equals(password)) {
+                        if (enteredPassword.equals(target.password)) {
                             Intent intent = new Intent(getApplicationContext(), Main_Page.class);
                             intent.putExtra("username",enteredUsername);
                             startActivity(intent);
@@ -81,8 +87,6 @@ public class LogIn extends AppCompatActivity {
 
                         }
                     }
-                    // Now, you have the JSON data as a string (jsonString)
-                    Log.d("FirebaseData", jsonString);
 
                     // You can use the jsonString as needed in your app
                 } else {
