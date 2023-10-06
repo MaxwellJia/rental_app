@@ -31,15 +31,10 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-
         setContentView(R.layout.activity_main);//还未添加跳转页面
-
     }
 
     public void buttonFun(){
 
     }
-
-
-
 }

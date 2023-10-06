@@ -1,6 +1,8 @@
 package com.example.forum;
 
-public class AccountTree {
+import com.google.firebase.database.core.utilities.Tree;
+
+public class AccountTree extends Tree {
 
     public AccountTree( Account root) {
         this.root = root;

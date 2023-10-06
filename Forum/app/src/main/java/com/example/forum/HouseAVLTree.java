@@ -1,12 +1,12 @@
 package com.example.forum;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.google.firebase.database.core.utilities.Tree;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseAVLTree  {
+public class HouseAVLTree extends Tree {
     public House root;
 
     // Constructor

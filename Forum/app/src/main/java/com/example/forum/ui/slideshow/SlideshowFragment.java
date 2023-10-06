@@ -1,5 +1,6 @@
 package com.example.forum.ui.slideshow;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.forum.R;
 import com.example.forum.databinding.FragmentSlideshowBinding;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
-
-import android.graphics.Color;
 
 
 public class SlideshowFragment extends Fragment {
