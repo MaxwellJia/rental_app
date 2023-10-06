@@ -67,6 +67,8 @@ public class Account {
         this.account = account;
         this.password = password;
         this.height = 1;
+        this.left=null;
+        this.right=null;
     }
 }
 
