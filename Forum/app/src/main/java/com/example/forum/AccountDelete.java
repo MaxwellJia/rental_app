@@ -50,12 +50,13 @@ public class AccountDelete extends AppCompatActivity {
                     }
 
 
-                    AccountTree at=new AccountTree();
 
-                    for(int i=0;i<=valuesList.size()-1;i++){
+                    String[] pairs1=valuesList.get(0).split(";");
+                    AccountTree at=new AccountTree(new Account(pairs1[0],pairs1[1]));
+
+                    for(int i=1;i<=valuesList.size()-1;i++){
                         String[] pairs=valuesList.get(i).split(";");
                         at.insert(pairs[0],pairs[1]);
-
                     }
 
                     Account target= at.search(inputAccount);

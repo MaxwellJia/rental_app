@@ -7,8 +7,8 @@ import java.util.List;
 
 public class AccountTree extends Tree {
 
-    public AccountTree() {
-        root=new Account("admin","admin");
+    public AccountTree(Account account) {
+        root=account;
     }
 
     public Account root;
@@ -84,7 +84,7 @@ public class AccountTree extends Tree {
             node.right = insert(node.right, account, password);
         } else {
             // Handle duplicate accounts if needed
-            return node;
+
         }
 
         updateHeight(node);
