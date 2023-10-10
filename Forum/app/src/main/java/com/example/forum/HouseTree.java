@@ -6,6 +6,10 @@ import java.util.List;
 public class HouseTree {
     private House root;
 
+    public HouseTree(House root) {
+        this.root = root;
+    }
+
     public void insert(House house) {
         root = insert(root, house);
     }
