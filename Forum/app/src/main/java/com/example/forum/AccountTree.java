@@ -2,14 +2,13 @@ package com.example.forum;
 
 import com.google.firebase.database.core.utilities.Tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccountTree extends Tree {
 
-    public AccountTree( Account root) {
-        this.root = root;
-    }
-
     public AccountTree() {
-        root=new Account("ggg","sdds");
+        root=new Account("admin","admin");
     }
 
     public Account root;
@@ -132,6 +131,108 @@ public class AccountTree extends Tree {
             return search(node.right, account);
         } else {
             return node; // Found the node with the specified account name
+        }
+    }
+    // Delete a node with a given account name
+    public void delete(String account) {
+        root = delete(root, account);
+    }
+
+    private Account delete(Account node, String account) {
+        if (node == null) {
+            return node; // Account not found, nothing to delete
+        }
+
+        int cmp = account.compareTo(node.account);
+
+        // Recursively search for the node to delete
+        if (cmp < 0) {
+            node.left = delete(node.left, account);
+        } else if (cmp > 0) {
+            node.right = delete(node.right, account);
+        } else {
+            // Node with the account name to be deleted is found
+
+            // Node with only one child or no child
+            if (node.left == null || node.right == null) {
+                Account temp = (node.left != null) ? node.left : node.right;
+
+                // No child case
+                if (temp == null) {
+                    temp = node;
+                    node = null;
+                } else {
+                    // One child case
+                    node = temp; // Copy the contents of the non-empty child
+                }
+
+                temp = null; // Set the temporary node to null
+            } else {
+                // Node with two children: get the inorder successor (smallest in the right subtree)
+                Account temp = minValueNode(node.right);
+
+                // Copy the inorder successor's data to this node
+                node.account = temp.account;
+                node.password = temp.password;
+
+                // Delete the inorder successor
+                node.right = delete(node.right, temp.account);
+            }
+        }
+
+        // If the tree had only one node, then return
+        if (node == null) {
+            return node;
+        }
+
+        // Update the height of the current node
+        updateHeight(node);
+
+        // Get the balance factor of this node
+        int balance = getBalance(node);
+
+        // Perform rotations to balance the tree (same as insert)
+        if (balance > 1) {
+            if (getBalance(node.left) >= 0) {
+                return rotateRight(node);
+            } else {
+                node.left = rotateLeft(node.left);
+                return rotateRight(node);
+            }
+        }
+
+        if (balance < -1) {
+            if (getBalance(node.right) <= 0) {
+                return rotateLeft(node);
+            } else {
+                node.right = rotateRight(node.right);
+                return rotateLeft(node);
+            }
+        }
+
+        return node;
+    }
+
+    // Helper method to find the node with the minimum value in a subtree
+    private Account minValueNode(Account node) {
+        Account current = node;
+        while (current.left != null) {
+            current = current.left;
+        }
+        return current;
+    }
+    // Traverse the AVL tree in-order and return a list of all accounts
+    public List<String> getNewJSONArrays() {
+        List<String> accountList = new ArrayList<>();
+        inOrderTraversal(root, accountList);
+        return accountList;
+    }
+
+    private void inOrderTraversal(Account node, List<String> accountList) {
+        if (node != null) {
+            inOrderTraversal(node.left, accountList);
+            accountList.add(node.account+";"+node.password);
+            inOrderTraversal(node.right, accountList);
         }
     }
 }

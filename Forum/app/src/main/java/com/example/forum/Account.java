@@ -1,8 +1,5 @@
 package com.example.forum;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Account {
     String account;
     String password;
@@ -52,14 +49,6 @@ public class Account {
 
     public Account() {
 
-    }
-    @JsonCreator
-    public Account(@JsonProperty("account") String account,@JsonProperty("password") String password,@JsonProperty("left") Account left, @JsonProperty("right")Account right, @JsonProperty("height")int height) {
-        this.account = account;
-        this.password = password;
-        this.left = left;
-        this.right = right;
-        this.height = height;
     }
 
     int height;
