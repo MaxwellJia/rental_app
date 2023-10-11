@@ -10,12 +10,14 @@ public class House {
     private int price;//value[5]
     private int xbxb;//value[6]
     private String email;//value[7]
+    private int likes;
 
     private int height;//Helper to balance AVL tree
     private House left;
+
     private House right;
 
-    public House(int id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email) {
+    public House(int id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email, int likes) {
         this.id = id;
         this.city = city;
         this.suburb = suburb;
@@ -28,6 +30,7 @@ public class House {
         this.height = 1;
         this.left = null;
         this.right = null;
+        this.likes = likes;
     }
 
     public int getId() {
@@ -124,6 +127,14 @@ public class House {
 
     public void setRight(House right) {
         this.right = right;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
 }
