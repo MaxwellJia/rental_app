@@ -37,9 +37,13 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2B2B1P"
-                android:textColor="#FF5722"
-                android:textSize="24sp" />
+                android:fontFamily="sans-serif-black"
+                android:paddingLeft="20dp"
+                android:text="$2000000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#171615"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView3"
