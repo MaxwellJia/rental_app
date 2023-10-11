@@ -221,6 +221,8 @@
 //}
 
 package com.example.forum.ui.home;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
@@ -248,9 +250,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
+import com.example.forum.House_Detail_Page;
 import com.example.forum.R;
 import com.example.forum.databinding.FragmentHomeBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.eazegraph.lib.models.PieModel;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,6 +274,7 @@ public class HomeFragment extends Fragment {
     private MultiAutoCompleteTextView multiAutoCompleteTextView;
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
+    private List<HouseData> houseList = new ArrayList<>();
 
     private FragmentHomeBinding binding;
 
@@ -271,12 +283,61 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
+
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textHome;
-//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        loadData();
+//        HouseData house = new HouseData("123", "123",213,"123");
+//
+//        houseList.add(house);
+
+        // 使用视图对象查找RecyclerView
+        recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
+
+        // 初始化适配器，这里你需要创建一个自定义适配器，比如 HouseAdapter
+        HouseAdapter adapter1 = new HouseAdapter(houseList);
+
+        // 设置适配器给 RecyclerView
+        recyclerViewhouse.setAdapter(adapter1);
+
+        // 使用线性布局管理器
+        recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerViewhouse.setVisibility(View.VISIBLE);
+        // 初始化数据列表
+
+        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("1");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        String[] property=item.split(";");
+                        HouseData house = new HouseData(property[0].toString(), property[1].toString()+" "+property[2].toString() +" $"+property[3].toString()+" "+property[4].toString()+" Bedroom", Integer.parseInt(property[3]), property[0].toString());
+                        // Set the data houselist
+                        houseList.add(house);
+                    }
+                    adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+
+
+
+
 
         Button searchButton = binding.buttonSearch; // 根据您的按钮 ID 获取按钮
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -288,8 +349,8 @@ public class HomeFragment extends Fragment {
             public void applySearch(View view) {
                 Log.d("MyApp", "applySearch method is called!");
 
-                dataList.clear();
-                loadData();
+//                dataList.clear();
+//                loadData();
                 filteredDataList = new ArrayList<>(dataList);
 
                 String query = multiAutoCompleteTextView.getText().toString().trim();
@@ -312,7 +373,11 @@ public class HomeFragment extends Fragment {
 
 
         recyclerView = binding.recyclerView;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        loadData();
+
+        recyclerView.setVisibility(View.GONE);
 
         multiAutoCompleteTextView = binding.inputSearch;
         adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -327,6 +392,24 @@ public class HomeFragment extends Fragment {
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 String item = dataList.get(position);
                 ((TextView) holder.itemView).setText(item);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Handle item click
+                        String selectedItem = dataList.get(position);
+                        // Depending on the item clicked, you can navigate to a different activity and pass data
+                        // Handle item 1 click
+//                        HouseData house = new HouseData(dataList.get(position)[0]);
+                        String[] pass = selectedItem.split(" ");
+
+                        HouseData house = new HouseData(pass[0],"asd",Integer.parseInt(pass[2]),pass[0]);
+
+                        Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
+                        // Add data to the intent
+                        intent.putExtra("houseData", house);
+                        v.getContext().startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -351,122 +434,43 @@ public class HomeFragment extends Fragment {
 
         fillAuto();
 
-
-
-//        LinearLayout cardViewContainer = root.findViewById(R.id.cardViewContainer);
-//
-//        for (HouseData houseData : houseList) {
-//            // 创建一个新的 CardView
-//            CardView cardView = new CardView(requireContext());
-//            cardView.setLayoutParams(new CardView.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//            ));
-//
-//            // 创建一个 LinearLayout 用于包裹标题和描述
-//            LinearLayout linearLayout = new LinearLayout(requireContext());
-//            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//            ));
-//            linearLayout.setOrientation(LinearLayout.VERTICAL);
-//            linearLayout.setPadding(16, 16, 16, 16);
-//
-//            // 创建标题 TextView
-//            TextView titleTextView = new TextView(requireContext());
-//            titleTextView.setLayoutParams(new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//            ));
-//            titleTextView.setText(houseData.getTitle());
-//            titleTextView.setTextSize(18);
-//            titleTextView.setTypeface(null, Typeface.BOLD);
-//
-//            // 创建描述 TextView
-//            TextView descriptionTextView = new TextView(requireContext());
-//            descriptionTextView.setLayoutParams(new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//            ));
-//            descriptionTextView.setText(houseData.getDescription());
-//            descriptionTextView.setTextSize(14);
-//
-//            // 将标题和描述添加到 LinearLayout 中
-//            linearLayout.addView(titleTextView);
-//            linearLayout.addView(descriptionTextView);
-//
-//            // 将 LinearLayout 添加到 CardView 中
-//            cardView.addView(linearLayout);
-//
-//            // 将 CardView 添加到 LinearLayout（cardViewContainer）中
-//            cardViewContainer.addView(cardView);
-//        }
-// 使用视图对象查找RecyclerView
-        recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
-
-        // 初始化数据列表
-        List<HouseData> houseList = new ArrayList<>();
-        // 添加房源数据到 houseList
-        HouseData house1 = new HouseData("Beautiful House 1", "A lovely house with a garden.", 1200.0, "City A");
-        HouseData house2 = new HouseData("Cozy Cottage", "A charming cottage by the lake.", 800.0, "City B");
-        HouseData house3 = new HouseData("Spacious Villa", "A luxurious villa with a pool.", 2500.0, "City C");
-
-        // 将模拟数据添加到 houseList
-        houseList.add(house1);
-        houseList.add(house2);
-        houseList.add(house3);
-        houseList.add(house1);
-        houseList.add(house2);
-        houseList.add(house3);
-        System.out.println(houseList.size());
-        // 初始化适配器，这里你需要创建一个自定义适配器，比如 HouseAdapter
-        HouseAdapter adapter1 = new HouseAdapter(houseList);
-
-        // 设置适配器给 RecyclerView
-        recyclerViewhouse.setAdapter(adapter1);
-
-        // 使用线性布局管理器
-        recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-
         return root;
     }
 
     private void loadData() {
-        // 添加一些示例数据
-        dataList.add("Item 1 800");
-        dataList.add("Item 2 700");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Item 1");
-        dataList.add("Item 2");
-        dataList.add("Item 3");
-        dataList.add("Item 4");
-        dataList.add("Item 5");
-        dataList.add("Bruce");
+
+        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("1");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        String[] property=item.split(";");
+                        // Set the data to search recycleview
+                        dataList.add(property[0].toString()+" "+"$ "+property[3].toString()+" "+property[4].toString()+" Bedroom");
+                    }
+
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
     }
 
     private void loadMoreData() {
         int nextPageStartIndex = dataList.size();
         for (int i = nextPageStartIndex; i < nextPageStartIndex + 5; i++) {
-            dataList.add("Item " + (i + 1));
+            dataList.add("More place to explore");
         }
         adapter.notifyDataSetChanged();
     }
@@ -496,7 +500,8 @@ public class HomeFragment extends Fragment {
         multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                recyclerView.setVisibility(View.GONE);
+//                recyclerView.setVisibility(View.GONE);
+//                recyclerViewhouse.setVisibility(View.VISIBLE);
 
             }
 

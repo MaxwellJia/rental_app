@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Forum"
         tools:targetApi="31">
         <activity
+            android:name=".AccountDelete"
+            android:exported="false" />
+        <activity
             android:name=".House_Detail_Page"
             android:exported="true"
             android:label="@string/title_activity_house_detail_page" />
