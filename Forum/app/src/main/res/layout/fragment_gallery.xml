@@ -8,130 +8,145 @@
     tools:context=".ui.gallery.GalleryFragment">
 
     <Spinner
-        android:id="@+id/bedroom"
-        android:layout_width="58dp"
-        android:layout_height="29dp"
-        android:autofillHints="Province"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="65dp" />
-
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Address:"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="131dp" />
-
-    <Spinner
         android:id="@+id/suburb"
         android:layout_width="58dp"
         android:layout_height="29dp"
-        tools:layout_editor_absoluteX="254dp"
-        tools:layout_editor_absoluteY="175dp" />
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="150dp"
+        app:layout_constraintStart_toEndOf="@+id/street"
+        app:layout_constraintTop_toBottomOf="@+id/text5" />
+
+    <Spinner
+        android:id="@+id/bathroom"
+        android:layout_width="59dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/text5" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
         android:text="B"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="233dp"
-        tools:layout_editor_absoluteY="65dp" />
-
-    <EditText
-        android:id="@+id/numberEditText2"
-        android:layout_width="63dp"
-        android:layout_height="26dp"
-        android:background="@drawable/number_input_bg"
-        android:hint="Buliding_No"
-        android:inputType="number"
-        android:textSize="12sp"
-        tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="178dp" />
+        app:layout_constraintStart_toEndOf="@+id/bathroom"
+        app:layout_constraintTop_toBottomOf="@+id/text5" />
 
     <Spinner
         android:id="@+id/province"
         android:layout_width="58dp"
         android:layout_height="29dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="193dp"
         android:autofillHints="Province"
-        tools:layout_editor_absoluteX="329dp"
-        tools:layout_editor_absoluteY="175dp" />
+        app:layout_constraintStart_toEndOf="@+id/suburb"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/bathroom"
+        android:id="@+id/bedroom"
         android:layout_width="58dp"
         android:layout_height="29dp"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="65dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="B"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="126dp"
-        tools:layout_editor_absoluteY="65dp" />
-
-    <EditText
-        android:id="@+id/numberEditText"
-        android:layout_width="70dp"
-        android:layout_height="26dp"
-        android:background="@drawable/number_input_bg"
-        android:hint="Unit(Optional)"
-        android:inputType="number"
-        android:textSize="12sp"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="178dp" />
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="83dp"
+        android:autofillHints="Province"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/street"
         android:layout_width="58dp"
         android:layout_height="29dp"
-        tools:layout_editor_absoluteX="175dp"
-        tools:layout_editor_absoluteY="175dp" />
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="81dp"
+        app:layout_constraintStart_toEndOf="@+id/numberEditText2"
+        app:layout_constraintTop_toBottomOf="@+id/bathroom" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="13dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="40dp"
+        android:text="B"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/text5"
+        tools:layout_editor_absoluteX="107dp" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="37dp"
+        android:text="Address:"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bedroom" />
 
     <TextView
         android:id="@+id/text3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="66dp"
         android:text="Add Description"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="221dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/street" />
 
     <TextView
         android:id="@+id/text5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rent out your house"
+        android:layout_width="182dp"
+        android:layout_height="27dp"
+        android:text="rent  out your house"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="116dp"
+        tools:layout_editor_absoluteX="107dp"
         tools:layout_editor_absoluteY="16dp" />
 
     <TextView
         android:id="@+id/text4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Picture Description"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="78dp"
+        android:text="Add Description"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="352dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text3" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="upload"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="434dp" />
+    <EditText
+        android:id="@+id/numberEditText"
+        android:layout_width="70dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/number_input_bg"
+        android:hint="Unit(Optional)"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <EditText
+        android:id="@+id/numberEditText2"
+        android:layout_width="63dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/number_input_bg"
+        android:hint="Buliding_No"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/numberEditText"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
