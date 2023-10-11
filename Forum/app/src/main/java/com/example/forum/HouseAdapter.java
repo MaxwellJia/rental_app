@@ -42,6 +42,7 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
 
+                System.out.println(house.getStreet());
                     Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                     intent.putExtra("houseData", house);
                     v.getContext().startActivity(intent);

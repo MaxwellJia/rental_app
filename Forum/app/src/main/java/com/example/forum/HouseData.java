@@ -86,6 +86,8 @@ public class HouseData implements Parcelable {
         description = in.readString();
         price = in.readDouble();
         location = in.readString();
+        street = in.readString();
+
     }
     // 其他属性的 getter 和 setter 方法
 }

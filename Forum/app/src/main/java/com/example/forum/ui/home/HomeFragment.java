@@ -351,7 +351,7 @@ public class HomeFragment extends Fragment {
                 Log.d("MyApp", "applySearch method is called!");
 
                 loadData();
-                filteredDataList = new ArrayList<>(dataList);
+                filteredDataList = new ArrayList<>();
 
                 String query = multiAutoCompleteTextView.getText().toString().trim();
                 String aa=TokenParse.parse(TokenParse.tokenize(query)).toLowerCase();
@@ -359,20 +359,23 @@ public class HomeFragment extends Fragment {
                 if (query.isEmpty()) {
                     filteredDataList = new ArrayList<>(dataList);
                 } else {
-                    filteredDataList = new ArrayList<>();
                     for (String item : dataList) {
-//                        if(item.toLowerCase().contains(aa.toLowerCase())){
-//                            filteredDataList.add(item);
-//
-//                            System.out.println("find");
-//                        }
-
-                        if (item.toLowerCase().contains(query.toLowerCase()) ) {
+                        if(item.toLowerCase().contains(aa.toLowerCase())){
                             filteredDataList.add(item);
+
+                            System.out.println("find");
                         }
+
+//                        if (item.toLowerCase().contains(query.toLowerCase()) ) {
+//                            filteredDataList.add(item);
+//                        }
                     }
                 }
+//                for(String cc: filteredDataList){
+//                    System.out.println();
+//                }
                 dataList = filteredDataList;
+
                 adapter.notifyDataSetChanged();
 
             }
