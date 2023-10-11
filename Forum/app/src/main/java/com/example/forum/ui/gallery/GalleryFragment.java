@@ -13,6 +13,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.forum.databinding.FragmentGalleryBinding;
 
 public class GalleryFragment extends Fragment {
+//house data structure:
+// String id;
+// String city;
+// String suburb;
+// String street;
+// String street number;
+// String unit;
+// String price;
+// String xbxb;
+// String email;
 
     private FragmentGalleryBinding binding;
 
