@@ -80,12 +80,13 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/arizonia"
+                android:fontFamily="serif-monospace"
                 android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:paddingRight="10dp"
                 android:text="Description\nEmbracing a blend of traditional and contemporary design, this exquisite house captivates with its welcoming ivy-draped facade and vibrant blossoms. The interior radiates warmth and elegance, featuring a sunlit, spacious living room and a gourmet kitchen fitted with top-tier appliances. The cozy, yet sophisticated, dining area under a striking chandelier invites family gatherings, while the master bedroom serves as a luxurious retreat with its plush bedding and lavish en-suite bathroom. Additional bedrooms offer versatility and comfort for residents and guests alike. The backyard, a blend of lush greenery, a shimmering pool, and a charming patio, provides a private oasis for relaxation and entertainment. Every detail of this home is a testament to a harmonious balance of luxury and homely comfort."
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView5"
