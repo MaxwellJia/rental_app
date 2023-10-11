@@ -32,7 +32,7 @@ public class House_Detail_Page extends AppCompatActivity {
         textview4.setText("$"+price);
         // house street and location
         TextView textview3 = findViewById(R.id.textView3);
-        textview3.setText(street + " " + location);
+        textview3.setText(street + location);
         // title
         TextView textview = findViewById(R.id.textView1);
         textview.setText(houseData.getTitle());
