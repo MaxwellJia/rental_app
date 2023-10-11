@@ -1,20 +1,26 @@
 package com.example.forum;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,39 +54,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonFun() {
-//        Random random = new Random();
-//        String[] suburbs = {
-//                "Acton", "Ainslie", "Amaroo", "Aranda", "Banks", "Barton", "Belconnen", "Bonner", "Bonython", "Braddon",
-//                "Bruce", "Calwell", "Campbell", "Casey", "Chapman", "Charnwood", "Chifley", "Chisholm", "City", "Cook",
-//                "Coombs", "Crace", "Curtin", "Deakin", "Dickson", "Downer", "Duffy", "Dunlop", "Evatt", "Fadden",
-//                "Farrer", "Fisher", "Florey", "Flynn", "Forde", "Forrest", "Franklin", "Fraser", "Fyshwick", "Garran",
-//                "Gilmore", "Giralang", "Gordon", "Gowrie", "Greenway", "Griffith", "Gungahlin", "Hackett", "Harrison",
-//                "Hawker", "Higgins", "Holder", "Holt", "Hughes", "Hume", "Isaacs", "Isabella Plains", "Jacka", "Kaleen",
-//                "Kambah", "Kingston", "Latham", "Lawson", "Lyneham", "Lyons", "Macarthur", "Macgregor", "Macquarie", "Mawson",
-//                "McKellar", "Melba", "Mitchell", "Monash", "Narrabundah", "Ngunnawal", "Nicholls", "O'Connor", "O'Malley",
-//                "Oxley", "Page", "Palmerston", "Pearce", "Phillip", "Red Hill", "Reid", "Richardson", "Rivett", "Scullin",
-//                "Spence", "Stirling", "Swinger Hill", "Symonston", "Tharwa", "Theodore", "Torrens", "Turner", "Wanniassa",
-//                "Waramanga", "Watson", "Weetangera", "Weston", "Weston Creek", "Wright", "Yarralumla"
-//        };
-//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//
-//        List<String> houseData=new ArrayList<>();
-//        for(int j=0;j<=1999;j++){
-//            String line="";
-//            line+=suburbs[random.nextInt(suburbs.length)]+";";
-//            line+="Street;";
-//            line+=""+random.nextInt(21)+";";
-//            line+=""+(300+random.nextInt(1700))+";";
-//            line+=""+(1+random.nextInt(6))+";";
-//            line+="USER;";
-//            line+="Descrpition "+random.nextInt(20);
-//            houseData.add(line);
-//
+//        List<String> accountList=new ArrayList<>();
+//        accountList.add("comp2100@anu.edu.au"+";"+"comp2100");
+//        accountList.add("comp6442@anu.edu.au"+";"+"comp6442");
+//        accountList.add("1"+";"+"1");
+//        Random random=new Random();
+//        for(int i=0;i<497;i++){
+//            accountList.add("u7"+(100000+random.nextInt(900000))+";"+"123456");
 //        }
-//        // Get a reference to the database (you may, if you choose to structure your data a bit more, provide path).
-//        DatabaseReference databaseReference1 = firebaseDatabase.getReference("House");
-//        // Get a reference to a child within the previous reference and set the value of that child.
-//        databaseReference1.child("1").setValue(houseData);
+//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+//        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
+//        databaseReference.setValue(accountList);
     }
 
 

@@ -20,6 +20,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFC107"
+                android:fontFamily="@font/architects_daughter"
+                android:text="My Place"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
@@ -37,27 +47,46 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2B2B1P"
-                android:textColor="#FF5722"
+                android:fontFamily="sans-serif-black"
+                android:paddingLeft="20dp"
+                android:text="$2000000"
+                android:textColor="#232120"
                 android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
                 android:text="House Information"
-                android:textAlignment="center"
-                android:textColor="#E91E63"
-                android:textSize="34sp"
-                android:textStyle="bold" />
+                android:textAlignment="viewStart"
+                android:textColor="#232120"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:text="Rooms"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:text="Embracing a blend of traditional and contemporary design, this exquisite house captivates with its welcoming ivy-draped facade and vibrant blossoms. The interior radiates warmth and elegance, featuring a sunlit, spacious living room and a gourmet kitchen fitted with top-tier appliances. The cozy, yet sophisticated, dining area under a striking chandelier invites family gatherings, while the master bedroom serves as a luxurious retreat with its plush bedding and lavish en-suite bathroom. Additional bedrooms offer versatility and comfort for residents and guests alike. The backyard, a blend of lush greenery, a shimmering pool, and a charming patio, provides a private oasis for relaxation and entertainment. Every detail of this home is a testament to a harmonious balance of luxury and homely comfort."
-                android:textSize="16sp" />
+                android:fontFamily="serif-monospace"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingRight="10dp"
+                android:text="Description\nEmbracing a blend of traditional and contemporary design, this exquisite house captivates with its welcoming ivy-draped facade and vibrant blossoms. The interior radiates warmth and elegance, featuring a sunlit, spacious living room and a gourmet kitchen fitted with top-tier appliances. The cozy, yet sophisticated, dining area under a striking chandelier invites family gatherings, while the master bedroom serves as a luxurious retreat with its plush bedding and lavish en-suite bathroom. Additional bedrooms offer versatility and comfort for residents and guests alike. The backyard, a blend of lush greenery, a shimmering pool, and a charming patio, provides a private oasis for relaxation and entertainment. Every detail of this home is a testament to a harmonious balance of luxury and homely comfort."
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView5"

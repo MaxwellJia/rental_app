@@ -8,13 +8,17 @@ public class HouseData implements Parcelable {
     private String description;
     private double price;
     private String location;
+    private String street;
+
     // 其他房源相关属性
 
-    public HouseData(String title, String description, double price, String location) {
+    public HouseData(String title, String description, double price, String location,String street) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.location = location;
+        this.street = street;
+
         // 可以在构造函数中初始化其他属性
     }
 
@@ -36,10 +40,15 @@ public class HouseData implements Parcelable {
         dest.writeString(description);
         dest.writeDouble(price);
         dest.writeString(location);
+        dest.writeString(street);
+
     }
 
     public String getDescription() {
         return description;
+    }
+    public String getStreet() {
+        return street;
     }
 
     public void setDescription(String description) {
@@ -77,6 +86,8 @@ public class HouseData implements Parcelable {
         description = in.readString();
         price = in.readDouble();
         location = in.readString();
+        street = in.readString();
+
     }
     // 其他属性的 getter 和 setter 方法
 }

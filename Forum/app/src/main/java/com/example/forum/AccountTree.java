@@ -1,11 +1,15 @@
 package com.example.forum;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.core.utilities.Tree;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
-public class AccountTree extends Tree {
+public class AccountTree  implements Iterable<Account> {
 
     public AccountTree(Account account) {
         root=account;
@@ -222,17 +226,45 @@ public class AccountTree extends Tree {
         return current;
     }
     // Traverse the AVL tree in-order and return a list of all accounts
-    public List<String> getNewJSONArrays() {
-        List<String> accountList = new ArrayList<>();
-        inOrderTraversal(root, accountList);
-        return accountList;
+
+    @Override
+    public Iterator<Account> iterator() {
+        return new AccountTreeIterator(root);
     }
 
-    private void inOrderTraversal(Account node, List<String> accountList) {
-        if (node != null) {
-            inOrderTraversal(node.left, accountList);
-            accountList.add(node.account+";"+node.password);
-            inOrderTraversal(node.right, accountList);
+    private class AccountTreeIterator implements Iterator<Account> {
+        private Stack<Account> stack;
+
+        public AccountTreeIterator(Account root) {
+            stack = new Stack<>();
+            // Initialize the stack with nodes from the leftmost path
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public Account next() {
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+
+            Account current = stack.pop();
+            Account node = current.right;
+
+            // Push the right subtree onto the stack
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+
+            return current;
         }
     }
 }
