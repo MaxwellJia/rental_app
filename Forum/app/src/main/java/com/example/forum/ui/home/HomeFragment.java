@@ -221,6 +221,7 @@
 //}
 
 package com.example.forum.ui.home;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -249,6 +250,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
+import com.example.forum.House_Detail_Page;
 import com.example.forum.R;
 import com.example.forum.databinding.FragmentHomeBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -259,6 +261,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.eazegraph.lib.models.PieModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -346,8 +349,8 @@ public class HomeFragment extends Fragment {
             public void applySearch(View view) {
                 Log.d("MyApp", "applySearch method is called!");
 
-                dataList.clear();
-                loadData();
+//                dataList.clear();
+//                loadData();
                 filteredDataList = new ArrayList<>(dataList);
 
                 String query = multiAutoCompleteTextView.getText().toString().trim();
@@ -389,6 +392,24 @@ public class HomeFragment extends Fragment {
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 String item = dataList.get(position);
                 ((TextView) holder.itemView).setText(item);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Handle item click
+                        String selectedItem = dataList.get(position);
+                        // Depending on the item clicked, you can navigate to a different activity and pass data
+                        // Handle item 1 click
+//                        HouseData house = new HouseData(dataList.get(position)[0]);
+                        String[] pass = selectedItem.split(" ");
+
+                        HouseData house = new HouseData(pass[0],"asd",Integer.parseInt(pass[2]),pass[0]);
+
+                        Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
+                        // Add data to the intent
+                        intent.putExtra("houseData", house);
+                        v.getContext().startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -431,7 +452,7 @@ public class HomeFragment extends Fragment {
                         String item = itemSnapshot.getValue(String.class);
                         String[] property=item.split(";");
                         // Set the data to search recycleview
-                        dataList.add(property[0].toString()+" $"+property[3].toString()+" "+property[4].toString()+" Bedroom");
+                        dataList.add(property[0].toString()+" "+"$ "+property[3].toString()+" "+property[4].toString()+" Bedroom");
                     }
 
                 } else {
