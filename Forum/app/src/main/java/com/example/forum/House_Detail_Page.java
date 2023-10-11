@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,6 +29,13 @@ public class House_Detail_Page extends AppCompatActivity {
         // price
         TextView textview4 = findViewById(R.id.textView4);
         textview4.setText("$"+price);
+        // house location
+        TextView textview3 = findViewById(R.id.textView3);
+        textview3.setText(location);
+        // title
+        TextView textview = findViewById(R.id.textView1);
+        textview.setText(houseData.getTitle());
+
 
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setImageResource(R.raw.sydneyopera0);
