@@ -82,12 +82,12 @@ public class SlideshowFragment extends Fragment {
                     tv6.setText(""+countRoom[5]);
 
                     // Set the data and color to the pie chart
-                    pieChart.addPieSlice(new PieModel("1", (float) countRoom[0]/2000, Color.parseColor("#FFA726")));
-                    pieChart.addPieSlice(new PieModel("2", (float) countRoom[1]/2000, Color.parseColor("#66BB6A")));
-                    pieChart.addPieSlice(new PieModel("3", (float) countRoom[2]/2000, Color.parseColor("#EF5350")));
-                    pieChart.addPieSlice(new PieModel("4", (float) countRoom[3]/2000, Color.parseColor("#29B6F6")));
-                    pieChart.addPieSlice(new PieModel("5", (float) countRoom[4]/2000, Color.parseColor("#9E9E9E")));
-                    pieChart.addPieSlice(new PieModel("6", (float) countRoom[5]/2000, Color.parseColor("#9C27B0")));
+                    pieChart.addPieSlice(new PieModel("1", (float) (((float) countRoom[0])/2000.0), Color.parseColor("#FFA726")));
+                    pieChart.addPieSlice(new PieModel("2",  (float) (((float) countRoom[1])/2000.0), Color.parseColor("#66BB6A")));
+                    pieChart.addPieSlice(new PieModel("3",  (float) (((float) countRoom[2])/2000.0), Color.parseColor("#EF5350")));
+                    pieChart.addPieSlice(new PieModel("4",  (float) (((float) countRoom[3])/2000.0), Color.parseColor("#29B6F6")));
+                    pieChart.addPieSlice(new PieModel("5",  (float) (((float) countRoom[4])/2000.0), Color.parseColor("#9E9E9E")));
+                    pieChart.addPieSlice(new PieModel("6",  (float) (((float) countRoom[5])/2000.0), Color.parseColor("#9C27B0")));
 
                 } else {
                     Log.d("FirebaseData", "No data available or data is null");

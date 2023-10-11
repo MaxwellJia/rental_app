@@ -6,6 +6,10 @@ import java.util.List;
 public class HouseTree {
     private House root;
 
+    public HouseTree(House root) {
+        this.root = root;
+    }
+
     public void insert(House house) {
         root = insert(root, house);
     }
@@ -150,56 +154,4 @@ public class HouseTree {
         }
     }
 
-    public void deleteHouseById(int id) {
-        root = deleteHouseById(root, id);
-    }
-
-    private House deleteHouseById(House node, int id) {
-        if (node == null) {
-            return null;
-        }
-
-        if (id < node.getId()) {
-            node.left = deleteHouseById(node.left, id);
-        } else if (id > node.getId()) {
-            node.right = deleteHouseById(node.right, id);
-        } else {
-            if (node.left == null) {
-                return node.right;
-            } else if (node.right == null) {
-                return node.left;
-            }
-
-            node.setId(findMin(node.right).getId());
-            node.right = deleteHouseById(node.right, node.getId());
-        }
-
-        node.setHeight(Math.max(getHeight(node.left), getHeight(node.right)) + 1);
-
-        int balance = getBalance(node);
-
-        if (balance > 1 && getBalance(node.left) >= 0) {
-            return rotateRight(node);
-        }
-        if (balance < -1 && getBalance(node.right) <= 0) {
-            return rotateLeft(node);
-        }
-        if (balance > 1 && getBalance(node.left) < 0) {
-            node.left = rotateLeft(node.left);
-            return rotateRight(node);
-        }
-        if (balance < -1 && getBalance(node.right) > 0) {
-            node.right = rotateRight(node.right);
-            return rotateLeft(node);
-        }
-
-        return node;
-    }
-
-    private House findMin(House node) {
-        while (node.left != null) {
-            node = node.left;
-        }
-        return node;
-    }
 }
