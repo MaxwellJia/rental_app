@@ -10,7 +10,7 @@ public class House {
     private int price;//value[5]
     private int xbxb;//value[6]
     private String email;//value[7]
-    private int likes;
+    private int likes;//value[8]
 
     private int height;//Helper to balance AVL tree
     private House left;
