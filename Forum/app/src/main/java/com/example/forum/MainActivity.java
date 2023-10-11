@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,10 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void jump(View v){
-//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://ga-23s2-a5f8f-default-rtdb.firebaseio.com/");
-//        DatabaseReference myRef = database.getReference("message");
-//        myRef.setValue("Hello, helloleoo!");
+    public void jump(View v) {
 
         setContentView(R.layout.activity_log_in);
         Intent intent = getIntent();
@@ -49,58 +47,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);//还未添加跳转页面
     }
 
-    public void buttonFun(){
-        Random random=new Random();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-
-                    List<String> valuesList= new ArrayList<>();
-                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item = itemSnapshot.getValue(String.class);
-                        valuesList.add(item);
-                    }
-                    List<String> profileData=new ArrayList<>();
-                    DatabaseReference databaseReference11 = firebaseDatabase.getReference("Profile").child("1");
-                    for(String s:valuesList){
-                        String[] uu=s.split(";");
-                        String username=uu[0];
-                        profileData.add(username+";"+random.nextInt(10)+";"+"This is my description.");
-                    }
-                    databaseReference11.setValue(profileData);
-
-                    // You can use the jsonString as needed in your app
-                } else {
-                    Log.d("FirebaseData", "No data available or data is null");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur during the read operation
-                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-            }
-        });
-
-//        List<String> userURLs =new ArrayList<>();
-//        userURLs.add("comp2100@anu.edu.au;comp2100");
-//        userURLs.add("comp6442@anu.edu.au;comp6442");
-//        userURLs.add("1;1");
-//        Random random=new Random();
-//        for(int i=0;i<497;i++){
-//            int r=random.nextInt(1000000);
-//            userURLs.add("u7"+r+";"+"123456");
-//        }
-//        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+    public void buttonFun() {
+//        Random random = new Random();
+//        String[] suburbs = {
+//                "Acton", "Ainslie", "Amaroo", "Aranda", "Banks", "Barton", "Belconnen", "Bonner", "Bonython", "Braddon",
+//                "Bruce", "Calwell", "Campbell", "Casey", "Chapman", "Charnwood", "Chifley", "Chisholm", "City", "Cook",
+//                "Coombs", "Crace", "Curtin", "Deakin", "Dickson", "Downer", "Duffy", "Dunlop", "Evatt", "Fadden",
+//                "Farrer", "Fisher", "Florey", "Flynn", "Forde", "Forrest", "Franklin", "Fraser", "Fyshwick", "Garran",
+//                "Gilmore", "Giralang", "Gordon", "Gowrie", "Greenway", "Griffith", "Gungahlin", "Hackett", "Harrison",
+//                "Hawker", "Higgins", "Holder", "Holt", "Hughes", "Hume", "Isaacs", "Isabella Plains", "Jacka", "Kaleen",
+//                "Kambah", "Kingston", "Latham", "Lawson", "Lyneham", "Lyons", "Macarthur", "Macgregor", "Macquarie", "Mawson",
+//                "McKellar", "Melba", "Mitchell", "Monash", "Narrabundah", "Ngunnawal", "Nicholls", "O'Connor", "O'Malley",
+//                "Oxley", "Page", "Palmerston", "Pearce", "Phillip", "Red Hill", "Reid", "Richardson", "Rivett", "Scullin",
+//                "Spence", "Stirling", "Swinger Hill", "Symonston", "Tharwa", "Theodore", "Torrens", "Turner", "Wanniassa",
+//                "Waramanga", "Watson", "Weetangera", "Weston", "Weston Creek", "Wright", "Yarralumla"
+//        };
 //        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+//
+//        List<String> houseData=new ArrayList<>();
+//        for(int j=0;j<=1999;j++){
+//            String line="";
+//            line+=suburbs[random.nextInt(suburbs.length)]+";";
+//            line+="Street;";
+//            line+=""+random.nextInt(21)+";";
+//            line+=""+(300+random.nextInt(1700))+";";
+//            line+=""+(1+random.nextInt(6))+";";
+//            line+="USER;";
+//            line+="Descrpition "+random.nextInt(20);
+//            houseData.add(line);
+//
+//        }
 //        // Get a reference to the database (you may, if you choose to structure your data a bit more, provide path).
-//        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData");
+//        DatabaseReference databaseReference1 = firebaseDatabase.getReference("House");
 //        // Get a reference to a child within the previous reference and set the value of that child.
-//        databaseReference.child("1").setValue(userURLs);
+//        databaseReference1.child("1").setValue(houseData);
     }
+
+
 }
