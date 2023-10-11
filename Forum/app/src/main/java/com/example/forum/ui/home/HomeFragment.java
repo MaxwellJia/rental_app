@@ -319,7 +319,7 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
                         String[] property=item.split(";");
-                        HouseData house = new HouseData(property[4].toString()+" Bedroom", property[1].toString()+" "+property[2].toString() +" $"+property[3].toString()+" "+property[4].toString()+" Bedroom", Integer.parseInt(property[3]), property[0].toString());
+                        HouseData house = new HouseData(property[4].toString()+" Bedroom", property[1].toString()+" "+property[2].toString() +" $"+property[3].toString()+" "+property[4].toString()+" Bedroom", Integer.parseInt(property[3]), property[0].toString(),property[1].toString()+" "+property[2].toString());
                         // Set the data houselist
                         houseList.add(house);
                     }
@@ -350,8 +350,7 @@ public class HomeFragment extends Fragment {
             public void applySearch(View view) {
                 Log.d("MyApp", "applySearch method is called!");
 
-//                dataList.clear();
-//                loadData();
+                loadData();
                 filteredDataList = new ArrayList<>(dataList);
 
                 String query = multiAutoCompleteTextView.getText().toString().trim();
@@ -362,7 +361,13 @@ public class HomeFragment extends Fragment {
                 } else {
                     filteredDataList = new ArrayList<>();
                     for (String item : dataList) {
-                        if (item.toLowerCase().contains(query.toLowerCase())) {
+//                        if(item.toLowerCase().contains(aa.toLowerCase())){
+//                            filteredDataList.add(item);
+//
+//                            System.out.println("find");
+//                        }
+
+                        if (item.toLowerCase().contains(query.toLowerCase()) ) {
                             filteredDataList.add(item);
                         }
                     }
@@ -403,7 +408,7 @@ public class HomeFragment extends Fragment {
 //                        HouseData house = new HouseData(dataList.get(position)[0]);
                         String[] pass = selectedItem.split(" ");
 
-                        HouseData house = new HouseData(pass[3]+" "+pass[4],"asd",Integer.parseInt(pass[2]),pass[0]);
+                        HouseData house = new HouseData(pass[5]+" "+pass[6],"asd",Integer.parseInt(pass[4]), pass[0],pass[1].toString()+" "+pass[2].toString());
 
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
@@ -452,8 +457,9 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
                         String[] property=item.split(";");
+
                         // Set the data to search recycleview
-                        dataList.add(property[0].toString()+" "+"$ "+property[3].toString()+" "+property[4].toString()+" Bedroom");
+                        dataList.add(property[0].toString()+" "+property[1].toString()+" "+property[2].toString()+" "+"$ "+property[3].toString()+" "+property[4].toString()+" Bedroom");
                     }
 
                 } else {
