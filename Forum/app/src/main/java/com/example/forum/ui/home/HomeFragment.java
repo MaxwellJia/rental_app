@@ -252,6 +252,7 @@ import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
 import com.example.forum.House_Detail_Page;
 import com.example.forum.R;
+import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -318,7 +319,7 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
                         String[] property=item.split(";");
-                        HouseData house = new HouseData(property[0].toString(), property[1].toString()+" "+property[2].toString() +" $"+property[3].toString()+" "+property[4].toString()+" Bedroom", Integer.parseInt(property[3]), property[0].toString());
+                        HouseData house = new HouseData(property[4].toString()+" Bedroom", property[1].toString()+" "+property[2].toString() +" $"+property[3].toString()+" "+property[4].toString()+" Bedroom", Integer.parseInt(property[3]), property[0].toString());
                         // Set the data houselist
                         houseList.add(house);
                     }
@@ -354,7 +355,8 @@ public class HomeFragment extends Fragment {
                 filteredDataList = new ArrayList<>(dataList);
 
                 String query = multiAutoCompleteTextView.getText().toString().trim();
-
+                String aa=TokenParse.parse(TokenParse.tokenize(query)).toLowerCase();
+                System.out.println(aa);
                 if (query.isEmpty()) {
                     filteredDataList = new ArrayList<>(dataList);
                 } else {
@@ -370,7 +372,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
 
         recyclerView = binding.recyclerView;
 
@@ -402,7 +403,7 @@ public class HomeFragment extends Fragment {
 //                        HouseData house = new HouseData(dataList.get(position)[0]);
                         String[] pass = selectedItem.split(" ");
 
-                        HouseData house = new HouseData(pass[0],"asd",Integer.parseInt(pass[2]),pass[0]);
+                        HouseData house = new HouseData(pass[3]+" "+pass[4],"asd",Integer.parseInt(pass[2]),pass[0]);
 
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent

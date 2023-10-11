@@ -34,16 +34,18 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
         // 获取当前位置的房源数据
         HouseData house = houseList.get(position);
 
+
         // 将房源数据填充到 house_cardview.xml 中的各个视图中
-        holder.textViewTitle.setText(house.getTitle());
+        holder.textViewTitle.setText(house.getLocation());
         holder.textViewDescription.setText(house.getDescription());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
-                intent.putExtra("houseData", house);
-                v.getContext().startActivity(intent);
+                    Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
+                    intent.putExtra("houseData", house);
+                    v.getContext().startActivity(intent);
+
             }
         });
     }
