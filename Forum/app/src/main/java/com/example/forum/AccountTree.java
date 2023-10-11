@@ -267,4 +267,14 @@ public class AccountTree  implements Iterable<Account> {
             return current;
         }
     }
+
+    public List<String> toList(){
+        List<String> storage=new ArrayList<>();
+        Iterator<Account> it = this.iterator();
+        while (it.hasNext()) {
+            Account account = it.next();
+            storage.add(account.account+";"+account.password);
+        }
+        return storage;
+    }
 }

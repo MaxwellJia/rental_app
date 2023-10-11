@@ -198,5 +198,14 @@ public class HouseTree implements Iterable<House>{
             return current;
         }
     }
-
+    //Traverse the whole AVL tree
+    public List<House> toList(){
+        List<House> storage=new ArrayList<>();
+        Iterator<House> it = this.iterator();
+        while (it.hasNext()) {
+            House house = it.next();
+            storage.add(house);
+        }
+        return storage;
+    }
 }
