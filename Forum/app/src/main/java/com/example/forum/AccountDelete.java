@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AccountDelete extends AppCompatActivity {
@@ -65,8 +66,14 @@ public class AccountDelete extends AppCompatActivity {
                             return;
                         }
                     }
-                    List<String> newUserData=at.getNewJSONArrays();
-                    databaseReference.setValue(newUserData);
+                    valuesList = new ArrayList<>();
+                    Iterator<Account> iterator = at.iterator();
+                    while (iterator.hasNext()) {
+                        Account account = iterator.next();
+                        valuesList.add(account.account+";"+account.password);
+                    }
+
+                    databaseReference.setValue(valuesList);
                     Toast.makeText(getApplicationContext(), "Successful Delete", Toast.LENGTH_SHORT).show();
                     finish();
                     // You can use the jsonString as needed in your app
