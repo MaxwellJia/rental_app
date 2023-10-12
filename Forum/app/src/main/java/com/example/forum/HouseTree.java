@@ -1,10 +1,22 @@
 package com.example.forum;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.annotation.NonNull;
 
-public class HouseTree {
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+
+public class HouseTree implements Iterable<House>{
     private House root;
+
+    public House getRoot() {
+        return root;
+    }
+
+    public void setRoot(House root) {
+        this.root = root;
+    }
 
     public HouseTree(House root) {
         this.root = root;
@@ -19,93 +31,37 @@ public class HouseTree {
             return house;
         }
 
-        if (house.getPrice() <= node.getPrice()) {
-            node.left = insert(node.left, house);
+        int priceComparison = Integer.compare(house.getPrice(), node.getPrice());
+
+        if (priceComparison <= 0) {
+            node.setLeft(insert(node.getLeft(), house));
         } else {
-            node.right = insert(node.right, house);
+            node.setRight(insert(node.getRight(), house));
         }
 
-        node.setHeight(1 + Math.max(getHeight(node.left), getHeight(node.right)));
+        node.setHeight(1 + Math.max(getHeight(node.getLeft()), getHeight(node.getRight())));
 
         int balance = getBalance(node);
 
-        // Perform AVL rotations if needed
-        if (balance > 1 && house.getPrice() <= node.left.getPrice()) {
-            return rotateRight(node);
+        if (balance > 1) {
+            if (priceComparison < 0) {
+                return rotateRight(node);
+            } else if (priceComparison > 0) {
+                node.setLeft(rotateLeft(node.getLeft()));
+                return rotateRight(node);
+            }
         }
-        if (balance < -1 && house.getPrice() > node.right.getPrice()) {
-            return rotateLeft(node);
-        }
-        if (balance > 1 && house.getPrice() > node.left.getPrice()) {
-            node.left = rotateLeft(node.left);
-            return rotateRight(node);
-        }
-        if (balance < -1 && house.getPrice() <= node.right.getPrice()) {
-            node.right = rotateRight(node.right);
-            return rotateLeft(node);
+
+        if (balance < -1) {
+            if (priceComparison > 0) {
+                return rotateLeft(node);
+            } else if (priceComparison < 0) {
+                node.setRight(rotateRight(node.getRight()));
+                return rotateLeft(node);
+            }
         }
 
         return node;
-    }
-
-    private int getHeight(House node) {
-        return (node != null) ? node.getHeight() : 0;
-    }
-
-    private int getBalance(House node) {
-        return (node != null) ? getHeight(node.left) - getHeight(node.right) : 0;
-    }
-
-    private House rotateRight(House y) {
-        House x = y.left;
-        House T2 = x.right;
-
-        x.right = y;
-        y.left = T2;
-
-        y.setHeight(Math.max(getHeight(y.left), getHeight(y.right)) + 1);
-        x.setHeight(Math.max(getHeight(x.left), getHeight(x.right)) + 1);
-
-        return x;
-    }
-
-    private House rotateLeft(House x) {
-        House y = x.right;
-        House T2 = y.left;
-
-        y.left = x;
-        x.right = T2;
-
-        x.setHeight(Math.max(getHeight(x.left), getHeight(x.right)) + 1);
-        y.setHeight(Math.max(getHeight(y.left), getHeight(y.right)) + 1);
-
-        return y;
-    }
-
-    public List<House> getHousesInDistrict(String district) {
-        List<House> result = new ArrayList<>();
-        getHousesInDistrict(root, district, result);
-        return result;
-    }
-
-    private void getHousesInDistrict(House node, String district, List<House> result) {
-        if (node == null) {
-            return;
-        }
-
-        int cmp = district.compareTo(node.getDistrict());
-
-        if (cmp < 0) {
-            getHousesInDistrict(node.left, district, result);
-        } else if (cmp > 0) {
-            getHousesInDistrict(node.right, district, result);
-        } else {
-            getHousesInDistrict(node.left, district, result);
-            if (node.getDistrict().equals(district)) {
-                result.add(node);
-            }
-            getHousesInDistrict(node.right, district, result);
-        }
     }
 
     public List<House> getHousesByPrice(int price) {
@@ -119,39 +75,137 @@ public class HouseTree {
             return;
         }
 
-        if (price < node.getPrice()) {
-            getHousesByPrice(node.left, price, result);
-        } else if (price > node.getPrice()) {
-            getHousesByPrice(node.right, price, result);
+        int priceComparison = Integer.compare(price, node.getPrice());
+
+        if (priceComparison < 0) {
+            getHousesByPrice(node.getLeft(), price, result);
+        } else if (priceComparison > 0) {
+            getHousesByPrice(node.getRight(), price, result);
         } else {
-            getHousesByPrice(node.left, price, result);
-            if (node.getPrice() == price) {
-                result.add(node);
-            }
-            getHousesByPrice(node.right, price, result);
+            result.add(node);
+            getHousesByPrice(node.getLeft(), price, result);
+            getHousesByPrice(node.getRight(), price, result);
         }
     }
 
-    public List<House> getHousesInPriceRange(int minPrice, int maxPrice) {
+    public List<House> getHousesPriceRange(int lowerBound,int upperBound) {
         List<House> result = new ArrayList<>();
-        getHousesInPriceRange(root, minPrice, maxPrice, result);
+        getHousesPriceRange(root, lowerBound,upperBound, result);
         return result;
     }
 
-    private void getHousesInPriceRange(House node, int minPrice, int maxPrice, List<House> result) {
+    private void getHousesPriceRange(House node, int lowerBound,int upperBound, List<House> result) {
         if (node == null) {
             return;
         }
+        if (node.getPrice()>upperBound) {
+            // The current house price is above the upper bound.
+            // Add it to the result list.
 
-        if (node.getPrice() >= minPrice && node.getPrice() <= maxPrice) {
-            getHousesInPriceRange(node.left, minPrice, maxPrice, result);
+            // Continue searching in the left subtree for more houses below the upper bound.
+            getHousesPriceRange(node.getLeft(), lowerBound,upperBound, result);
+        } else if(node.getPrice()<lowerBound) {
+            // The current house price is below to the upper bound.
+            // Continue searching in right subtree.
+            getHousesPriceRange(node.getLeft(), lowerBound,upperBound, result);
+        }else {
             result.add(node);
-            getHousesInPriceRange(node.right, minPrice, maxPrice, result);
-        } else if (node.getPrice() < minPrice) {
-            getHousesInPriceRange(node.right, minPrice, maxPrice, result);
-        } else {
-            getHousesInPriceRange(node.left, minPrice, maxPrice, result);
+            getHousesPriceRange(node.getLeft(), lowerBound,upperBound, result);
+            getHousesPriceRange(node.getLeft(), lowerBound,upperBound, result);
         }
     }
 
+
+    private int getHeight(House node) {
+        if (node == null) {
+            return 0;
+        }
+        return node.getHeight();
+    }
+
+    private int getBalance(House node) {
+        if (node == null) {
+            return 0;
+        }
+        return getHeight(node.getLeft()) - getHeight(node.getRight());
+    }
+
+    private House rotateRight(House y) {
+        House x = y.getLeft();
+        House T2 = x.getRight();
+
+        x.setRight(y);
+        y.setLeft(T2);
+
+        y.setHeight(1 + Math.max(getHeight(y.getLeft()), getHeight(y.getRight())));
+        x.setHeight(1 + Math.max(getHeight(x.getLeft()), getHeight(x.getRight())));
+
+        return x;
+    }
+
+    private House rotateLeft(House x) {
+        House y = x.getRight();
+        House T2 = y.getLeft();
+
+        y.setLeft(x);
+        x.setRight(T2);
+
+        x.setHeight(1 + Math.max(getHeight(x.getLeft()), getHeight(x.getRight())));
+        y.setHeight(1 + Math.max(getHeight(y.getLeft()), getHeight(y.getRight())));
+
+        return y;
+    }
+    @Override
+    public Iterator<House> iterator() {
+        return new AVLTreeIterator(root);
+    }
+    private class AVLTreeIterator implements Iterator<House> {
+        private Stack<House> stack = new Stack<>();
+        private House current;
+
+        public AVLTreeIterator(House root) {
+            current = root;
+            initializeStack(root);
+        }
+
+        private void initializeStack(House node) {
+            while (node != null) {
+                stack.push(node);
+                node = node.getLeft();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public House next() {
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+
+            House next = stack.pop();
+            current = next;
+            if (next.getRight() != null) {
+                initializeStack(next.getRight());
+            }
+            return next;
+        }
+
+        public House getCurrent() {
+            return current;
+        }
+    }
+    //Traverse the whole AVL tree
+    public List<House> toList(){
+        List<House> storage=new ArrayList<>();
+        Iterator<House> it = this.iterator();
+        while (it.hasNext()) {
+            House house = it.next();
+            storage.add(house);
+        }
+        return storage;
+    }
 }

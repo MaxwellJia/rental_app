@@ -1,7 +1,10 @@
 package com.example.forum;
 
 import android.content.Intent;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.forum.databinding.ActivityMainPageBinding;
+import com.example.forum.ui.gallery.GalleryFragment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,23 +41,25 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
+import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main_Page extends AppCompatActivity {
-    String user;
+    static String userr;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
     TextView mySignature;
     TextView title;
     ImageView avatar;
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        user = intent.getStringExtra("username");
+        userr = intent.getStringExtra("username");
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         FirebaseApp.initializeApp(this);
@@ -78,7 +84,26 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        loadUserProfile(navigationView);
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main__page, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    public void loadUserProfile(NavigationView navigationView){
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
@@ -96,10 +121,10 @@ public class Main_Page extends AppCompatActivity {
                     String[] item;
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         item = itemSnapshot.getValue(String.class).split(";");
-                        if (!user.equals(item[0])) {
+                        if (!userr.equals(item[0])) {
                             continue;
                         }
-                        title.setText(user);
+                        title.setText(userr);
                         mySignature.setText(item[2]);
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         StorageReference storageRef = storage.getReference("avatars").child("image"+item[1]+".jpeg");
@@ -135,20 +160,8 @@ public class Main_Page extends AppCompatActivity {
                 Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
             }
         });
-
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main__page, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    public static String getUser(){
+        return userr;
     }
 }

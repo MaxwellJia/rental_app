@@ -234,6 +234,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
@@ -272,7 +273,7 @@ public class HomeFragment extends Fragment {
     private List<String> dataList = new ArrayList<>();
     private List<String> filteredDataList;
     private ArrayAdapter<String> arrayAdapter;
-    private MultiAutoCompleteTextView multiAutoCompleteTextView;
+    private EditText editText;
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
     private List<HouseData> houseList = new ArrayList<>();
@@ -338,63 +339,47 @@ public class HomeFragment extends Fragment {
 
 
 
+        recyclerView = binding.recyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        loadData();
+        recyclerView.setVisibility(View.GONE);
 
-
-        Button searchButton = binding.buttonSearch; // 根据您的按钮 ID 获取按钮
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        editText = binding.inputSearch;
+        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, dataList);
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                applySearch(v); // 手动调用 applySearch 方法
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-            @SuppressLint("NotifyDataSetChanged")
-            public void applySearch(View view) {
-                Log.d("MyApp", "applySearch method is called!");
 
-                loadData();
-                filteredDataList = new ArrayList<>();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                showContentIfEmpty();
+                String query = s.toString();
 
-                String query = multiAutoCompleteTextView.getText().toString().trim();
-                String aa=TokenParse.parse(TokenParse.tokenize(query)).toLowerCase();
-                System.out.println(aa);
-                if (query.isEmpty()) {
-                    filteredDataList = new ArrayList<>(dataList);
+                if (!query.isEmpty()) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerViewhouse.setVisibility(View.GONE);
                 } else {
-                    for (String item : dataList) {
-                        if(item.toLowerCase().contains(aa.toLowerCase())){
-                            filteredDataList.add(item);
-
-                            System.out.println("find");
-                        }
-
-//                        if (item.toLowerCase().contains(query.toLowerCase()) ) {
-//                            filteredDataList.add(item);
-//                        }
-                    }
+                    recyclerView.setVisibility(View.GONE);
+                    recyclerViewhouse.setVisibility(View.VISIBLE);
                 }
-//                for(String cc: filteredDataList){
-//                    System.out.println();
-//                }
-                dataList = filteredDataList;
+            }
 
-                adapter.notifyDataSetChanged();
-
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0 && recyclerView.getVisibility() == View.VISIBLE) {
+                    recyclerView.setVisibility(View.GONE);
+                }
             }
         });
 
-        recyclerView = binding.recyclerView;
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        loadData();
-
-        recyclerView.setVisibility(View.GONE);
-
-        multiAutoCompleteTextView = binding.inputSearch;
         adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-                return new RecyclerView.ViewHolder(view) {};
+                return new RecyclerView.ViewHolder(view) {
+                };
             }
 
             @Override
@@ -407,12 +392,8 @@ public class HomeFragment extends Fragment {
                         // Handle item click
                         String selectedItem = dataList.get(position);
                         // Depending on the item clicked, you can navigate to a different activity and pass data
-                        // Handle item 1 click
-//                        HouseData house = new HouseData(dataList.get(position)[0]);
                         String[] pass = selectedItem.split(" ");
-
-                        HouseData house = new HouseData(pass[5]+" "+pass[6],"asd",Integer.parseInt(pass[4]), pass[0],pass[1].toString()+" "+pass[2].toString());
-
+                        HouseData house = new HouseData(pass[5] + " " + pass[6], "asd", Integer.parseInt(pass[4]), pass[0], pass[1] + " " + pass[2]);
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
                         intent.putExtra("houseData", house);
@@ -426,8 +407,36 @@ public class HomeFragment extends Fragment {
                 return dataList.size();
             }
         };
+
+        Button searchButton = binding.buttonSearch;
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                applySearch(v);
+            }
+
+            public void applySearch(View view) {
+                loadData();
+                filteredDataList = new ArrayList<>();
+                String query = editText.getText().toString().trim();
+                TokenParse aa = new TokenParse(query);
+                System.out.println(aa.getBedrooms());
+                System.out.println(aa.getpriceRange());
+                if (query.isEmpty()) {
+                    filteredDataList = new ArrayList<>(dataList);
+                } else {
+                    for (String item : dataList) {
+                        if (item.toLowerCase().contains(aa.getLocation().toLowerCase())) {
+                            filteredDataList.add(item);
+                        }
+                    }
+                }
+                dataList = filteredDataList;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         recyclerView.setAdapter(adapter);
-        boolean isLoading = false;
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -441,10 +450,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        fillAuto();
-
         return root;
     }
+
+
 
     private void loadData() {
 
@@ -485,74 +494,11 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    public void fillAuto() {
-        multiAutoCompleteTextView = binding.inputSearch;
-        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, dataList);
-        multiAutoCompleteTextView.setAdapter(arrayAdapter);
-
-        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
-            @Override
-            public int findTokenStart(CharSequence text, int cursor) {
-                return 0;
-            }
-
-            @Override
-            public int findTokenEnd(CharSequence text, int cursor) {
-                return text.length();
-            }
-
-            @Override
-            public CharSequence terminateToken(CharSequence text) {
-                return text;
-            }
-        });
-
-        multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                recyclerView.setVisibility(View.GONE);
-//                recyclerViewhouse.setVisibility(View.VISIBLE);
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                showContentIfEmpty();
-                if (s.length() > 0) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    recyclerViewhouse.setVisibility(View.GONE);
-
-                } else {
-                    recyclerView.setVisibility(View.GONE);
-                    recyclerViewhouse.setVisibility(View.VISIBLE);
-
-                }
-                arrayAdapter.getFilter().filter(s, new Filter.FilterListener() {
-                    @Override
-                    public void onFilterComplete(int count) {
-                        if (s.length() == 0) {
-                            recyclerView.setVisibility(View.GONE);
-                        } else {
-                            recyclerView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-                        }                    }
-                });
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 0 && recyclerView.getVisibility() == View.VISIBLE) {
-                    recyclerView.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
-
 
 
     @SuppressLint("NotifyDataSetChanged")
-    public void showContentIfEmpty(){
-        multiAutoCompleteTextView = binding.inputSearch;
-        String query = multiAutoCompleteTextView.getText().toString().trim();
+    public void showContentIfEmpty() {
+        String query = editText.getText().toString().trim();
         if (query.isEmpty()) {
             dataList.clear();
             loadData();
