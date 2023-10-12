@@ -2,257 +2,325 @@ package com.example.forum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TokenParse {
+    private String location;
+    private List<Integer> priceRange;
+    private int bedrooms;
 
+    public TokenParse(String input) {
+        this.location = extractLocation(input);
+        this.priceRange = extractMinMaxPrice(input);
+        this.bedrooms = extractBedrooms(input);
+    }
 
-    //    ] suburbs = {
-////                "Acton", "Ainslie", "Amaroo", "Aranda", "Banks", "Barton", "Belconnen", "Bonner", "Bonython", "Braddon",
-////                "Bruce", "Calwell", "Campbell", "Casey", "Chapman", "Charnwood", "Chifley", "Chisholm", "City", "Cook",
-////                "Coombs", "Crace", "Curtin", "Deakin", "Dickson", "Downer", "Duffy", "Dunlop", "Evatt", "Fadden",
-////                "Farrer", "Fisher", "Florey", "Flynn", "Forde", "Forrest", "Franklin", "Fraser", "Fyshwick", "Garran",
-////                "Gilmore", "Giralang", "Gordon", "Gowrie", "Greenway", "Griffith", "Gungahlin", "Hackett", "Harrison",
-////                "Hawker", "Higgins", "Holder", "Holt", "Hughes", "Hume", "Isaacs", "Isabella Plains", "Jacka", "Kaleen",
-////                "Kambah", "Kingston", "Latham", "Lawson", "Lyneham", "Lyons", "Macarthur", "Macgregor", "Macquarie", "Mawson",
-////                "McKellar", "Melba", "Mitchell", "Monash", "Narrabundah", "Ngunnawal", "Nicholls", "O'Connor", "O'Malley",
-////                "Oxley", "Page", "Palmerston", "Pearce", "Phillip", "Red Hill", "Reid", "Richardson", "Rivett", "Scullin",
-////                "Spence", "Stirling", "Swinger Hill", "Symonston", "Tharwa", "Theodore", "Torrens", "Turner", "Wanniassa",
-////                "Waramanga", "Watson", "Weetangera", "Weston", "Weston Creek", "Wright", "Yarralumla"
-////        };
-    public static List<String> tokenize(String input) {
-        List<String> tokens = new ArrayList<>();
+    public String getLocation() {
+        return location;
+    }
 
-        // 检查第一个部分是否匹配地名
-        if (input.matches("(?i)^bel.*$")) {
-            // 如果输入是字母 bel，则补全成 "Belconnen"
-            tokens.add("Belconnen");
-        } // 根据输入的内容进行分割
-        else if (input.matches("(?i)^ac.*$")) {
-            // 如果输入是 1 到 3 位数字，则补全成 "$" 后加上数字
-            tokens.add("Acton");
-        }else if (input.matches("(?i)^ai.*$")) {
-            // 如果输入是 1 到 3 位数字，则补全成 "$" 后加上数字
-            tokens.add("Ainslie");
-        } else if (input.matches("(?i)^am.*$")) {
-            // 如果输入是 1 到 3 位数字，则补全成 "$" 后加上数字
-            tokens.add("Amaroo");
-        }else if (input.matches("(?i)^ar.*$")) {
-            // 如果输入是 1 到 3 位数字，则补全成 "$" 后加上数字
-            tokens.add("Aranda");
-        }else if (input.matches("(?i)^ba.*$")) {
-            // 如果输入是 1 到 3 位数字，则补全成 "$" 后加上数字
-            tokens.add("Banks");
-        }else if (input.matches("(?i)^bar.*$")) {
-            tokens.add("Barton");
-        } else if (input.matches("(?i)^bo.*$")) {
-            tokens.add("Bonner");
-        } else if (input.matches("(?i)^bon.*$")) {
-            tokens.add("Bonner");
-        } else if (input.matches("(?i)^bonn.*$")) {
-            tokens.add("Bonner");
-        } else if (input.matches("(?i)^bony.*$")) {
-            tokens.add("Bonython");
-        } else if (input.matches("(?i)^br.*$")) {
-            tokens.add("Braddon");
-        } else if (input.matches("(?i)^bru.*$")) {
-            tokens.add("Bruce");
-        } else if (input.matches("(?i)^cal.*$")) {
-            tokens.add("Calwell");
-        } else if (input.matches("(?i)^cam.*$")) {
-            tokens.add("Campbell");
-        } else if (input.matches("(?i)^cas.*$")) {
-            tokens.add("Casey");
-        } else if (input.matches("(?i)^cha.*$")) {
-            tokens.add("Chapman");
-        } else if (input.matches("(?i)^char.*$")) {
-            tokens.add("Charnwood");
-        } else if (input.matches("(?i)^chif.*$")) {
-            tokens.add("Chifley");
-        } else if (input.matches("(?i)^chis.*$")) {
-            tokens.add("Chisholm");
-        } else if (input.matches("(?i)^cit.*$")) {
-            tokens.add("City");
-        } else if (input.matches("(?i)^coo.*$")) {
-            tokens.add("Cook");
-        } else if (input.matches("(?i)^coo.*$")) {
-            tokens.add("Coombs");
-        } else if (input.matches("(?i)^cra.*$")) {
-            tokens.add("Crace");
-        } else if (input.matches("(?i)^cur.*$")) {
-            tokens.add("Curtin");
-        } else if (input.matches("(?i)^dea.*$")) {
-            tokens.add("Deakin");
-        } else if (input.matches("(?i)^dic.*$")) {
-            tokens.add("Dickson");
-        } else if (input.matches("(?i)^dow.*$")) {
-            tokens.add("Downer");
-        } else if (input.matches("(?i)^duf.*$")) {
-            tokens.add("Duffy");
-        } else if (input.matches("(?i)^dun.*$")) {
-            tokens.add("Dunlop");
-        } else if (input.matches("(?i)^eva.*$")) {
-            tokens.add("Evatt");
-        } else if (input.matches("(?i)^fad.*$")) {
-            tokens.add("Fadden");
-        } else if (input.matches("(?i)^far.*$")) {
-            tokens.add("Farrer");
-        } else if (input.matches("(?i)^fis.*$")) {
-            tokens.add("Fisher");
-        } else if (input.matches("(?i)^flo.*$")) {
-            tokens.add("Florey");
-        } else if (input.matches("(?i)^fly.*$")) {
-            tokens.add("Flynn");
-        } else if (input.matches("(?i)^for.*$")) {
-            tokens.add("Forde");
-        } else if (input.matches("(?i)^fors.*$")) {
-            tokens.add("Forrest");
-        } else if (input.matches("(?i)^fra.*$")) {
-            tokens.add("Franklin");
-        } else if (input.matches("(?i)^fras.*$")) {
-            tokens.add("Fraser");
-        } else if (input.matches("(?i)^fysh.*$")) {
-            tokens.add("Fyshwick");
-        } else if (input.matches("(?i)^gar.*$")) {
-            tokens.add("Garran");
-        } else if (input.matches("(?i)^gil.*$")) {
-            tokens.add("Gilmore");
-        } else if (input.matches("(?i)^gir.*$")) {
-            tokens.add("Giralang");
-        } else if (input.matches("(?i)^gor.*$")) {
-            tokens.add("Gordon");
-        } else if (input.matches("(?i)^gow.*$")) {
-            tokens.add("Gowrie");
-        } else if (input.matches("(?i)^gre.*$")) {
-            tokens.add("Greenway");
-        } else if (input.matches("(?i)^gri.*$")) {
-            tokens.add("Griffith");
-        } else if (input.matches("(?i)^gun.*$")) {
-            tokens.add("Gungahlin");
-        } else if (input.matches("(?i)^hac.*$")) {
-            tokens.add("Hackett");
-        } else if (input.matches("(?i)^har.*$")) {
-            tokens.add("Harrison");
-        } else if (input.matches("(?i)^haw.*$")) {
-            tokens.add("Hawker");
-        } else if (input.matches("(?i)^hig.*$")) {
-            tokens.add("Higgins");
-        } else if (input.matches("(?i)^hol.*$")) {
-            tokens.add("Holder");
-        } else if (input.matches("(?i)^holt.*$")) {
-            tokens.add("Holt");
-        } else if (input.matches("(?i)^hug.*$")) {
-            tokens.add("Hughes");
-        } else if (input.matches("(?i)^hum.*$")) {
-            tokens.add("Hume");
-        } else if (input.matches("(?i)^isa.*$")) {
-            tokens.add("Isaacs");
-        } else if (input.matches("(?i)^isa.*$")) {
-            tokens.add("Isabella Plains");
-        } else if (input.matches("(?i)^jac.*$")) {
-            tokens.add("Jacka");
-        } else if (input.matches("(?i)^kal.*$")) {
-            tokens.add("Kaleen");
-        } else if (input.matches("(?i)^kam.*$")) {
-            tokens.add("Kambah");
-        } else if (input.matches("(?i)^kin.*$")) {
-            tokens.add("Kingston");
-        } else if (input.matches("(?i)^lat.*$")) {
-            tokens.add("Latham");
-        } else if (input.matches("(?i)^law.*$")) {
-            tokens.add("Lawson");
-        } else if (input.matches("(?i)^lyn.*$")) {
-            tokens.add("Lyneham");
-        } else if (input.matches("(?i)^lyo.*$")) {
-            tokens.add("Lyons");
-        } else if (input.matches("(?i)^mac.*$")) {
-            tokens.add("Macarthur");
-        } else if (input.matches("(?i)^macg.*$")) {
-            tokens.add("Macgregor");
-        } else if (input.matches("(?i)^macq.*$")) {
-            tokens.add("Macquarie");
-        } else if (input.matches("(?i)^maw.*$")) {
-            tokens.add("Mawson");
-        } else if (input.matches("(?i)^mcke.*$")) {
-            tokens.add("McKellar");
-        } else if (input.matches("(?i)^mel.*$")) {
-            tokens.add("Melba");
-        } else if (input.matches("(?i)^mitc.*$")) {
-            tokens.add("Mitchell");
-        } else if (input.matches("(?i)^mon.*$")) {
-            tokens.add("Monash");
-        } else if (input.matches("(?i)^narr.*$")) {
-            tokens.add("Narrabundah");
-        } else if (input.matches("(?i)^ngu.*$")) {
-            tokens.add("Ngunnawal");
-        } else if (input.matches("(?i)^nic.*$")) {
-            tokens.add("Nicholls");
-        } else if (input.matches("(?i)^o'c.*$")) {
-            tokens.add("O'Connor");
-        } else if (input.matches("(?i)^o'm.*$")) {
-            tokens.add("O'Malley");
-        } else if (input.matches("(?i)^ox.*$")) {
-            tokens.add("Oxley");
-        } else if (input.matches("(?i)^pa.*$")) {
-            tokens.add("Page");
-        } else if (input.matches("(?i)^pal.*$")) {
-            tokens.add("Palmerston");
-        } else if (input.matches("(?i)^pea.*$")) {
-            tokens.add("Pearce");
-        } else if (input.matches("(?i)^phi.*$")) {
-            tokens.add("Phillip");
-        } else if (input.matches("(?i)^red.*$")) {
-            tokens.add("Red Hill");
-        } else if (input.matches("(?i)^rei.*$")) {
-            tokens.add("Reid");
-        } else if (input.matches("(?i)^ric.*$")) {
-            tokens.add("Richardson");
-        } else if (input.matches("(?i)^riv.*$")) {
-            tokens.add("Rivett");
-        } else if (input.matches("(?i)^scu.*$")) {
-            tokens.add("Scullin");
-        } else if (input.matches("(?i)^spe.*$")) {
-            tokens.add("Spence");
-        } else if (input.matches("(?i)^sti.*$")) {
-            tokens.add("Stirling");
-        } else if (input.matches("(?i)^swi.*$")) {
-            tokens.add("Swinger Hill");
-        } else if (input.matches("(?i)^sym.*$")) {
-            tokens.add("Symonston");
-        } else if (input.matches("(?i)^tha.*$")) {
-            tokens.add("Tharwa");
-        } else if (input.matches("(?i)^the.*$")) {
-            tokens.add("Theodore");
-        } else if (input.matches("(?i)^tor.*$")) {
-            tokens.add("Torrens");
-        } else if (input.matches("(?i)^tur.*$")) {
-            tokens.add("Turner");
-        } else if (input.matches("(?i)^wan.*$")) {
-            tokens.add("Wanniassa");
-        } else if (input.matches("(?i)^war.*$")) {
-            tokens.add("Waramanga");
-        } else if (input.matches("(?i)^wat.*$")) {
-            tokens.add("Watson");
-        } else if (input.matches("(?i)^wee.*$")) {
-            tokens.add("Weetangera");
-        } else if (input.matches("(?i)^wes.*$")) {
-            tokens.add("Weston");
-        } else if (input.matches("(?i)^west.*$")) {
-            tokens.add("Weston Creek");
-        } else if (input.matches("(?i)^wri.*$")) {
-            tokens.add("Wright");
-        } else if (input.matches("(?i)^yar.*$")) {
-            tokens.add("Yarralumla");
+    public List<Integer> getpriceRange() {
+        return priceRange;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    private String extractLocation(String input) {
+
+        String[] parts = input.split("\\s+");
+
+        String FindLocation=null;
+        for (String part : parts) {
+            if (containsLetters(part)) {
+
+                if (part.matches("(?i)^bel.*$")) {
+                    // 如果输入是字母 bel，则补全成 "Belconnen"
+                    FindLocation="Belconnen";
+                } else if (part.matches("(?i)^ac.*$")) {
+                    FindLocation = "Acton";
+                } else if (part.matches("(?i)^ai.*$")) {
+                    FindLocation = "Ainslie";
+                } else if (part.matches("(?i)^am.*$")) {
+                    FindLocation = "Amaroo";
+                } else if (part.matches("(?i)^ar.*$")) {
+                    FindLocation = "Aranda";
+                } else if (part.matches("(?i)^ba.*$")) {
+                    FindLocation = "Banks";
+                } else if (part.matches("(?i)^bar.*$")) {
+                    FindLocation = "Barton";
+                } else if (part.matches("(?i)^bo.*$")) {
+                    FindLocation = "Bonner";
+                } else if (part.matches("(?i)^bon.*$")) {
+                    FindLocation = "Bonner";
+                } else if (part.matches("(?i)^bonn.*$")) {
+                    FindLocation = "Bonner";
+                } else if (part.matches("(?i)^bony.*$")) {
+                    FindLocation = "Bonython";
+                } else if (part.matches("(?i)^br.*$")) {
+                    FindLocation = "Braddon";
+                } else if (part.matches("(?i)^bru.*$")) {
+                    FindLocation = "Bruce";
+                } else if (part.matches("(?i)^cal.*$")) {
+                    FindLocation = "Calwell";
+                } else if (part.matches("(?i)^cam.*$")) {
+                    FindLocation = "Campbell";
+                } else if (part.matches("(?i)^cas.*$")) {
+                    FindLocation = "Casey";
+                } else if (part.matches("(?i)^cha.*$")) {
+                    FindLocation = "Chapman";
+                } else if (part.matches("(?i)^char.*$")) {
+                    FindLocation = "Charnwood";
+                } else if (part.matches("(?i)^chif.*$")) {
+                    FindLocation = "Chifley";
+                } else if (part.matches("(?i)^chis.*$")) {
+                    FindLocation = "Chisholm";
+                } else if (part.matches("(?i)^cit.*$")) {
+                    FindLocation = "City";
+                } else if (part.matches("(?i)^coo.*$")) {
+                    FindLocation = "Cook";
+                } else if (part.matches("(?i)^coo.*$")) {
+                    FindLocation = "Coombs";
+                } else if (part.matches("(?i)^cra.*$")) {
+                    FindLocation = "Crace";
+                } else if (part.matches("(?i)^cur.*$")) {
+                    FindLocation = "Curtin";
+                } else if (part.matches("(?i)^dea.*$")) {
+                    FindLocation = "Deakin";
+                } else if (part.matches("(?i)^dic.*$")) {
+                    FindLocation = "Dickson";
+                } else if (part.matches("(?i)^dow.*$")) {
+                    FindLocation = "Downer";
+                } else if (part.matches("(?i)^duf.*$")) {
+                    FindLocation = "Duffy";
+                } else if (part.matches("(?i)^dun.*$")) {
+                    FindLocation = "Dunlop";
+                } else if (part.matches("(?i)^eva.*$")) {
+                    FindLocation = "Evatt";
+                } else if (part.matches("(?i)^fad.*$")) {
+                    FindLocation = "Fadden";
+                } else if (part.matches("(?i)^far.*$")) {
+                    FindLocation = "Farrer";
+                } else if (part.matches("(?i)^fis.*$")) {
+                    FindLocation = "Fisher";
+                } else if (part.matches("(?i)^flo.*$")) {
+                    FindLocation = "Florey";
+                } else if (part.matches("(?i)^fly.*$")) {
+                    FindLocation = "Flynn";
+                } else if (part.matches("(?i)^for.*$")) {
+                    FindLocation = "Forde";
+                } else if (part.matches("(?i)^fors.*$")) {
+                    FindLocation = "Forrest";
+                } else if (part.matches("(?i)^fra.*$")) {
+                    FindLocation = "Franklin";
+                } else if (part.matches("(?i)^fras.*$")) {
+                    FindLocation = "Fraser";
+                } else if (part.matches("(?i)^fysh.*$")) {
+                    FindLocation = "Fyshwick";
+                } else if (part.matches("(?i)^gar.*$")) {
+                    FindLocation = "Garran";
+                } else if (part.matches("(?i)^gil.*$")) {
+                    FindLocation = "Gilmore";
+                } else if (part.matches("(?i)^gir.*$")) {
+                    FindLocation = "Giralang";
+                } else if (part.matches("(?i)^gor.*$")) {
+                    FindLocation = "Gordon";
+                } else if (part.matches("(?i)^gow.*$")) {
+                    FindLocation = "Gowrie";
+                } else if (part.matches("(?i)^gre.*$")) {
+                    FindLocation = "Greenway";
+                } else if (part.matches("(?i)^gri.*$")) {
+                    FindLocation = "Griffith";
+                } else if (part.matches("(?i)^gun.*$")) {
+                    FindLocation = "Gungahlin";
+                } else if (part.matches("(?i)^hac.*$")) {
+                    FindLocation = "Hackett";
+                } else if (part.matches("(?i)^har.*$")) {
+                    FindLocation = "Harrison";
+                } else if (part.matches("(?i)^haw.*$")) {
+                    FindLocation = "Hawker";
+                } else if (part.matches("(?i)^hig.*$")) {
+                    FindLocation = "Higgins";
+                } else if (part.matches("(?i)^hol.*$")) {
+                    FindLocation = "Holder";
+                } else if (part.matches("(?i)^holt.*$")) {
+                    FindLocation = "Holt";
+                } else if (part.matches("(?i)^hug.*$")) {
+                    FindLocation = "Hughes";
+                } else if (part.matches("(?i)^hum.*$")) {
+                    FindLocation = "Hume";
+                } else if (part.matches("(?i)^isa.*$")) {
+                    FindLocation = "Isaacs";
+                } else if (part.matches("(?i)^isa.*$")) {
+                    FindLocation = "Isabella Plains";
+                } else if (part.matches("(?i)^jac.*$")) {
+                    FindLocation = "Jacka";
+                } else if (part.matches("(?i)^kal.*$")) {
+                    FindLocation = "Kaleen";
+                } else if (part.matches("(?i)^kam.*$")) {
+                    FindLocation = "Kambah";
+                } else if (part.matches("(?i)^kin.*$")) {
+                    FindLocation = "Kingston";
+                } else if (part.matches("(?i)^lat.*$")) {
+                    FindLocation = "Latham";
+                } else if (part.matches("(?i)^law.*$")) {
+                    FindLocation = "Lawson";
+                } else if (part.matches("(?i)^lyn.*$")) {
+                    FindLocation = "Lyneham";
+                } else if (part.matches("(?i)^lyo.*$")) {
+                    FindLocation = "Lyons";
+                } else if (part.matches("(?i)^mac.*$")) {
+                    FindLocation = "Macarthur";
+                } else if (part.matches("(?i)^macg.*$")) {
+                    FindLocation = "Macgregor";
+                } else if (part.matches("(?i)^macq.*$")) {
+                    FindLocation = "Macquarie";
+                } else if (part.matches("(?i)^maw.*$")) {
+                    FindLocation = "Mawson";
+                } else if (part.matches("(?i)^mcke.*$")) {
+                    FindLocation = "McKellar";
+                } else if (part.matches("(?i)^mel.*$")) {
+                    FindLocation = "Melba";
+                } else if (part.matches("(?i)^mitc.*$")) {
+                    FindLocation = "Mitchell";
+                } else if (part.matches("(?i)^mon.*$")) {
+                    FindLocation = "Monash";
+                } else if (part.matches("(?i)^narr.*$")) {
+                    FindLocation = "Narrabundah";
+                } else if (part.matches("(?i)^ngu.*$")) {
+                    FindLocation = "Ngunnawal";
+                } else if (part.matches("(?i)^nic.*$")) {
+                    FindLocation = "Nicholls";
+                } else if (part.matches("(?i)^o'c.*$")) {
+                    FindLocation = "O'Connor";
+                } else if (part.matches("(?i)^o'm.*$")) {
+                    FindLocation = "O'Malley";
+                } else if (part.matches("(?i)^ox.*$")) {
+                    FindLocation = "Oxley";
+                } else if (part.matches("(?i)^pa.*$")) {
+                    FindLocation = "Page";
+                } else if (part.matches("(?i)^pal.*$")) {
+                    FindLocation = "Palmerston";
+                } else if (part.matches("(?i)^pea.*$")) {
+                    FindLocation = "Pearce";
+                } else if (part.matches("(?i)^phi.*$")) {
+                    FindLocation = "Phillip";
+                } else if (part.matches("(?i)^red.*$")) {
+                    FindLocation = "Red Hill";
+                } else if (part.matches("(?i)^rei.*$")) {
+                    FindLocation = "Reid";
+                } else if (part.matches("(?i)^ric.*$")) {
+                    FindLocation = "Richardson";
+                } else if (part.matches("(?i)^riv.*$")) {
+                    FindLocation = "Rivett";
+                } else if (part.matches("(?i)^scu.*$")) {
+                    FindLocation = "Scullin";
+                } else if (part.matches("(?i)^spe.*$")) {
+                    FindLocation = "Spence";
+                } else if (part.matches("(?i)^sti.*$")) {
+                    FindLocation = "Stirling";
+                } else if (part.matches("(?i)^swi.*$")) {
+                    FindLocation = "Swinger Hill";
+                } else if (part.matches("(?i)^sym.*$")) {
+                    FindLocation = "Symonston";
+                } else if (part.matches("(?i)^tha.*$")) {
+                    FindLocation = "Tharwa";
+                } else if (part.matches("(?i)^the.*$")) {
+                    FindLocation = "Theodore";
+                } else if (part.matches("(?i)^tor.*$")) {
+                    FindLocation = "Torrens";
+                } else if (part.matches("(?i)^tur.*$")) {
+                    FindLocation = "Turner";
+                } else if (part.matches("(?i)^wan.*$")) {
+                    FindLocation = "Wanniassa";
+                } else if (part.matches("(?i)^war.*$")) {
+                    FindLocation = "Waramanga";
+                } else if (part.matches("(?i)^wat.*$")) {
+                    FindLocation = "Watson";
+                } else if (part.matches("(?i)^wee.*$")) {
+                    FindLocation = "Weetangera";
+                } else if (part.matches("(?i)^wes.*$")) {
+                    FindLocation = "Weston";
+                } else if (part.matches("(?i)^west.*$")) {
+                    FindLocation = "Weston Creek";
+                } else if (part.matches("(?i)^wri.*$")) {
+                    FindLocation = "Wright";
+                } else if (part.matches("(?i)^yar.*$")) {
+                    FindLocation = "Yarralumla";
+                }
+            }
         }
 
-
-
-        return tokens;
+        return FindLocation ;
     }
 
-    public static String parse(List<String> tokens) {
-        // 将令牌拼接成最终输出
-        return String.join(" ", tokens);
+    private boolean containsLetters(String input) {
+        // 使用正则表达式检查字符串中是否包含字母
+        Pattern pattern = Pattern.compile(".*[a-zA-Z].*");
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
     }
+
+
+    private List<Integer> extractMinMaxPrice(String input) {
+        List<Integer> priceRange = new ArrayList<>();
+        boolean validInput = false;
+
+        String[] parts = input.split("\\s+");
+        for (String part : parts) {
+            if (part.contains("-")) {
+                validInput = true;
+                String[] rangeParts = part.split("-");
+                if (rangeParts.length == 2) {
+                    int firstNumber = Integer.parseInt(rangeParts[0]);
+                    int secondNumber = Integer.parseInt(rangeParts[1]);
+                    priceRange.add(Math.min(firstNumber, secondNumber));
+                    priceRange.add(Math.max(firstNumber, secondNumber));
+                }
+            } else {
+                try {
+                    int number = Integer.parseInt(part);
+                    if (number > 100) {
+                        priceRange.add(number - 100);
+                        priceRange.add(number + 100);
+                        validInput = true;
+                    }
+                } catch (NumberFormatException e) {
+                }
+            }
+        }
+
+        if (validInput) {
+            return priceRange;
+        } else {
+            return null;
+        }
+    }
+
+
+    private int extractBedrooms(String input) {
+        String[] parts = input.split("\\s+");
+
+        int FindroomNumber = 0;
+        for (String part : parts) {
+            if (part.matches("\\d+") && Integer.parseInt(part) < 10) {
+                FindroomNumber = Integer.parseInt(part);
+                break;
+            }
+        }
+        return FindroomNumber;
+    }
+
+//    public static void main(String[] args) {
+//        TokenParse aa=new TokenParse("600 belssadsadss 5");
+//        System.out.println(aa.getBedrooms());
+//        System.out.println(aa.getLocation());
+//        System.out.println(aa.getpriceRange());
+//    }
+
+
 }
 
 
