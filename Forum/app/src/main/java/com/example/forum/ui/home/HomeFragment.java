@@ -286,6 +286,7 @@ public class HomeFragment extends Fragment {
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
     private List<HouseData> houseList = new ArrayList<>();
+    private TextView textview;
 
     private FragmentHomeBinding binding;
 
@@ -349,7 +350,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        textview = root.findViewById(R.id.textViewMap);
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -371,9 +372,13 @@ public class HomeFragment extends Fragment {
                 if (!query.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerViewhouse.setVisibility(View.GONE);
+                    textview.setVisibility(View.GONE);
+
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     recyclerViewhouse.setVisibility(View.VISIBLE);
+                    textview.setVisibility(View.VISIBLE);
+
                 }
             }
 
