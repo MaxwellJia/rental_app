@@ -441,22 +441,25 @@ public class HomeFragment extends Fragment {
             //根据token搜索
             public void applySearch(View view) {
                 loadData();
+                //最后展示的结果List
                 filteredDataList = new ArrayList<>();
+                //temp是一个暂时存储每次提取出来的房子
                 List<House> temp=new ArrayList<>();
                 String query = editText.getText().toString().trim();
                 TokenParse tp = new TokenParse(query);
+                //转换成AVL树
                 AVLTreeFactory avlTreeFactory=AVLTreeFactory.getInstance();
                 HouseTree houseTree=avlTreeFactory.houseTreeCreator(dataList);
 //                if (query.isEmpty()) {
 //                    filteredDataList = new ArrayList<>(dataList);
 //                }
-
+                //价格
                 if(tp.getpriceRange().size()!=0){
                     filteredDataList=houseTree.getHousesPriceRange(tp.getpriceRange().get(0),tp.getpriceRange().get(1));
                 }else {
                     filteredDataList=houseTree.toList();
                 }
-
+                //suburb
                 if(tp.getLocation()!=null){
                     for(House h:filteredDataList){
                         if(h.getSuburb().equals(tp.getLocation())){
@@ -466,6 +469,8 @@ public class HomeFragment extends Fragment {
                 }
                 filteredDataList=temp;
                 temp=new ArrayList<>();
+
+                //房子大小
                 if(tp.getBedrooms()!=0){
                     for(House h:filteredDataList){
                         if(h.getXbxb()==tp.getBedrooms()){
@@ -474,7 +479,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
                 dataList=new ArrayList<>();
-
+                //把House类型的List转化为String List的显示结果
                 for(House house:filteredDataList){
                     dataList.add("$"+house.getPrice());
                     System.out.println(house.toString());
