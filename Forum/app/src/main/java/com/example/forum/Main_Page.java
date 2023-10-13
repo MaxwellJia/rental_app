@@ -51,6 +51,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,13 +147,26 @@ public class Main_Page extends AppCompatActivity {
 
     public void loadUserProfile(NavigationView navigationView){
         applayUpdate();
+        //Generate greetings in user profile
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        String greeting;
+        if (hourOfDay >= 4 && hourOfDay < 12) {
+            greeting = "Good morning";
+        } else if (hourOfDay >= 12 && hourOfDay < 17) {
+            greeting = "Good afternoon";
+        } else if (hourOfDay >= 17 && hourOfDay < 21) {
+            greeting = "Good evening";
+        } else {
+            greeting = "Good night";
+        }
 
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
-
+        mySignature=headerView.findViewById(R.id.mySignature);
         avatar = headerView.findViewById(R.id.imageViewAvatar);
-
+        mySignature.setText(greeting+", "+userr+"!");
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
         DatabaseReference databaseReference = firebaseDatabase.getReference("Profile").child("1");
@@ -206,9 +220,6 @@ public class Main_Page extends AppCompatActivity {
     }
     public static String getUser(){
         return userr;
-    }
-    public  String getDistrict(){
-        return district;
     }
     public void applayUpdate() {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){

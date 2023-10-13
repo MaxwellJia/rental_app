@@ -289,7 +289,7 @@ public class HomeFragment extends Fragment {
     private EditText editText;
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
-    private List<House> houseList = new ArrayList<>();
+    private List<House> houseList=new ArrayList<>() ;
     private TextView textview;
 
     private FragmentHomeBinding binding;
@@ -323,8 +323,6 @@ public class HomeFragment extends Fragment {
             // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
             DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
-            TextView ddd=root.findViewById(R.id.textViewMap);
-            System.out.println(ddd.getText().toString());
             //首页地区房子
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -332,6 +330,9 @@ public class HomeFragment extends Fragment {
                     textview = root.findViewById(R.id.textViewMap);
                     String currentDistirct=textview.getText().toString();
                     if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                        if(houseList.size()!=0){
+                            houseList=new ArrayList<>();
+                        }
                         for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                             String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
                             String[] property=item.split(";");
