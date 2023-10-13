@@ -2,6 +2,7 @@ package com.example.forum.ui.gallery;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.forum.HouseData;
 import com.example.forum.MainActivity;
 import com.example.forum.Main_Page;
 import com.example.forum.R;
+import com.example.forum.ReadData;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentGalleryBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -39,6 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class GalleryFragment extends Fragment {
 
@@ -46,6 +53,8 @@ public class GalleryFragment extends Fragment {
     String selectedState;
     String selectedSuburb;
     View root;
+
+    private static final Random random = new Random();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         GalleryViewModel galleryViewModel =
@@ -110,7 +119,11 @@ public class GalleryFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submit_house_inf(v);
+                //silumate data
+                for (int i =0; i<20; i++){
+                    generateData(v);
+                }
+                //submit_house_inf(v); the final one
             }
 
 
@@ -267,17 +280,6 @@ public class GalleryFragment extends Fragment {
 
 // Create a map to hold the values
         String data = city+";"+suburb_data+";"+street_data+";"+street_no_data+";"+unit_data+";"+price_data+";"+bedroom_no+";"+email+";"+recommend+";";
-//        Map<String, Object> recordValues = new HashMap<>();
-//        recordValues.put("HouseId", id);
-//        recordValues.put("City", city);
-//        recordValues.put("Suburb", suburb_data);
-//        recordValues.put("Street", street_data);
-//        recordValues.put("Building_no", street_no_data);
-//        recordValues.put("Unit", unit_data);
-//        recordValues.put("Price", price_data);
-//        recordValues.put("Bedroom", bedroom_no);
-//        recordValues.put("Contact", email);
-//        recordValues.put("recommend", recommend);
 
 // Push the map to the database
 //        Map<String, Object> childUpdates = new HashMap<>();
@@ -292,5 +294,72 @@ public class GalleryFragment extends Fragment {
         startActivity(intent);
 
     }
+
+    public void generateData(View V){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+        String bedroom = String.valueOf(random.nextInt(6) + 1);
+        String unit = String.valueOf(random.nextInt(10)+1)+String.valueOf(random.nextInt(8)+String.valueOf(random.nextInt(8)));
+        List<String> states = getProvinces();
+        int state_choice = random.nextInt(states.size());
+        String state = states.get(state_choice);
+        List<String> suburbs = getSuburbs(state);
+        int suburb_choice = random.nextInt(suburbs.size());
+        String suburb = suburbs.get(suburb_choice);
+        List<String> streets = getStreetsForSelectedSuburb(state, suburb);
+        int street_choice = random.nextInt(suburbs.size());
+        String street = streets.get(street_choice);
+        String building_no = String.valueOf(random.nextInt(100)+1);
+        String price_data = String.valueOf(random.nextInt(501) + 400);
+        //get userslist and randomly choose a user
+        List<String> usernames = this.getDatafromFirebase("UsersData", "1");
+        int user_choice = random.nextInt(usernames.size());
+        String user = usernames.get(user_choice);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+        String houseId = user+currentTime;
+        String data = state+";"+suburb+";"+street+";"+building_no+";"+unit+";"+price_data+";"+bedroom+";"+user+"@Gmail.com"+";"+"0"+";";
+        Toast.makeText(getContext(),user,Toast.LENGTH_SHORT).show();
+// Push the map to the database
+//        Map<String, Object> childUpdates = new HashMap<>();
+//        childUpdates.put("/records/" + key, recordValues);
+        Map<String, Object> updates = new HashMap<>();
+
+        //updates.put(houseId, data);
+        //mDatabase.updateChildren(updates);
+    }
+    public List<String> getDatafromFirebase(String reference, String child ) {
+        List<String> usernames = new ArrayList<>();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference(reference).child(child);
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() ) {
+                    //&& dataSnapshot.getValue() != null
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        //String[] property = item.split(";");
+                        usernames.add(item);
+                    }
+                    // 通知适配器数据已更改
+
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+        usernames.subList(0, 3).clear();
+        return usernames;
+    }
+
+
 
 }
