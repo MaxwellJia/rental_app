@@ -1,5 +1,6 @@
 package com.example.forum.ui.gallery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Xml;
 import android.view.LayoutInflater;
@@ -7,22 +8,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.forum.MainActivity;
+import com.example.forum.Main_Page;
 import com.example.forum.R;
+import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentGalleryBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GalleryFragment extends Fragment {
 //house data structure:
@@ -49,13 +65,19 @@ public class GalleryFragment extends Fragment {
         root = binding.getRoot();
 
         List<String> states = getProvinces();
+        List<String> xbxb = Arrays.asList("select","1", "2", "3", "4", "5", "6");
         Spinner state = root.findViewById(R.id.province);
         Spinner suburb = root.findViewById(R.id.suburb);
         Spinner street = root.findViewById(R.id.street);
+        Spinner bedroom = root.findViewById(R.id.bedroom);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, states);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state.setAdapter(adapter);
         state.setSelection(0);
+        ArrayAdapter<String> xbxb_adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, xbxb);
+        xbxb_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bedroom.setAdapter(xbxb_adapter);
+        bedroom.setSelection(0);
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -94,6 +116,15 @@ public class GalleryFragment extends Fragment {
                 // You can leave this empty if you don't have any specific functionality for it
             }
         });
+        Button submit = root.findViewById(R.id.submit_house_inf);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit_house_inf(v);
+            }
+
+
+        });
 
 //        final TextView textView = binding.textGallery;
 //        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
@@ -124,7 +155,7 @@ public class GalleryFragment extends Fragment {
         }catch (Exception e) {
             e.printStackTrace();
         }
-        provinces.add(0,"select your state");
+        provinces.add(0,"select your city");
         return provinces;
     }
 
@@ -206,7 +237,7 @@ public class GalleryFragment extends Fragment {
         }catch (Exception e) {
             e.printStackTrace();
         }
-        streets.add(0,"select your suburb");
+        streets.add(0,"select your street");
         return streets;
     }
     public void updateStreet(List<String> streets){
@@ -215,6 +246,62 @@ public class GalleryFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         street.setAdapter(adapter);
         street.setSelection(0);
+    }
+
+    public void submit_house_inf(View V){//submit house inf to firebase
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+        Spinner bedroom= root.findViewById(R.id.bedroom);
+        Spinner province = root.findViewById(R.id.province);
+        Spinner suburb = root.findViewById(R.id.suburb);
+        Spinner street = root.findViewById(R.id.street);
+        EditText street_no = root.findViewById(R.id.Buil_no);
+        EditText unit = root.findViewById(R.id.unit);
+        EditText price = root.findViewById(R.id.price);
+        String unit_data = null;
+        String id = Main_Page.getUser()+currentTime;
+        id = id.replace(":", "");
+        String city = province.getSelectedItem().toString();
+        String suburb_data = suburb.getSelectedItem().toString();
+        String street_data = street.getSelectedItem().toString();
+        String street_no_data = street_no.getText().toString();
+        unit_data = unit.getText().toString();
+        String price_data = price.getText().toString();
+        String bedroom_no =bedroom.getSelectedItem().toString();
+        String email = Main_Page.getUser();
+        String recommend = "0";
+
+        //updata data
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+
+// Create a new child and get its key
+//        String key = mDatabase.child("1").push().getKey();
+
+// Create a map to hold the values
+        String data = city+";"+suburb_data+";"+street_data+";"+street_no_data+";"+unit_data+";"+price_data+";"+bedroom_no+";"+email+";"+recommend+";";
+//        Map<String, Object> recordValues = new HashMap<>();
+//        recordValues.put("HouseId", id);
+//        recordValues.put("City", city);
+//        recordValues.put("Suburb", suburb_data);
+//        recordValues.put("Street", street_data);
+//        recordValues.put("Building_no", street_no_data);
+//        recordValues.put("Unit", unit_data);
+//        recordValues.put("Price", price_data);
+//        recordValues.put("Bedroom", bedroom_no);
+//        recordValues.put("Contact", email);
+//        recordValues.put("recommend", recommend);
+
+// Push the map to the database
+//        Map<String, Object> childUpdates = new HashMap<>();
+//        childUpdates.put("/records/" + key, recordValues);
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(id, data);
+        mDatabase.updateChildren(updates);
+        Toast.makeText(getActivity(), "successfully submit", Toast.LENGTH_SHORT);
+        // Create an instance of the new fragment
+        Intent intent = new Intent(getActivity(), Main_Page.class);
+        startActivity(intent);
+
     }
 
 }
