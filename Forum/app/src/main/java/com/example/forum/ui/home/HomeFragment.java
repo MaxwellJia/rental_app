@@ -257,6 +257,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.forum.House;
 import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
 import com.example.forum.House_Detail_Page;
@@ -272,6 +273,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.eazegraph.lib.models.PieModel;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -285,26 +287,17 @@ public class HomeFragment extends Fragment {
     private EditText editText;
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
-    private List<HouseData> houseList = new ArrayList<>();
+    private List<House> houseList = new ArrayList<>();
     private TextView textview;
 
     private FragmentHomeBinding binding;
 
-
-
-    //    private List<HouseData> houseList = new ArrayList<>();
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-//        HouseData house = new HouseData("123", "123",213,"123");
-//
-//        houseList.add(house);
 
         // 使用视图对象查找RecyclerView
         recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
@@ -321,41 +314,48 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse.setVisibility(View.VISIBLE);
         // 初始化数据列表
 
-        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-        try {
-            Thread.sleep(2000); // Pause for 2 seconds (in milliseconds)
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //首页地区房子
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item = itemSnapshot.getValue(String.class);
-                        String[] property=item.split(";");
-                        HouseData house = new HouseData(property[6].toString(), property[2].toString()+" "+"Buiding "+property[3].toString()+" $"+property[5].toString()+" "+property[6].toString()+" Bedroom", Integer.parseInt(property[5]), property[0].toString()+" "+property[1].toString(),property[2].toString()+" "+"Buiding "+property[3].toString()+" Unit "+property[4].toString(),property[7].toString(),Integer.parseInt(property[8]));
-                        // Set the data houselist
-                        houseList.add(house);
-                    }
-                    adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+        Button searchNearby=binding.btnNearby;
+        searchNearby.setOnClickListener(v -> {
+            // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+            DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
-                } else {
-                    Log.d("FirebaseData", "No data available or data is null");
+            TextView ddd=root.findViewById(R.id.textViewMap);
+            System.out.println(ddd.getText().toString());
+            //首页地区房子
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    textview = root.findViewById(R.id.textViewMap);
+                    String currentDistirct=textview.getText().toString();
+                    if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                            String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
+                            String[] property=item.split(";");
+                            if(property[2].equals(currentDistirct)){
+                                // Set the data houselist
+                                houseList.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
+                                        Integer.parseInt(property[6]),Integer.parseInt(property[7]),property[8],
+                                        Integer.parseInt(property[9])));
+                            }
+
+                        }
+                        adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+
+                    } else {
+                        Log.d("FirebaseData", "No data available or data is null");
+                    }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur during the read operation
-                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle any errors that may occur during the read operation
+                    Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+                }
+            });
+
         });
 
-        textview = root.findViewById(R.id.textViewMap);
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -417,8 +417,8 @@ public class HomeFragment extends Fragment {
                         String[] pass = selectedItem.split(" ");
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
-                        HouseData houseToPass = houseList.get(position);
-                        intent.putExtra("houseData", houseToPass);
+                        House houseToPass = houseList.get(position);
+                        intent.putExtra("houseData", (Serializable) houseToPass);
                         v.getContext().startActivity(intent);
                     }
                 });
@@ -533,4 +533,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

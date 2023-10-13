@@ -47,7 +47,7 @@ public class AVLTreeFactory {
         this.dataString = data;
 
         String[] pairs1 = dataString.get(0).split(";");
-        int id = Integer.parseInt(pairs1[0]);
+        String id = pairs1[0];
         String city = pairs1[1];
         String suburb = pairs1[2];
         String street = pairs1[3];
@@ -61,6 +61,7 @@ public class AVLTreeFactory {
 
         for (int i = 1; i <= dataString.size() - 1; i++) {
             String[] pairs = dataString.get(i).split(";");
+            id=pairs[0];
             city = pairs[1];
             suburb = pairs[2];
             street = pairs[3];

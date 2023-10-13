@@ -112,7 +112,7 @@ public class Main_Page extends AppCompatActivity {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                         if (addresses.size() > 0) {
 //                            mySignature.setText(addresses.get(0).getLocality());
-                            suburbDisplay.setText(addresses.get(0).getLocality()+", "+addresses.get(0).getAdminArea());
+                            suburbDisplay.setText(addresses.get(0).getLocality());
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
