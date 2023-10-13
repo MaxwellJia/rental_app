@@ -61,15 +61,15 @@ public class AVLTreeFactory {
 
         for (int i = 1; i <= dataString.size() - 1; i++) {
             String[] pairs = dataString.get(i).split(";");
-            city = pairs1[1];
-            suburb = pairs1[2];
-            street = pairs1[3];
-            streetNumber = pairs1[4];
-            unit = pairs1[5];
-            price = Integer.parseInt(pairs1[6]);
-            xbxb = Integer.parseInt(pairs1[7]);
-            username = pairs1[8];
-            likes = Integer.parseInt(pairs1[9]);
+            city = pairs[1];
+            suburb = pairs[2];
+            street = pairs[3];
+            streetNumber = pairs[4];
+            unit = pairs[5];
+            price = Integer.parseInt(pairs[6]);
+            xbxb = Integer.parseInt(pairs[7]);
+            username = pairs[8];
+            likes = Integer.parseInt(pairs[9]);
             ht.insert(new House(id, city, suburb, street, streetNumber, unit, price, xbxb, username, likes));
         }
         return ht;

@@ -221,9 +221,20 @@
 //}
 
 package com.example.forum.ui.home;
+import static android.content.Context.LOCATION_SERVICE;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -243,16 +254,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.forum.House;
 import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
 import com.example.forum.House_Detail_Page;
 import com.example.forum.Main_Page;
+import com.example.forum.Manifest;
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
@@ -263,10 +278,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.eazegraph.lib.models.PieModel;
-
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -280,6 +301,7 @@ public class HomeFragment extends Fragment {
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
     private List<HouseData> houseList = new ArrayList<>();
+    private List<House> districtHouses=new ArrayList<>();
 
     private FragmentHomeBinding binding;
 
@@ -309,6 +331,8 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recyclerViewhouse.setVisibility(View.VISIBLE);
+
+
         // 初始化数据列表
 
         // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
@@ -521,4 +545,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
