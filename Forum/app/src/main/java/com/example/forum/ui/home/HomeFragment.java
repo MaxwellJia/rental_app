@@ -271,6 +271,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();
+
+
     private List<String> filteredDataList;
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
@@ -337,9 +339,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //test
 
-        //test
+
+
+
+
+
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         loadData();
@@ -427,7 +432,7 @@ public class HomeFragment extends Fragment {
                     filteredDataList = new ArrayList<>(dataList);
                 } else {
                     for (String item : dataList) {
-                        if (item.toLowerCase().contains(aa.getLocation().toLowerCase())) {
+                        if (item.toLowerCase().contains(String.valueOf(aa.getBedrooms()).toLowerCase())) {
                             filteredDataList.add(item);
                         }
                     }
@@ -451,6 +456,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
         return root;
     }
 
@@ -461,7 +468,7 @@ public class HomeFragment extends Fragment {
         // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("1");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -472,7 +479,7 @@ public class HomeFragment extends Fragment {
                         String[] property=item.split(";");
 
                         // Set the data to search recycleview
-                        dataList.add(property[0].toString()+" "+property[1].toString()+" "+property[2].toString()+" "+"$ "+property[3].toString()+" "+property[4].toString()+" Bedroom");
+                        dataList.add(property[0].toString()+" "+property[1].toString()+" "+property[2].toString()+" Buliding "+property[3].toString()+" Unit "+property[4].toString()+" "+"$ "+property[5].toString()+" "+property[6].toString()+" Bedroom");
                     }
 
                 } else {
@@ -494,6 +501,7 @@ public class HomeFragment extends Fragment {
         }
         adapter.notifyDataSetChanged();
     }
+
 
 
 
