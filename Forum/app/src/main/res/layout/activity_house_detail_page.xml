@@ -45,7 +45,7 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="match_parent"
+                android:layout_width="400dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:paddingLeft="20dp"
@@ -96,13 +96,6 @@
                 android:textAlignment="center"
                 android:textSize="34sp" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="51dp"
-                android:text="Map"
-                android:textAlignment="center"
-                android:textSize="24sp" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
