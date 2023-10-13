@@ -75,6 +75,9 @@ public class LogIn extends AppCompatActivity {
                     } else {
                         if (enteredPassword.equals(target.password)) {
                             Intent intent = new Intent(getApplicationContext(), Main_Page.class);
+
+
+
                             intent.putExtra("username",enteredUsername);
                             startActivity(intent);
                         } else {
