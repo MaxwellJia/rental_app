@@ -222,14 +222,20 @@
 
 package com.example.forum.ui.home;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -275,10 +281,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.eazegraph.lib.models.PieModel;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -291,8 +299,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewhouse;
     private List<House> houseList=new ArrayList<>() ;
     private TextView textview;
-
+    LocationManager locationManager;
+    LocationListener locationListener;
     private FragmentHomeBinding binding;
+    String district;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -315,10 +325,45 @@ public class HomeFragment extends Fragment {
 
         recyclerViewhouse.setVisibility(View.VISIBLE);
         // 初始化数据列表
+        textview=root.findViewById(R.id.textViewMap);
+        locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
 
+                    // Reverse Geocoding
+                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (addresses.size() > 0) {
+//                            mySignature.setText(addresses.get(0).getLocality());
+                            district=addresses.get(0).getLocality();
+                            textview.setText(district);
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+        Button start=binding.btnLocationStart;
+        start.setOnClickListener(v->{
+            applayUpdate();
+        });
         Button searchNearby=binding.btnNearby;
         searchNearby.setOnClickListener(v -> {
-            // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+// FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
             DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
@@ -327,16 +372,15 @@ public class HomeFragment extends Fragment {
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    textview = root.findViewById(R.id.textViewMap);
-                    String currentDistirct=textview.getText().toString();
+
+
                     if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                        if(houseList.size()!=0){
-                            houseList=new ArrayList<>();
-                        }
+
+                        houseList.clear();
                         for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                             String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
                             String[] property=item.split(";");
-                            if(property[2].equals(currentDistirct)){
+                            if(property[2].equals(textview.getText().toString())){
                                 // Set the data houselist
                                 houseList.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
                                         Integer.parseInt(property[6]),Integer.parseInt(property[7]),property[8],
@@ -563,5 +607,22 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+    public void applayUpdate() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if(ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
+                    ||ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
 
+                },0);
+                return;
+            }
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+//            }
+        }
+        locationManager.requestLocationUpdates("gps",0,0,locationListener);
+    }
 }

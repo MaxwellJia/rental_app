@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 ////        accountList.add("comp2100@anu.edu.au"+";"+"comp2100");
 ////        accountList.add("comp6442@anu.edu.au"+";"+"comp6442");
 ////        accountList.add("1"+";"+"1");
-//        Random random=new Random();
+        Random random=new Random();
 ////        for(int i=0;i<497;i++){
 ////            accountList.add("u7"+(100000+random.nextInt(900000))+";"+"123456");
 ////        }
@@ -77,17 +77,12 @@ public class MainActivity extends AppCompatActivity {
 //                    List<String> valuesList=new ArrayList<>();
 //                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
 //                        String item = itemSnapshot.getValue(String.class);
-//                        String[] names=item.split(";");
 //
-//                        valuesList.add(names[0]);
+//                        valuesList.add(item+";"+0+";"+random.nextInt(10));
 //                    }
-//                    List<String> pro=new ArrayList<>();
-//                    for(String user:valuesList){
-//                        pro.add(user+";"+random.nextInt(10));
-//                    }
-//                    FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
-//                    DatabaseReference dr = firebaseDatabase1.getReference("Profile").child("1");
-//                    dr.setValue(pro);
+//
+//
+//                    databaseReference.setValue(valuesList);
 //                    // You can use the jsonString as needed in your app
 //                } else {
 //                    Log.d("FirebaseData", "No data available or data is null");

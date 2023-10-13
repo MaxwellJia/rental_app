@@ -58,36 +58,37 @@ public class SlideshowFragment extends Fragment {
         // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("1");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child(
+                "key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
 
-                    int[] countRoom=new int[6];
-                    int roomNumber=-1;
+                    double[] countRoom = new double[6];
+                    int roomNumber = -1;
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
-                        String[] property=item.split(";");
-                        roomNumber=Integer.parseInt(property[4]);
-                        countRoom[roomNumber-1]++;
+                        String[] property = item.split(";");
+                        roomNumber = Integer.parseInt(property[6]);
+                        countRoom[roomNumber - 1] = countRoom[roomNumber - 1] + 1.00;
                     }
 
-                    tv1.setText(""+countRoom[0]);
-                    tv2.setText(""+countRoom[1]);
-                    tv3.setText(""+countRoom[2]);
-                    tv4.setText(""+countRoom[3]);
-                    tv5.setText(""+countRoom[4]);
-                    tv6.setText(""+countRoom[5]);
+                    tv1.setText("" + (int)countRoom[0]);
+                    tv2.setText("" +(int) countRoom[1]);
+                    tv3.setText("" + (int)countRoom[2]);
+                    tv4.setText("" + (int)countRoom[3]);
+                    tv5.setText("" + (int)countRoom[4]);
+                    tv6.setText("" + (int)countRoom[5]);
 
                     // Set the data and color to the pie chart
-                    pieChart.addPieSlice(new PieModel("1", (float) (((float) countRoom[0])/2000.0), Color.parseColor("#FFA726")));
-                    pieChart.addPieSlice(new PieModel("2",  (float) (((float) countRoom[1])/2000.0), Color.parseColor("#66BB6A")));
-                    pieChart.addPieSlice(new PieModel("3",  (float) (((float) countRoom[2])/2000.0), Color.parseColor("#EF5350")));
-                    pieChart.addPieSlice(new PieModel("4",  (float) (((float) countRoom[3])/2000.0), Color.parseColor("#29B6F6")));
-                    pieChart.addPieSlice(new PieModel("5",  (float) (((float) countRoom[4])/2000.0), Color.parseColor("#9E9E9E")));
-                    pieChart.addPieSlice(new PieModel("6",  (float) (((float) countRoom[5])/2000.0), Color.parseColor("#9C27B0")));
+                    pieChart.addPieSlice(new PieModel("1", (float) (countRoom[0] / 2000.0), Color.parseColor("#FFA726")));
+                    pieChart.addPieSlice(new PieModel("2", (float) (countRoom[1] / 2000.0), Color.parseColor("#66BB6A")));
+                    pieChart.addPieSlice(new PieModel("3", (float) (countRoom[2] / 2000.0), Color.parseColor("#EF5350")));
+                    pieChart.addPieSlice(new PieModel("4", (float) (countRoom[3] / 2000.0), Color.parseColor("#29B6F6")));
+                    pieChart.addPieSlice(new PieModel("5", (float) (countRoom[4] / 2000.0), Color.parseColor("#9E9E9E")));
+                    pieChart.addPieSlice(new PieModel("6", (float) (countRoom[5] / 2000.0), Color.parseColor("#9C27B0")));
 
                 } else {
                     Log.d("FirebaseData", "No data available or data is null");
@@ -100,7 +101,6 @@ public class SlideshowFragment extends Fragment {
                 Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
             }
         });
-
 
 
         // To animate the pie chart

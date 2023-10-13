@@ -95,38 +95,7 @@ public class Main_Page extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-//        View headerView = navigationView.getHeaderView(0);
-//        mySignature=headerView.findViewById(R.id.mySignature);
-        suburbDisplay=findViewById(R.id.textViewMap);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
 
-                    // Reverse Geocoding
-                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                        if (addresses.size() > 0) {
-//                            mySignature.setText(addresses.get(0).getLocality());
-                            suburbDisplay.setText(addresses.get(0).getLocality());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
 
         loadUserProfile(navigationView);
     }
@@ -146,7 +115,7 @@ public class Main_Page extends AppCompatActivity {
     }
 
     public void loadUserProfile(NavigationView navigationView){
-        applayUpdate();
+//        applayUpdate();
         //Generate greetings in user profile
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -169,7 +138,7 @@ public class Main_Page extends AppCompatActivity {
         mySignature.setText(greeting+", "+userr+"!");
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Profile").child("1");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -184,7 +153,7 @@ public class Main_Page extends AppCompatActivity {
                         title.setText(userr);
 
                         FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = storage.getReference("avatars").child("image"+item[1]+".jpeg");
+                        StorageReference storageRef = storage.getReference("avatars").child("image"+item[3]+".jpeg");
 
                         storageRef.getDownloadUrl()
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -221,22 +190,5 @@ public class Main_Page extends AppCompatActivity {
     public static String getUser(){
         return userr;
     }
-    public void applayUpdate() {
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                    ||ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET
 
-                },0);
-                return;
-            }
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-//            }
-        }
-        locationManager.requestLocationUpdates("gps",0,0,locationListener);
-    }
 }

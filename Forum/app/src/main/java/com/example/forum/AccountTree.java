@@ -73,19 +73,19 @@ public class AccountTree  implements Iterable<Account> {
     }
 
     // Insert a new node into the AVL tree
-    public void insert(String account, String password) {
-        root = insert(root, account, password);
+    public void insert(Account toInsert) {
+        root = insert(root, toInsert);
     }
 
-    private Account insert(Account node, String account, String password) {
+    private Account insert(Account node, Account toInsert) {
         if (node == null) {
-            return new Account(account, password);
+            return toInsert;
         }
 
-        if (account.compareTo(node.account) < 0) {
-            node.left = insert(node.left, account, password);
-        } else if (account.compareTo(node.account) > 0) {
-            node.right = insert(node.right, account, password);
+        if (toInsert.account.compareTo(node.account) < 0) {
+            node.left = insert(node.left, toInsert);
+        } else if (toInsert.account.compareTo(node.account) > 0) {
+            node.right = insert(node.right, toInsert);
         } else {
             // Handle duplicate accounts if needed
         }
@@ -96,7 +96,7 @@ public class AccountTree  implements Iterable<Account> {
 
         // Perform rotations to balance the tree
         if (balance > 1) {
-            if (account.compareTo(node.left.account) < 0) {
+            if (toInsert.account.compareTo(node.left.account) < 0) {
                 return rotateRight(node);
             } else {
                 node.left = rotateLeft(node.left);
@@ -105,7 +105,7 @@ public class AccountTree  implements Iterable<Account> {
         }
 
         if (balance < -1) {
-            if (account.compareTo(node.right.account) > 0) {
+            if (toInsert.account.compareTo(node.right.account) > 0) {
                 return rotateLeft(node);
             } else {
                 node.right = rotateRight(node.right);
@@ -272,7 +272,7 @@ public class AccountTree  implements Iterable<Account> {
         Iterator<Account> it = this.iterator();
         while (it.hasNext()) {
             Account account = it.next();
-            storage.add(account.account+";"+account.password);
+            storage.add(account.account+";"+account.password+";"+account.state+";"+account.imageId);
         }
         return storage;
     }
