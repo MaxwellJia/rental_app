@@ -63,7 +63,7 @@ public class Main_Page extends AppCompatActivity {
     TextView mySignature;
     TextView title;
     ImageView avatar;
-
+    TextView suburbDisplay;
     LocationManager locationManager;
     LocationListener locationListener;
     @Override
@@ -94,6 +94,7 @@ public class Main_Page extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+//        suburbDisplay.findViewById(R.id.piechart);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -108,8 +109,8 @@ public class Main_Page extends AppCompatActivity {
                     try {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                         if (addresses.size() > 0) {
+//                            suburbDisplay.setText(addresses.get(0).getLocality());
 
-                            // or getSubLocality() or getAdminArea() for more specific location details
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
