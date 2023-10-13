@@ -1,9 +1,15 @@
 package com.example.forum;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -13,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -41,20 +49,23 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
-
+import android.Manifest;
 public class Main_Page extends AppCompatActivity {
     static String userr;
+    private String district;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
     TextView mySignature;
     TextView title;
     ImageView avatar;
+    TextView suburbDisplay;
     LocationManager locationManager;
     LocationListener locationListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,10 +94,38 @@ public class Main_Page extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+//        suburbDisplay.findViewById(R.id.piechart);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+                    // Reverse Geocoding
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (addresses.size() > 0) {
+//                            suburbDisplay.setText(addresses.get(0).getLocality());
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
 
         loadUserProfile(navigationView);
-
-
     }
 
     @Override
@@ -104,6 +143,8 @@ public class Main_Page extends AppCompatActivity {
     }
 
     public void loadUserProfile(NavigationView navigationView){
+
+
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
@@ -163,5 +204,26 @@ public class Main_Page extends AppCompatActivity {
     }
     public static String getUser(){
         return userr;
+    }
+    public  String getDistrict(){
+        return district;
+    }
+    public void applayUpdate() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
+                    ||ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
+
+                },0);
+                return;
+            }
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+//            }
+        }
+        locationManager.requestLocationUpdates("gps",0,0,locationListener);
     }
 }
