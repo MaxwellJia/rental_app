@@ -271,6 +271,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();
+
+
     private List<String> filteredDataList;
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
@@ -336,6 +338,10 @@ public class HomeFragment extends Fragment {
                 Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
             }
         });
+
+
+
+
 
 
 
@@ -450,6 +456,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
         return root;
     }
 
@@ -493,6 +501,7 @@ public class HomeFragment extends Fragment {
         }
         adapter.notifyDataSetChanged();
     }
+
 
 
 
