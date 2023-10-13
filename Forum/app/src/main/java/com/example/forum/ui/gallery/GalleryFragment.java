@@ -41,16 +41,6 @@ import java.util.List;
 import java.util.Map;
 
 public class GalleryFragment extends Fragment {
-//house data structure:
-// String id;
-// String city;
-// String suburb;
-// String street;
-// String street number;
-// String unit;
-// String price;
-// String xbxb;
-// String email;
 
     private FragmentGalleryBinding binding;
     String selectedState;
@@ -126,8 +116,6 @@ public class GalleryFragment extends Fragment {
 
         });
 
-//        final TextView textView = binding.textGallery;
-//        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
@@ -298,8 +286,9 @@ public class GalleryFragment extends Fragment {
         updates.put(id, data);
         mDatabase.updateChildren(updates);
         Toast.makeText(getActivity(), "successfully submit", Toast.LENGTH_SHORT);
+        Intent intent = getActivity().getIntent();
+        getActivity().finish();
         // Create an instance of the new fragment
-        Intent intent = new Intent(getActivity(), Main_Page.class);
         startActivity(intent);
 
     }
