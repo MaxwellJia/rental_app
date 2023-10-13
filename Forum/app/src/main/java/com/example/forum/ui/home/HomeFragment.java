@@ -336,7 +336,7 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
                         String[] property=item.split(";");
-                        HouseData house = new HouseData(property[6].toString(), property[2].toString()+" "+"Buiding "+property[3].toString()+" $"+property[5].toString()+" "+property[6].toString()+" Bedroom", Integer.parseInt(property[5]), property[0].toString()+" "+property[1].toString(),property[2].toString()+" "+"Buiding "+property[3].toString()+" Unit "+property[4].toString());
+                        HouseData house = new HouseData(property[6].toString(), property[2].toString()+" "+"Buiding "+property[3].toString()+" $"+property[5].toString()+" "+property[6].toString()+" Bedroom", Integer.parseInt(property[5]), property[0].toString()+" "+property[1].toString(),property[2].toString()+" "+"Buiding "+property[3].toString()+" Unit "+property[4].toString(),property[7].toString(),Integer.parseInt(property[8]));
                         // Set the data houselist
                         houseList.add(house);
                     }
@@ -409,10 +409,10 @@ public class HomeFragment extends Fragment {
                         String selectedItem = dataList.get(position);
                         // Depending on the item clicked, you can navigate to a different activity and pass data
                         String[] pass = selectedItem.split(" ");
-                        HouseData house = new HouseData(pass[10], "asd", Integer.parseInt(pass[9]), pass[0]+" "+pass[1], pass[2] + " " + pass[3]+" " +pass[4]+" "+pass[5]+" "+pass[6]+" "+pass[7]);
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
-                        intent.putExtra("houseData", house);
+                        HouseData houseToPass = houseList.get(position);
+                        intent.putExtra("houseData", houseToPass);
                         v.getContext().startActivity(intent);
                     }
                 });
@@ -487,7 +487,7 @@ public class HomeFragment extends Fragment {
                         String[] property=item.split(";");
 
                         // Set the data to search recycleview
-                        dataList.add(property[0].toString()+" "+property[1].toString()+" "+property[2].toString()+" Buliding "+property[3].toString()+" Unit "+property[4].toString()+" "+"$ "+property[5].toString()+" "+property[6].toString()+" Bedroom");
+                        dataList.add(property[0].toString()+" "+property[1].toString()+" "+property[2].toString()+" Buliding "+property[3].toString()+" Unit "+property[4].toString()+" "+"$ "+property[5].toString()+" "+property[6].toString()+" Bedroom"+" "+property[7]+" "+property[8]);
                     }
 
                 } else {
