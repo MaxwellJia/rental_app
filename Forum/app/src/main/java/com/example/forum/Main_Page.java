@@ -2,12 +2,14 @@ package com.example.forum;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -61,10 +63,9 @@ public class Main_Page extends AppCompatActivity {
     TextView mySignature;
     TextView title;
     ImageView avatar;
+    TextView suburbDisplay;
     LocationManager locationManager;
     LocationListener locationListener;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,9 +94,7 @@ public class Main_Page extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-
-
+//        suburbDisplay.findViewById(R.id.piechart);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -110,8 +109,8 @@ public class Main_Page extends AppCompatActivity {
                     try {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                         if (addresses.size() > 0) {
-                            district= addresses.get(0).getLocality();
-                           // or getSubLocality() or getAdminArea() for more specific location details
+//                            suburbDisplay.setText(addresses.get(0).getLocality());
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -125,6 +124,7 @@ public class Main_Page extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+
         loadUserProfile(navigationView);
     }
 
@@ -143,8 +143,8 @@ public class Main_Page extends AppCompatActivity {
     }
 
     public void loadUserProfile(NavigationView navigationView){
-        applayUpdate();
-        System.out.println("Home: "+district);
+
+
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
@@ -210,12 +210,12 @@ public class Main_Page extends AppCompatActivity {
     }
     public void applayUpdate() {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                    ||ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
+                    ||ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
                 requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.INTERNET
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
 
                 },0);
                 return;
@@ -224,6 +224,6 @@ public class Main_Page extends AppCompatActivity {
 //                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
 //            }
         }
-        locationManager.requestLocationUpdates("gps",3000,0,locationListener);
+        locationManager.requestLocationUpdates("gps",0,0,locationListener);
     }
 }

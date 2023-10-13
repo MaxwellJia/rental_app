@@ -298,10 +298,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
-
-
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
