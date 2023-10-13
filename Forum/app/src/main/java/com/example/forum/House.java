@@ -1,6 +1,7 @@
 package com.example.forum;
 
 public class House {
+
     public String district;//Property[0]
     public String street;//Property[1]
     public String no;//Property[2]

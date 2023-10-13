@@ -54,6 +54,8 @@ public class Main_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         user = intent.getStringExtra("username");
+
+
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         FirebaseApp.initializeApp(this);
