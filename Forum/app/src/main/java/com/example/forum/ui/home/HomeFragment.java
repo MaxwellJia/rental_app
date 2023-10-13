@@ -221,9 +221,15 @@
 //}
 
 package com.example.forum.ui.home;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -243,6 +249,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -252,7 +260,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
 import com.example.forum.House_Detail_Page;
-import com.example.forum.Main_Page;
+import android.Manifest;
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
@@ -272,8 +280,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();
-
-
     private List<String> filteredDataList;
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
@@ -283,10 +289,17 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-//    private List<HouseData> houseList = new ArrayList<>();
+
+
+    //    private List<HouseData> houseList = new ArrayList<>();
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+
+
+
+
 
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -314,7 +327,7 @@ public class HomeFragment extends Fragment {
         // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("1");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -323,7 +336,7 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
                         String[] property=item.split(";");
-                        HouseData house = new HouseData(property[4].toString()+" Bedroom", property[1].toString()+" "+property[2].toString() +" $"+property[3].toString()+" "+property[4].toString()+" Bedroom", Integer.parseInt(property[3]), property[0].toString(),property[1].toString()+" "+property[2].toString());
+                        HouseData house = new HouseData(property[6].toString(), property[2].toString()+" "+"Buiding "+property[3].toString()+" $"+property[5].toString()+" "+property[6].toString()+" Bedroom", Integer.parseInt(property[5]), property[0].toString()+" "+property[1].toString(),property[2].toString()+" "+"Buiding "+property[3].toString()+" Unit "+property[4].toString());
                         // Set the data houselist
                         houseList.add(house);
                     }
@@ -339,10 +352,6 @@ public class HomeFragment extends Fragment {
                 Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
             }
         });
-
-
-
-
 
 
 
@@ -400,7 +409,7 @@ public class HomeFragment extends Fragment {
                         String selectedItem = dataList.get(position);
                         // Depending on the item clicked, you can navigate to a different activity and pass data
                         String[] pass = selectedItem.split(" ");
-                        HouseData house = new HouseData(pass[5] + " " + pass[6], "asd", Integer.parseInt(pass[4]), pass[0], pass[1] + " " + pass[2]);
+                        HouseData house = new HouseData(pass[10], "asd", Integer.parseInt(pass[9]), pass[0]+" "+pass[1], pass[2] + " " + pass[3]+" " +pass[4]+" "+pass[5]+" "+pass[6]+" "+pass[7]);
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
                         intent.putExtra("houseData", house);
@@ -457,8 +466,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-
         return root;
     }
 
@@ -502,7 +509,6 @@ public class HomeFragment extends Fragment {
         }
         adapter.notifyDataSetChanged();
     }
-
 
 
 
