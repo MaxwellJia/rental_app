@@ -426,7 +426,7 @@ public class HomeFragment extends Fragment {
                     filteredDataList = new ArrayList<>(dataList);
                 } else {
                     for (String item : dataList) {
-                        if (item.toLowerCase().contains(aa.getLocation().toLowerCase())) {
+                        if (item.toLowerCase().contains(String.valueOf(aa.getBedrooms()).toLowerCase())) {
                             filteredDataList.add(item);
                         }
                     }

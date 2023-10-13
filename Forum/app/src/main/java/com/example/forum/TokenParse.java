@@ -38,7 +38,7 @@ public class TokenParse {
 
                 if (part.matches("(?i)^bel.*$")) {
                     // 如果输入是字母 bel，则补全成 "Belconnen"
-                    FindLocation="Belconnen";
+                    FindLocation="city";
                 } else if (part.matches("(?i)^ac.*$")) {
                     FindLocation = "Acton";
                 } else if (part.matches("(?i)^ai.*$")) {
