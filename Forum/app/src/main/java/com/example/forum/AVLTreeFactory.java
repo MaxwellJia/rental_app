@@ -10,8 +10,6 @@ public class AVLTreeFactory {
     private AVLTreeFactory() {
     }
 
-    ;
-
     public List<String> getDataString() {
         return dataString;
     }
