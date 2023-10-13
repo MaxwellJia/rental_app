@@ -53,7 +53,7 @@ public class GalleryFragment extends Fragment {
     String selectedState;
     String selectedSuburb;
     View root;
-
+    private List<String> userList = new ArrayList<>();
     private static final Random random = new Random();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -128,10 +128,42 @@ public class GalleryFragment extends Fragment {
 
 
         });
-
+        loaduserdata();
+        for(String aa:userList){
+            System.out.println(aa);
+        }
         return root;
     }
+    private void loaduserdata(){
+        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
 
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        String[] property=item.split(";");
+
+                        userList.add(property[0]);
+                    }
+
+                    System.out.println(userList);
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -357,6 +389,7 @@ public class GalleryFragment extends Fragment {
             }
         });
         usernames.subList(0, 3).clear();
+        System.out.println(usernames);
         return usernames;
     }
 
