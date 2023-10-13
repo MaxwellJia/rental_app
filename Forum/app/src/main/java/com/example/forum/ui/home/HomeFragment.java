@@ -257,9 +257,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.forum.AVLTreeFactory;
 import com.example.forum.House;
 import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
+import com.example.forum.HouseTree;
 import com.example.forum.House_Detail_Page;
 import android.Manifest;
 import com.example.forum.R;
@@ -282,7 +284,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();//初始全部房源
-    private List<String> filteredDataList;//搜索后符合条件的房子
+    private List<House> filteredDataList;//搜索后符合条件的房子
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
     private int lastVisibleItemPosition = 0;
@@ -377,12 +379,12 @@ public class HomeFragment extends Fragment {
                 if (!query.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerViewhouse.setVisibility(View.GONE);
-                    textview.setVisibility(View.GONE);
+//                    textview.setVisibility(View.GONE);
 
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     recyclerViewhouse.setVisibility(View.VISIBLE);
-                    textview.setVisibility(View.VISIBLE);
+//                    textview.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -440,21 +442,46 @@ public class HomeFragment extends Fragment {
             public void applySearch(View view) {
                 loadData();
                 filteredDataList = new ArrayList<>();
+                List<House> temp=new ArrayList<>();
                 String query = editText.getText().toString().trim();
-                TokenParse aa = new TokenParse(query);
-                System.out.println(aa.getBedrooms());
-                System.out.println(aa.getpriceRange());
-                if (query.isEmpty()) {
-                    filteredDataList = new ArrayList<>(dataList);
-                } else {
-                    for (String item : dataList) {
-                        if (item.toLowerCase().contains(String.valueOf(aa.getBedrooms()).toLowerCase())) {
-                            filteredDataList.add(item);
+                TokenParse tp = new TokenParse(query);
+                AVLTreeFactory avlTreeFactory=AVLTreeFactory.getInstance();
+                HouseTree houseTree=avlTreeFactory.houseTreeCreator(dataList);
+//                if (query.isEmpty()) {
+//                    filteredDataList = new ArrayList<>(dataList);
+//                }
+
+                if(tp.getpriceRange().size()!=0){
+                    filteredDataList=houseTree.getHousesPriceRange(tp.getpriceRange().get(0),tp.getpriceRange().get(1));
+                }else {
+                    filteredDataList=houseTree.toList();
+                }
+
+                if(tp.getLocation()!=null){
+                    for(House h:filteredDataList){
+                        if(h.getSuburb().equals(tp.getLocation())){
+                            temp.add(h);
                         }
                     }
                 }
-                dataList = filteredDataList;
+                filteredDataList=temp;
+                temp=new ArrayList<>();
+                if(tp.getBedrooms()!=0){
+                    for(House h:filteredDataList){
+                        if(h.getXbxb()==tp.getBedrooms()){
+                            temp.add(h);
+                        }
+                    }
+                }
+                dataList=new ArrayList<>();
+
+                for(House house:filteredDataList){
+                    dataList.add("$"+house.getPrice());
+                    System.out.println(house.toString());
+                }
+
                 adapter.notifyDataSetChanged();
+
             }
         });
 
@@ -489,11 +516,8 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item = itemSnapshot.getValue(String.class);
-                        String[] property=item.split(";");
-
-                        // Set the data to search recycleview
-                        dataList.add(property[0].toString()+" "+property[1].toString()+" "+property[2].toString()+" Buliding "+property[3].toString()+" Unit "+property[4].toString()+" "+"$ "+property[5].toString()+" "+property[6].toString()+" Bedroom"+" "+property[7]+" "+property[8]);
+                        String item =""+itemSnapshot.getKey()+ ";"+itemSnapshot.getValue(String.class);
+                        dataList.add(item);
                     }
 
                 } else {

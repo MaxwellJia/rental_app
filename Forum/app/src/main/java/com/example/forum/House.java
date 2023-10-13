@@ -12,10 +12,10 @@ public class House {
     private String email;//value[7]
     private int likes;//value[8]
 
-    private int height;//Helper to balance AVL tree
-    private House left;
+    public int height;//Helper to balance AVL tree
+    public House left;
 
-    private House right;
+    public House right;
 
     public House(String id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email, int likes) {
         this.id = id;
@@ -136,5 +136,7 @@ public class House {
     public void setLikes(int likes) {
         this.likes = likes;
     }
-
+    public String toString(){
+        return id+";"+city+";"+suburb+";$"+price+";B"+xbxb;
+    }
 }

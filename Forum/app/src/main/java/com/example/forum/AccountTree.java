@@ -88,7 +88,6 @@ public class AccountTree  implements Iterable<Account> {
             node.right = insert(node.right, account, password);
         } else {
             // Handle duplicate accounts if needed
-
         }
 
         updateHeight(node);
