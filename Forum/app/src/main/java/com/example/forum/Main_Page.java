@@ -94,7 +94,9 @@ public class Main_Page extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-//        suburbDisplay.findViewById(R.id.piechart);
+//        View headerView = navigationView.getHeaderView(0);
+//        mySignature=headerView.findViewById(R.id.mySignature);
+        suburbDisplay=findViewById(R.id.textViewMap);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -109,8 +111,8 @@ public class Main_Page extends AppCompatActivity {
                     try {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                         if (addresses.size() > 0) {
-//                            suburbDisplay.setText(addresses.get(0).getLocality());
-
+//                            mySignature.setText(addresses.get(0).getLocality());
+                            suburbDisplay.setText(addresses.get(0).getLocality()+", "+addresses.get(0).getAdminArea());
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -143,12 +145,12 @@ public class Main_Page extends AppCompatActivity {
     }
 
     public void loadUserProfile(NavigationView navigationView){
-
+        applayUpdate();
 
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
-        mySignature = headerView.findViewById(R.id.mySignature);
+
         avatar = headerView.findViewById(R.id.imageViewAvatar);
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -166,7 +168,7 @@ public class Main_Page extends AppCompatActivity {
                             continue;
                         }
                         title.setText(userr);
-                        mySignature.setText(item[2]);
+
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         StorageReference storageRef = storage.getReference("avatars").child("image"+item[1]+".jpeg");
 

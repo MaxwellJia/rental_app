@@ -279,8 +279,8 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
-    private List<String> dataList = new ArrayList<>();
-    private List<String> filteredDataList;
+    private List<String> dataList = new ArrayList<>();//初始全部房源
+    private List<String> filteredDataList;//搜索后符合条件的房子
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
     private int lastVisibleItemPosition = 0;
@@ -325,7 +325,12 @@ public class HomeFragment extends Fragment {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
         DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
+        try {
+            Thread.sleep(2000); // Pause for 2 seconds (in milliseconds)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //首页地区房子
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -431,7 +436,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 applySearch(v);
             }
-
+            //根据token搜索
             public void applySearch(View view) {
                 loadData();
                 filteredDataList = new ArrayList<>();
@@ -471,7 +476,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-
+    //全部数据
     private void loadData() {
 
         // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
