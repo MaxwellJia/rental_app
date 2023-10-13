@@ -1,76 +1,140 @@
 package com.example.forum;
 
 public class House {
+    private int id;//key
+    private String city;//value[0]
+    private String suburb;//value[1]
+    private String street;//value[2]
+    private String streetNumber;//value[3]
+    private String unit;//Value[4]
+    private int price;//value[5]
+    private int xbxb;//value[6]
+    private String email;//value[7]
+    private int likes;//value[8]
 
-    public String district;//Property[0]
-    public String street;//Property[1]
-    public String no;//Property[2]
-    public int price;//Property[3]
-    public int rooms;//Property[4]
-    public String uploader;//Property[5]
-    public String description;//Property[6]
-    public int height;//Helper to balance AVL tree
-    public House left;
-    public House right;
-    public House(String district, String street, String no, int price, int rooms, String uploader, String description) {
+    private int height;//Helper to balance AVL tree
+    private House left;
 
-        this.district = district;
+    private House right;
+
+    public House(int id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email, int likes) {
+        this.id = id;
+        this.city = city;
+        this.suburb = suburb;
         this.street = street;
-        this.no = no;
+        this.streetNumber = streetNumber;
+        this.unit = unit;
         this.price = price;
-        this.rooms = rooms;
-        this.uploader = uploader;
-        this.description = description;
+        this.xbxb = xbxb;
+        this.email = email;
         this.height = 1;
         this.left = null;
         this.right = null;
+        this.likes = likes;
     }
-    public String getDistrict() {
-        return district;
+
+    public int getId() {
+        return id;
     }
-    public void setDistrict(String district) {
-        this.district = district;
+
+    public void setId(int id) {
+        this.id = id;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
+
     public String getStreet() {
         return street;
     }
+
     public void setStreet(String street) {
         this.street = street;
     }
-    public String getNo() {
-        return no;
+
+    public String getStreetNumber() {
+        return streetNumber;
     }
-    public void setNo(String no) {
-        this.no = no;
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
     }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public int getPrice() {
         return price;
     }
+
     public void setPrice(int price) {
         this.price = price;
     }
-    public int getRooms() {
-        return rooms;
+
+    public int getXbxb() {
+        return xbxb;
     }
-    public void setRooms(int rooms) {
-        this.rooms = rooms;
+
+    public void setXbxb(int xbxb) {
+        this.xbxb = xbxb;
     }
-    public String getUploader() {
-        return uploader;
+
+    public String getEmail() {
+        return email;
     }
-    public void setUploader(String uploader) {
-        this.uploader = uploader;
+
+    public void setEmail(String email) {
+        this.email = email;
     }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
+
     public int getHeight() {
         return height;
     }
+
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public House getLeft() {
+        return left;
+    }
+
+    public void setLeft(House left) {
+        this.left = left;
+    }
+
+    public House getRight() {
+        return right;
+    }
+
+    public void setRight(House right) {
+        this.right = right;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
 }

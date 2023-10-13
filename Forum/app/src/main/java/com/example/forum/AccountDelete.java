@@ -66,12 +66,12 @@ public class AccountDelete extends AppCompatActivity {
                             return;
                         }
                     }
-                    valuesList = new ArrayList<>();
-                    Iterator<Account> iterator = at.iterator();
-                    while (iterator.hasNext()) {
-                        Account account = iterator.next();
-                        valuesList.add(account.account+";"+account.password);
-                    }
+                    valuesList = at.toList();
+//                    Iterator<Account> iterator = at.iterator();
+//                    while (iterator.hasNext()) {
+//                        Account account = iterator.next();
+//                        valuesList.add(account.account+";"+account.password);
+//                    }
 
                     databaseReference.setValue(valuesList);
                     Toast.makeText(getApplicationContext(), "Successful Delete", Toast.LENGTH_SHORT).show();
