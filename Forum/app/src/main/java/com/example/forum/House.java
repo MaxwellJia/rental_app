@@ -1,6 +1,8 @@
 package com.example.forum;
 
-public class House {
+import java.io.Serializable;
+
+public class House implements Serializable {
     private String id;//key
     private String city;//value[0]
     private String suburb;//value[1]

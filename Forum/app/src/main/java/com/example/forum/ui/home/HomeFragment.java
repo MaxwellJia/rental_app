@@ -235,6 +235,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -269,6 +270,7 @@ import com.example.forum.HouseAdapter;
 import com.example.forum.HouseData;
 import com.example.forum.HouseTree;
 import com.example.forum.House_Detail_Page;
+
 import android.Manifest;
 import android.widget.Toast;
 
@@ -299,12 +301,16 @@ public class HomeFragment extends Fragment {
     private EditText editText;
     private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
-    private List<House> houseList=new ArrayList<>() ;
+    private List<House> houseList = new ArrayList<>();
     private TextView textview;
     LocationManager locationManager;
     LocationListener locationListener;
     private FragmentHomeBinding binding;
     String district;
+    HouseAdapter adapter1;
+    private Handler handler = new Handler();
+    private final int INTERVAL = 10000; // 10 seconds in milliseconds
+    private boolean fetchingData = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -317,7 +323,7 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
 
         // 初始化适配器，这里你需要创建一个自定义适配器，比如 HouseAdapter
-        HouseAdapter adapter1 = new HouseAdapter(houseList);
+        adapter1 = new HouseAdapter(houseList);
 
         // 设置适配器给 RecyclerView
         recyclerViewhouse.setAdapter(adapter1);
@@ -327,7 +333,7 @@ public class HomeFragment extends Fragment {
 
         recyclerViewhouse.setVisibility(View.VISIBLE);
         // 初始化数据列表
-        textview=root.findViewById(R.id.textViewMap);
+        textview = root.findViewById(R.id.textViewMap);
         locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -343,7 +349,7 @@ public class HomeFragment extends Fragment {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                         if (addresses.size() > 0) {
 //                            mySignature.setText(addresses.get(0).getLocality());
-                            district=addresses.get(0).getLocality();
+                            district = addresses.get(0).getLocality();
                             textview.setText(district);
 
                         }
@@ -359,50 +365,17 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         };
-
-        FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
-        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-        DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
-        databaseReference1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        refresh();
 
 
-                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
-                        String[] property=item.split(";");
-                            // Set the data houselist
-                            houseList.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
-                                    Integer.parseInt(property[6]),Integer.parseInt(property[7]),property[8],
-                                    Integer.parseInt(property[9])));
+//        System.out.println(houseList);
 
-
-                    }
-                    adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-
-                } else {
-                    Log.d("FirebaseData", "No data available or data is null");
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur during the read operation
-                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-            }
-        });
-
-        System.out.println(houseList);
-
-        Button start=binding.btnLocationStart;
-        start.setOnClickListener(v->{
+        Button start = binding.btnLocationStart;
+        start.setOnClickListener(v -> {
             applayUpdate();
         });
 
-        Button searchNearby=binding.btnNearby;
-
-
+        Button searchNearby = binding.btnNearby;
 
         searchNearby.setOnClickListener(v -> {
 // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
@@ -417,26 +390,25 @@ public class HomeFragment extends Fragment {
 
 
                     if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                        List<House> houseListNearBy =new ArrayList<>() ;
+                        List<House> houseListNearBy = new ArrayList<>();
 
 
                         for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                            String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
-                            String[] property=item.split(";");
-                            if(property[2].equals(textview.getText().toString())){
+                            String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                            String[] property = item.split(";");
+                            if (property[2].equals(textview.getText().toString())) {
                                 // Set the data houselist
-                                houseListNearBy.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
-                                        Integer.parseInt(property[6]),Integer.parseInt(property[7]),property[8],
+                                houseListNearBy.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                        Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
                                         Integer.parseInt(property[9])));
                             }
 
                         }
-                        if(houseListNearBy.size()<3){
+                        if (houseListNearBy.size() < 3) {
                             Toast.makeText(requireContext(), "Please Search Other Location To Get More", Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             houseList.clear();
-                            for(House h:houseListNearBy)
-                            {
+                            for (House h : houseListNearBy) {
                                 houseList.add(h);
                             }
 
@@ -447,6 +419,7 @@ public class HomeFragment extends Fragment {
                         Log.d("FirebaseData", "No data available or data is null");
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Handle any errors that may occur during the read operation
@@ -508,9 +481,9 @@ public class HomeFragment extends Fragment {
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 String item = dataList.get(position);
                 String[] recycleshow = item.split(";");
-                House searchHouse=new House(recycleshow[0],recycleshow[1],recycleshow[2],recycleshow[3],recycleshow[4],recycleshow[5],Integer.parseInt(recycleshow[6]),Integer.parseInt(recycleshow[7]),recycleshow[8],Integer.parseInt(recycleshow[9]));
+                House searchHouse = new House(recycleshow[0], recycleshow[1], recycleshow[2], recycleshow[3], recycleshow[4], recycleshow[5], Integer.parseInt(recycleshow[6]), Integer.parseInt(recycleshow[7]), recycleshow[8], Integer.parseInt(recycleshow[9]));
 
-                ((TextView) holder.itemView).setText(searchHouse.getSuburb()+" "+searchHouse.getStreet()+" $"+searchHouse.getPrice()+" "+searchHouse.getXbxb()+" Bedroom");
+                ((TextView) holder.itemView).setText(searchHouse.getSuburb() + " " + searchHouse.getStreet() + " $" + searchHouse.getPrice() + " " + searchHouse.getXbxb() + " Bedroom");
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -518,7 +491,7 @@ public class HomeFragment extends Fragment {
                         String selectedItem = dataList.get(position);
                         // Depending on the item clicked, you can navigate to a different activity and pass data
                         String[] recycleshow = item.split(";");
-                        House searchHouse=new House(recycleshow[0],recycleshow[1],recycleshow[2],recycleshow[3],recycleshow[4],recycleshow[5],Integer.parseInt(recycleshow[6]),Integer.parseInt(recycleshow[7]),recycleshow[8],Integer.parseInt(recycleshow[9]));
+                        House searchHouse = new House(recycleshow[0], recycleshow[1], recycleshow[2], recycleshow[3], recycleshow[4], recycleshow[5], Integer.parseInt(recycleshow[6]), Integer.parseInt(recycleshow[7]), recycleshow[8], Integer.parseInt(recycleshow[9]));
 
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
@@ -541,52 +514,53 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 applySearch(v);
             }
+
             //根据token搜索
             public void applySearch(View view) {
                 loadData();
                 //最后展示的结果List
                 filteredDataList = new ArrayList<>();
                 //temp是一个暂时存储每次提取出来的房子
-                List<House> temp=new ArrayList<>();
+                List<House> temp = new ArrayList<>();
                 String query = editText.getText().toString().trim();
                 TokenParse tp = new TokenParse(query);
                 //转换成AVL树
-                AVLTreeFactory avlTreeFactory=AVLTreeFactory.getInstance();
-                HouseTree houseTree=avlTreeFactory.houseTreeCreator(dataList);
+                AVLTreeFactory avlTreeFactory = AVLTreeFactory.getInstance();
+                HouseTree houseTree = avlTreeFactory.houseTreeCreator(dataList);
 //                if (query.isEmpty()) {
 //                    filteredDataList = new ArrayList<>(dataList);
 //                }
                 //价格
-                if(tp.getpriceRange().size()!=0){
-                    filteredDataList=houseTree.getHousesPriceRange(tp.getpriceRange().get(0),tp.getpriceRange().get(1));
-                }else {
-                    filteredDataList=houseTree.toList();
+                if (tp.getpriceRange().size() != 0) {
+                    filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
+                } else {
+                    filteredDataList = houseTree.toList();
                 }
                 //suburb
-                if(tp.getLocation()!=null){
-                    for(House h:filteredDataList){
-                        if(h.getSuburb().equals(tp.getLocation())){
+                if (tp.getLocation() != null) {
+                    for (House h : filteredDataList) {
+                        if (h.getSuburb().equals(tp.getLocation())) {
                             temp.add(h);
                         }
                     }
-                    filteredDataList=temp;
-                    temp=new ArrayList<>();
+                    filteredDataList = temp;
+                    temp = new ArrayList<>();
                 }
 
 
                 //房子大小
-                if(tp.getBedrooms()!=0){
-                    for(House h:filteredDataList){
-                        if(h.getXbxb()==tp.getBedrooms()){
+                if (tp.getBedrooms() != 0) {
+                    for (House h : filteredDataList) {
+                        if (h.getXbxb() == tp.getBedrooms()) {
                             temp.add(h);
                         }
                     }
-                    filteredDataList=temp;
+                    filteredDataList = temp;
                 }
-                dataList=new ArrayList<>();
+                dataList = new ArrayList<>();
                 //把House类型的List转化为String List的显示结果
-                for(House house:filteredDataList){
-                    dataList.add(house.getId()+";"+house.getCity()+";"+house.getSuburb()+";"+house.getStreet()+";"+house.getStreetNumber()+";"+house.getUnit()+";"+house.getPrice()+";"+house.getXbxb()+";"+house.getEmail()+";"+house.getLikes()+";");
+                for (House house : filteredDataList) {
+                    dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
 //                    System.out.println(house.toString());
                 }
 
@@ -612,6 +586,58 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private void refresh() {
+        if (!fetchingData) {
+            fetchingData = true;
+
+            // Initialize Firebase
+            // Fetch data from Firebase and handle it here
+            FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
+            // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+            DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+            houseList.clear();
+            databaseReference1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                            String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                            String[] property = item.split(";");
+                            // Set the data houselist
+                            houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                    Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                    Integer.parseInt(property[9])));
+
+
+                        }
+// After data fetch is complete, reset the flag and schedule the next task
+                        fetchingData = false;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                refresh();
+                            }
+                        }, INTERVAL);
+                        adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+                        Toast.makeText(getActivity(), "Loaded", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Log.d("FirebaseData", "No data available or data is null");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle any errors that may occur during the read operation
+                    Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+                }
+            });
+
+        }
+
+
+    }
 
     //全部数据
     private void loadData() {
@@ -626,7 +652,7 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item =""+itemSnapshot.getKey()+ ";"+itemSnapshot.getValue(String.class);
+                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
                         dataList.add(item);
                     }
 
@@ -634,6 +660,7 @@ public class HomeFragment extends Fragment {
                     Log.d("FirebaseData", "No data available or data is null");
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Handle any errors that may occur during the read operation
@@ -651,7 +678,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-
     @SuppressLint("NotifyDataSetChanged")
     public void showContentIfEmpty() {
         String query = editText.getText().toString().trim();
@@ -667,22 +693,23 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
     public void applayUpdate() {
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            if(ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                    ||ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{
                         android.Manifest.permission.ACCESS_FINE_LOCATION,
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.INTERNET
 
-                },0);
+                }, 0);
                 return;
             }
 //            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
 //            }
         }
-        locationManager.requestLocationUpdates("gps",0,0,locationListener);
+        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
     }
 }
