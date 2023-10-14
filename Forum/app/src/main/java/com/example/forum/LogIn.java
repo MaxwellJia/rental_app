@@ -74,12 +74,15 @@ public class LogIn extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Username doesn't exist!", Toast.LENGTH_SHORT).show();
                     } else {
                         if (enteredPassword.equals(target.password)) {
-                            Intent intent = new Intent(getApplicationContext(), Main_Page.class);
-
-
-
-                            intent.putExtra("username",enteredUsername);
-                            startActivity(intent);
+                            if(target.state==0){
+                                Intent intent = new Intent(getApplicationContext(), Main_Page.class);
+                                intent.putExtra("username",enteredUsername);
+//                                target.state=1;
+//                                databaseReference.setValue(at.toList());
+                                startActivity(intent);
+                            }else {
+                                Toast.makeText(getApplicationContext(), "This account is online in another device!", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "Wrong password! Try again!", Toast.LENGTH_SHORT).show();
 

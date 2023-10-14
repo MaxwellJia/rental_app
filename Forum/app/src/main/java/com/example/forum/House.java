@@ -1,7 +1,7 @@
 package com.example.forum;
 
 public class House {
-    private int id;//key
+    private String id;//key
     private String city;//value[0]
     private String suburb;//value[1]
     private String street;//value[2]
@@ -12,12 +12,12 @@ public class House {
     private String email;//value[7]
     private int likes;//value[8]
 
-    private int height;//Helper to balance AVL tree
-    private House left;
+    public int height;//Helper to balance AVL tree
+    public House left;
 
-    private House right;
+    public House right;
 
-    public House(int id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email, int likes) {
+    public House(String id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email, int likes) {
         this.id = id;
         this.city = city;
         this.suburb = suburb;
@@ -33,11 +33,11 @@ public class House {
         this.likes = likes;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -136,5 +136,7 @@ public class House {
     public void setLikes(int likes) {
         this.likes = likes;
     }
-
+    public String toString(){
+        return id+";"+city+";"+suburb+";$"+price+";B"+xbxb;
+    }
 }

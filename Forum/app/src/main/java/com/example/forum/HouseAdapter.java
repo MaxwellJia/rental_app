@@ -12,13 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> {
 
-    private List<HouseData> houseList;
+    private List<House> houseList;
 
-    public HouseAdapter(List<HouseData> houseList) {
+    public HouseAdapter(List<House> houseList) {
         this.houseList = houseList;
     }
 
@@ -32,19 +33,19 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // 获取当前位置的房源数据
-        HouseData house = houseList.get(position);
+        House house = houseList.get(position);
 
 
         // 将房源数据填充到 house_cardview.xml 中的各个视图中
-        holder.textViewTitle.setText(house.getLocation());
-        holder.textViewDescription.setText(house.getDescription());
+        holder.textViewTitle.setText(house.getSuburb());
+        holder.textViewDescription.setText(house.getCity()+house.getSuburb()+house.getPrice());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 System.out.println(house.getStreet());
                     Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
-                    intent.putExtra("houseData", house);
+                    intent.putExtra("houseData", (Serializable) house);
                     v.getContext().startActivity(intent);
 
             }
