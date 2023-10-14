@@ -37,8 +37,8 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
 
 
         // 将房源数据填充到 house_cardview.xml 中的各个视图中
-        holder.textViewTitle.setText(house.getSuburb());
-        holder.textViewDescription.setText(house.getCity()+house.getSuburb()+house.getPrice());
+        holder.textViewTitle.setText(house.getCity()+" "+house.getSuburb());
+        holder.textViewDescription.setText(house.getStreet()+" "+house.getStreetNumber()+" $"+house.getPrice()+" "+house.getXbxb()+" Bedroom");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

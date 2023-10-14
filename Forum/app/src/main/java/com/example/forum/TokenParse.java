@@ -32,228 +32,121 @@ public class TokenParse {
 
         String[] parts = input.split("\\s+");
 
-        String FindLocation=null;
+        String FindLocation = null;
         for (String part : parts) {
+            // 使用正则表达式检查是否包含字母，如果包含，则将其识别为地点
             if (containsLetters(part)) {
-
-                if (part.matches("(?i)^bel.*$")) {
-                    // 如果输入是字母 bel，则补全成 "Belconnen"
-                    FindLocation="city";
-                } else if (part.matches("(?i)^ac.*$")) {
-                    FindLocation = "Acton";
-                } else if (part.matches("(?i)^ai.*$")) {
-                    FindLocation = "Ainslie";
-                } else if (part.matches("(?i)^am.*$")) {
-                    FindLocation = "Amaroo";
-                } else if (part.matches("(?i)^ar.*$")) {
-                    FindLocation = "Aranda";
-                } else if (part.matches("(?i)^ba.*$")) {
-                    FindLocation = "Banks";
-                } else if (part.matches("(?i)^bar.*$")) {
-                    FindLocation = "Barton";
-                } else if (part.matches("(?i)^bo.*$")) {
-                    FindLocation = "Bonner";
-                } else if (part.matches("(?i)^bon.*$")) {
-                    FindLocation = "Bonner";
-                } else if (part.matches("(?i)^bonn.*$")) {
-                    FindLocation = "Bonner";
-                } else if (part.matches("(?i)^bony.*$")) {
-                    FindLocation = "Bonython";
-                } else if (part.matches("(?i)^br.*$")) {
-                    FindLocation = "Braddon";
-                } else if (part.matches("(?i)^bru.*$")) {
-                    FindLocation = "Bruce";
-                } else if (part.matches("(?i)^cal.*$")) {
-                    FindLocation = "Calwell";
-                } else if (part.matches("(?i)^cam.*$")) {
-                    FindLocation = "Campbell";
-                } else if (part.matches("(?i)^cas.*$")) {
-                    FindLocation = "Casey";
-                } else if (part.matches("(?i)^cha.*$")) {
-                    FindLocation = "Chapman";
-                } else if (part.matches("(?i)^char.*$")) {
-                    FindLocation = "Charnwood";
-                } else if (part.matches("(?i)^chif.*$")) {
-                    FindLocation = "Chifley";
-                } else if (part.matches("(?i)^chis.*$")) {
-                    FindLocation = "Chisholm";
-                } else if (part.matches("(?i)^cit.*$")) {
+                if (part.matches("(?i)^cit.*$")) {
                     FindLocation = "City";
-                } else if (part.matches("(?i)^coo.*$")) {
-                    FindLocation = "Cook";
-                } else if (part.matches("(?i)^coo.*$")) {
-                    FindLocation = "Coombs";
-                } else if (part.matches("(?i)^cra.*$")) {
-                    FindLocation = "Crace";
-                } else if (part.matches("(?i)^cur.*$")) {
-                    FindLocation = "Curtin";
-                } else if (part.matches("(?i)^dea.*$")) {
-                    FindLocation = "Deakin";
-                } else if (part.matches("(?i)^dic.*$")) {
-                    FindLocation = "Dickson";
-                } else if (part.matches("(?i)^dow.*$")) {
-                    FindLocation = "Downer";
-                } else if (part.matches("(?i)^duf.*$")) {
-                    FindLocation = "Duffy";
-                } else if (part.matches("(?i)^dun.*$")) {
-                    FindLocation = "Dunlop";
-                } else if (part.matches("(?i)^eva.*$")) {
-                    FindLocation = "Evatt";
-                } else if (part.matches("(?i)^fad.*$")) {
-                    FindLocation = "Fadden";
-                } else if (part.matches("(?i)^far.*$")) {
-                    FindLocation = "Farrer";
-                } else if (part.matches("(?i)^fis.*$")) {
-                    FindLocation = "Fisher";
-                } else if (part.matches("(?i)^flo.*$")) {
-                    FindLocation = "Florey";
-                } else if (part.matches("(?i)^fly.*$")) {
-                    FindLocation = "Flynn";
-                } else if (part.matches("(?i)^for.*$")) {
-                    FindLocation = "Forde";
-                } else if (part.matches("(?i)^fors.*$")) {
-                    FindLocation = "Forrest";
-                } else if (part.matches("(?i)^fra.*$")) {
-                    FindLocation = "Franklin";
-                } else if (part.matches("(?i)^fras.*$")) {
-                    FindLocation = "Fraser";
-                } else if (part.matches("(?i)^fysh.*$")) {
-                    FindLocation = "Fyshwick";
-                } else if (part.matches("(?i)^gar.*$")) {
-                    FindLocation = "Garran";
-                } else if (part.matches("(?i)^gil.*$")) {
-                    FindLocation = "Gilmore";
-                } else if (part.matches("(?i)^gir.*$")) {
-                    FindLocation = "Giralang";
-                } else if (part.matches("(?i)^gor.*$")) {
-                    FindLocation = "Gordon";
-                } else if (part.matches("(?i)^gow.*$")) {
-                    FindLocation = "Gowrie";
-                } else if (part.matches("(?i)^gre.*$")) {
-                    FindLocation = "Greenway";
-                } else if (part.matches("(?i)^gri.*$")) {
-                    FindLocation = "Griffith";
-                } else if (part.matches("(?i)^gun.*$")) {
-                    FindLocation = "Gungahlin";
-                } else if (part.matches("(?i)^hac.*$")) {
-                    FindLocation = "Hackett";
-                } else if (part.matches("(?i)^har.*$")) {
-                    FindLocation = "Harrison";
-                } else if (part.matches("(?i)^haw.*$")) {
-                    FindLocation = "Hawker";
-                } else if (part.matches("(?i)^hig.*$")) {
-                    FindLocation = "Higgins";
-                } else if (part.matches("(?i)^hol.*$")) {
-                    FindLocation = "Holder";
-                } else if (part.matches("(?i)^holt.*$")) {
-                    FindLocation = "Holt";
-                } else if (part.matches("(?i)^hug.*$")) {
-                    FindLocation = "Hughes";
-                } else if (part.matches("(?i)^hum.*$")) {
-                    FindLocation = "Hume";
-                } else if (part.matches("(?i)^isa.*$")) {
-                    FindLocation = "Isaacs";
-                } else if (part.matches("(?i)^isa.*$")) {
-                    FindLocation = "Isabella Plains";
-                } else if (part.matches("(?i)^jac.*$")) {
-                    FindLocation = "Jacka";
-                } else if (part.matches("(?i)^kal.*$")) {
-                    FindLocation = "Kaleen";
-                } else if (part.matches("(?i)^kam.*$")) {
-                    FindLocation = "Kambah";
                 } else if (part.matches("(?i)^kin.*$")) {
                     FindLocation = "Kingston";
-                } else if (part.matches("(?i)^lat.*$")) {
-                    FindLocation = "Latham";
-                } else if (part.matches("(?i)^law.*$")) {
-                    FindLocation = "Lawson";
-                } else if (part.matches("(?i)^lyn.*$")) {
-                    FindLocation = "Lyneham";
-                } else if (part.matches("(?i)^lyo.*$")) {
-                    FindLocation = "Lyons";
-                } else if (part.matches("(?i)^mac.*$")) {
-                    FindLocation = "Macarthur";
-                } else if (part.matches("(?i)^macg.*$")) {
-                    FindLocation = "Macgregor";
-                } else if (part.matches("(?i)^macq.*$")) {
-                    FindLocation = "Macquarie";
-                } else if (part.matches("(?i)^maw.*$")) {
-                    FindLocation = "Mawson";
-                } else if (part.matches("(?i)^mcke.*$")) {
-                    FindLocation = "McKellar";
-                } else if (part.matches("(?i)^mel.*$")) {
-                    FindLocation = "Melba";
-                } else if (part.matches("(?i)^mitc.*$")) {
-                    FindLocation = "Mitchell";
-                } else if (part.matches("(?i)^mon.*$")) {
-                    FindLocation = "Monash";
-                } else if (part.matches("(?i)^narr.*$")) {
-                    FindLocation = "Narrabundah";
-                } else if (part.matches("(?i)^ngu.*$")) {
-                    FindLocation = "Ngunnawal";
-                } else if (part.matches("(?i)^nic.*$")) {
-                    FindLocation = "Nicholls";
-                } else if (part.matches("(?i)^o'c.*$")) {
-                    FindLocation = "O'Connor";
-                } else if (part.matches("(?i)^o'm.*$")) {
-                    FindLocation = "O'Malley";
-                } else if (part.matches("(?i)^ox.*$")) {
-                    FindLocation = "Oxley";
-                } else if (part.matches("(?i)^pa.*$")) {
-                    FindLocation = "Page";
-                } else if (part.matches("(?i)^pal.*$")) {
-                    FindLocation = "Palmerston";
-                } else if (part.matches("(?i)^pea.*$")) {
-                    FindLocation = "Pearce";
-                } else if (part.matches("(?i)^phi.*$")) {
-                    FindLocation = "Phillip";
-                } else if (part.matches("(?i)^red.*$")) {
-                    FindLocation = "Red Hill";
-                } else if (part.matches("(?i)^rei.*$")) {
-                    FindLocation = "Reid";
-                } else if (part.matches("(?i)^ric.*$")) {
-                    FindLocation = "Richardson";
-                } else if (part.matches("(?i)^riv.*$")) {
-                    FindLocation = "Rivett";
-                } else if (part.matches("(?i)^scu.*$")) {
-                    FindLocation = "Scullin";
-                } else if (part.matches("(?i)^spe.*$")) {
-                    FindLocation = "Spence";
-                } else if (part.matches("(?i)^sti.*$")) {
-                    FindLocation = "Stirling";
-                } else if (part.matches("(?i)^swi.*$")) {
-                    FindLocation = "Swinger Hill";
-                } else if (part.matches("(?i)^sym.*$")) {
-                    FindLocation = "Symonston";
-                } else if (part.matches("(?i)^tha.*$")) {
-                    FindLocation = "Tharwa";
-                } else if (part.matches("(?i)^the.*$")) {
-                    FindLocation = "Theodore";
-                } else if (part.matches("(?i)^tor.*$")) {
-                    FindLocation = "Torrens";
-                } else if (part.matches("(?i)^tur.*$")) {
-                    FindLocation = "Turner";
-                } else if (part.matches("(?i)^wan.*$")) {
-                    FindLocation = "Wanniassa";
-                } else if (part.matches("(?i)^war.*$")) {
-                    FindLocation = "Waramanga";
-                } else if (part.matches("(?i)^wat.*$")) {
-                    FindLocation = "Watson";
-                } else if (part.matches("(?i)^wee.*$")) {
-                    FindLocation = "Weetangera";
-                } else if (part.matches("(?i)^wes.*$")) {
-                    FindLocation = "Weston";
-                } else if (part.matches("(?i)^west.*$")) {
-                    FindLocation = "Weston Creek";
-                } else if (part.matches("(?i)^wri.*$")) {
-                    FindLocation = "Wright";
+                } else if (part.matches("(?i)^bra.*$")) {
+                    FindLocation = "Braddon";
+                } else if (part.matches("(?i)^bar.*$")) {
+                    FindLocation = "Barton";
+                } else if (part.matches("(?i)^dea.*$")) {
+                    FindLocation = "Deakin";
                 } else if (part.matches("(?i)^yar.*$")) {
                     FindLocation = "Yarralumla";
+                } else if (part.matches("(?i)^rei.*$")) {
+                    FindLocation = "Reid";
+                } else if (part.matches("(?i)^act.*$")) {
+                    FindLocation = "Acton";
+                } else if (part.matches("(?i)^cent.*$")) {
+                    FindLocation = "Central";
+                } else if (part.matches("(?i)^bon.*$")) {
+                    FindLocation = "Bondi";
+                } else if (part.matches("(?i)^darl.*$")) {
+                    FindLocation = "Darlinghurst";
+                } else if (part.matches("(?i)^pad.*$")) {
+                    FindLocation = "Paddington";
+                } else if (part.matches("(?i)^chip.*$")) {
+                    FindLocation = "Chippendale";
+                } else if (part.matches("(?i)^py.*$")) {
+                    FindLocation = "Pyrmont";
+                } else if (part.matches("(?i)^sur.*$")) {
+                    FindLocation = "Surry Hills";
+                } else if (part.matches("(?i)^red.*$")) {
+                    FindLocation = "Redfern";
+                } else if (part.matches("(?i)^ric.*$")) {
+                    FindLocation = "Richmond";
+                } else if (part.matches("(?i)^sou.*$")) {
+                    FindLocation = "Southbank";
+                } else if (part.matches("(?i)^car.*$")) {
+                    FindLocation = "Carlton";
+                } else if (part.matches("(?i)^fit.*$")) {
+                    FindLocation = "Fitzroy";
+                } else if (part.matches("(?i)^st.*$")) {
+                    FindLocation = "St Kilda";
+                } else if (part.matches("(?i)^doc.*$")) {
+                    FindLocation = "Docklands";
+                } else if (part.matches("(?i)^fort.*$")) {
+                    FindLocation = "Fortitude Valley";
+                } else if (part.matches("(?i)^nor.*$")) {
+                    FindLocation = "North Adelaide";
+                } else if (part.matches("(?i)^gle.*$")) {
+                    FindLocation = "Glenelg";
+                } else if (part.matches("(?i)^norw.*$")) {
+                    FindLocation = "Norwood";
+                } else if (part.matches("(?i)^por.*$")) {
+                    FindLocation = "Port Adelaide";
+                } else if (part.matches("(?i)^pro.*$")) {
+                    FindLocation = "Prospect";
+                } else if (part.matches("(?i)^un.*$")) {
+                    FindLocation = "Unley";
+                } else if (part.matches("(?i)^fre.*$")) {
+                    FindLocation = "Fremantle";
+                } else if (part.matches("(?i)^sca.*$")) {
+                    FindLocation = "Scarborough";
+                } else if (part.matches("(?i)^sub.*$")) {
+                    FindLocation = "Subiaco";
+                } else if (part.matches("(?i)^cot.*$")) {
+                    FindLocation = "Cottesloe";
+                } else if (part.matches("(?i)^cla.*$")) {
+                    FindLocation = "Claremont";
+                } else if (part.matches("(?i)^joo.*$")) {
+                    FindLocation = "Joondalup";
+                } else if (part.matches("(?i)^dar.*$")) {
+                    FindLocation = "Darwin City";
+                } else if (part.matches("(?i)^par.*$")) {
+                    FindLocation = "Parap";
+                } else if (part.matches("(?i)^nig.*$")) {
+                    FindLocation = "Nightcliff";
+                } else if (part.matches("(?i)^fan.*$")) {
+                    FindLocation = "Fannie Bay";
+                } else if (part.matches("(?i)^lu.*$")) {
+                    FindLocation = "Ludmilla";
+                } else if (part.matches("(?i)^st.*$")) {
+                    FindLocation = "Stuart Park";
+                } else if (part.matches("(?i)^hob.*$")) {
+                    FindLocation = "Hobart CBD";
+                } else if (part.matches("(?i)^bat.*$")) {
+                    FindLocation = "Battery Point";
+                } else if (part.matches("(?i)^san.*$")) {
+                    FindLocation = "Sandy Bay";
+                } else if (part.matches("(?i)^north.*$")) {
+                    FindLocation = "North Hobart";
+                } else if (part.matches("(?i)^wes.*$")) {
+                    FindLocation = "West Hobart";
+                } else if (part.matches("(?i)^sou.*$")) {
+                    FindLocation = "South Hobart";
+                } else if (part.matches("(?i)^surf.*$")) {
+                    FindLocation = "Surfers Paradise";
+                } else if (part.matches("(?i)^bro.*$")) {
+                    FindLocation = "Broadbeach";
+                } else if (part.matches("(?i)^bur.*$")) {
+                    FindLocation = "Burleigh Heads";
+                } else if (part.matches("(?i)^coo.*$")) {
+                    FindLocation = "Coolangatta";
+                } else if (part.matches("(?i)^south.*$")) {
+                    FindLocation = "Southport";
+                } else if (part.matches("(?i)^rob.*$")) {
+                    FindLocation = "Robina";
                 }
             }
         }
 
-        return FindLocation ;
+        return FindLocation;
     }
 
     private boolean containsLetters(String input) {

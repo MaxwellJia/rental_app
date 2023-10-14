@@ -270,6 +270,8 @@ import com.example.forum.HouseData;
 import com.example.forum.HouseTree;
 import com.example.forum.House_Detail_Page;
 import android.Manifest;
+import android.widget.Toast;
+
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
@@ -357,11 +359,51 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         };
+
+        FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+
+        databaseReference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
+                        String[] property=item.split(";");
+                            // Set the data houselist
+                            houseList.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
+                                    Integer.parseInt(property[6]),Integer.parseInt(property[7]),property[8],
+                                    Integer.parseInt(property[9])));
+
+
+                    }
+                    adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+
+        System.out.println(houseList);
+
         Button start=binding.btnLocationStart;
         start.setOnClickListener(v->{
             applayUpdate();
         });
+
         Button searchNearby=binding.btnNearby;
+
+
+
         searchNearby.setOnClickListener(v -> {
 // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -375,20 +417,27 @@ public class HomeFragment extends Fragment {
 
 
                     if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                        List<House> houseListNearBy =new ArrayList<>() ;
 
-                        houseList.clear();
+
                         for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                             String item = ""+itemSnapshot.getKey()+";"+itemSnapshot.getValue(String.class);
                             String[] property=item.split(";");
                             if(property[2].equals(textview.getText().toString())){
                                 // Set the data houselist
-                                houseList.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
+                                houseListNearBy.add(new House(property[0],property[1],property[2],property[3],property[4],property[5],
                                         Integer.parseInt(property[6]),Integer.parseInt(property[7]),property[8],
                                         Integer.parseInt(property[9])));
                             }
 
                         }
-                        adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+                        if(houseListNearBy.size()<3){
+                            Toast.makeText(requireContext(), "Please Search Other Location To Get More", Toast.LENGTH_SHORT).show();
+                        }else{
+                            houseList.clear();
+                            houseList=houseListNearBy;
+                            adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+                        }
 
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
@@ -424,12 +473,12 @@ public class HomeFragment extends Fragment {
                 if (!query.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerViewhouse.setVisibility(View.GONE);
-//                    textview.setVisibility(View.GONE);
+                    textview.setVisibility(View.GONE);
 
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     recyclerViewhouse.setVisibility(View.VISIBLE);
-//                    textview.setVisibility(View.VISIBLE);
+                    textview.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -454,18 +503,23 @@ public class HomeFragment extends Fragment {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 String item = dataList.get(position);
-                ((TextView) holder.itemView).setText(item);
+                String[] recycleshow = item.split(";");
+                House searchHouse=new House(recycleshow[0],recycleshow[1],recycleshow[2],recycleshow[3],recycleshow[4],recycleshow[5],Integer.parseInt(recycleshow[6]),Integer.parseInt(recycleshow[7]),recycleshow[8],Integer.parseInt(recycleshow[9]));
+
+                ((TextView) holder.itemView).setText(searchHouse.getSuburb()+" "+searchHouse.getStreet()+" $"+searchHouse.getPrice()+" "+searchHouse.getXbxb()+" Bedroom");
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Handle item click
                         String selectedItem = dataList.get(position);
                         // Depending on the item clicked, you can navigate to a different activity and pass data
-                        String[] pass = selectedItem.split(" ");
+                        String[] recycleshow = item.split(";");
+                        House searchHouse=new House(recycleshow[0],recycleshow[1],recycleshow[2],recycleshow[3],recycleshow[4],recycleshow[5],Integer.parseInt(recycleshow[6]),Integer.parseInt(recycleshow[7]),recycleshow[8],Integer.parseInt(recycleshow[9]));
+
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
-                        House houseToPass = houseList.get(position);
-                        intent.putExtra("houseData", (Serializable) houseToPass);
+
+                        intent.putExtra("house", (Serializable) searchHouse);
                         v.getContext().startActivity(intent);
                     }
                 });
@@ -526,8 +580,8 @@ public class HomeFragment extends Fragment {
                 dataList=new ArrayList<>();
                 //把House类型的List转化为String List的显示结果
                 for(House house:filteredDataList){
-                    dataList.add("$"+house.getPrice());
-                    System.out.println(house.toString());
+                    dataList.add(house.getId()+";"+house.getCity()+";"+house.getSuburb()+";"+house.getStreet()+";"+house.getStreetNumber()+";"+house.getUnit()+";"+house.getPrice()+";"+house.getXbxb()+";"+house.getEmail()+";"+house.getLikes()+";");
+//                    System.out.println(house.toString());
                 }
 
                 adapter.notifyDataSetChanged();
