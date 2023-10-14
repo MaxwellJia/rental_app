@@ -42,6 +42,36 @@ public class House_Detail_Page extends AppCompatActivity {
         }
 
 
+//        // pull this users url from firebase
+//        public void pullRecommandFromFirebase(Users user){
+//            // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+//            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+//            // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+//            DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
+//            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if (snapshot.exists()) {
+//                        List<String> URLs = new ArrayList<>();
+//
+//                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+//                            String item = itemSnapshot.getValue(String.class);
+//                            URLs.add(item);
+//                        }
+//
+//                        user.links = URLs;
+//                    }
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    // Failed to retrieve the data
+//                    System.err.println("Failed to retrieve data, error: " + error.toException());
+//                }
+//            });
+//        }
+
+
+
 
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setImageResource(R.raw.sydneyopera0);
