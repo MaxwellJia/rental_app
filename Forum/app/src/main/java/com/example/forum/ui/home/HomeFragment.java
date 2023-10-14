@@ -435,7 +435,11 @@ public class HomeFragment extends Fragment {
                             Toast.makeText(requireContext(), "Please Search Other Location To Get More", Toast.LENGTH_SHORT).show();
                         }else{
                             houseList.clear();
-                            houseList=houseListNearBy;
+                            for(House h:houseListNearBy)
+                            {
+                                houseList.add(h);
+                            }
+
                             adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
                         }
 
@@ -565,9 +569,10 @@ public class HomeFragment extends Fragment {
                             temp.add(h);
                         }
                     }
+                    filteredDataList=temp;
+                    temp=new ArrayList<>();
                 }
-                filteredDataList=temp;
-                temp=new ArrayList<>();
+
 
                 //房子大小
                 if(tp.getBedrooms()!=0){
@@ -576,6 +581,7 @@ public class HomeFragment extends Fragment {
                             temp.add(h);
                         }
                     }
+                    filteredDataList=temp;
                 }
                 dataList=new ArrayList<>();
                 //把House类型的List转化为String List的显示结果

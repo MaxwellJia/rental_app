@@ -1,4 +1,4 @@
-# Instructions
+-# Instructions
 - One member of your group should `fork` this repository, add all the members to the repository and set it as private.
   > The forked repository will be where you continuously update your progress, and
   submit the major part of the project to.
