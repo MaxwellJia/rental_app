@@ -112,12 +112,21 @@ public class House_Detail_Page extends AppCompatActivity {
                             String value = itemSnapshot.getValue(String.class);
 
                             // Check to ensure the value is not null and has enough characters to safely perform substring
-                            if (value != null && value.length() >= 3) {
-                                int valueSize = value.length();
-                                value = value.substring(0, valueSize - 3) + ";" + likes + ";";
+                            if (value != null) {
+                                String[] valueList = value.split(";");
+                                String newValue = "";
 
-                                // Here we should update the value in the database, using DatabaseReference
-                                itemSnapshot.getRef().setValue(value);
+                                for (int i =0;i< valueList.length;i++){
+                                    if (i != valueList.length-1){
+                                        newValue = newValue + valueList[i] + ";";
+                                    }else {
+                                        newValue = newValue + likes + ";";
+                                    }
+
+                                }
+
+                                //Here we should update the value in the database, using DatabaseReference
+                                itemSnapshot.getRef().setValue(newValue);
                             }
                         }
                     }
