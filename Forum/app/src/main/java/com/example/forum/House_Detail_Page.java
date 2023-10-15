@@ -74,6 +74,7 @@ public class House_Detail_Page extends AppCompatActivity {
         buttonLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(House_Detail_Page.this,"Like + 1",Toast.LENGTH_LONG).show();
                 String newLikes = String.valueOf(Integer.parseInt(likes)+1);
                 likes = newLikes;
                 textView6.setText(newLikes);
@@ -127,6 +128,7 @@ public class House_Detail_Page extends AppCompatActivity {
 
                                 //Here we should update the value in the database, using DatabaseReference
                                 itemSnapshot.getRef().setValue(newValue);
+
                             }
                         }
                     }
