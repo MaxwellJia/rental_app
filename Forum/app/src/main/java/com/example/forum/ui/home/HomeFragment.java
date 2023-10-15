@@ -309,7 +309,7 @@ public class HomeFragment extends Fragment {
     String district;
     HouseAdapter adapter1;
     private Handler handler = new Handler();
-    private final int INTERVAL = 10000; // 10 seconds in milliseconds
+    private final int INTERVAL = 30000; // 30 seconds in milliseconds
     private boolean fetchingData = false;
 
     @Override
@@ -596,7 +596,7 @@ public class HomeFragment extends Fragment {
             // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
             DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
             houseList.clear();
-            databaseReference1.addValueEventListener(new ValueEventListener() {
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
