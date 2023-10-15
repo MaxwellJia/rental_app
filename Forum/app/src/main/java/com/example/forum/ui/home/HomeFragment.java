@@ -289,6 +289,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -404,6 +405,7 @@ public class HomeFragment extends Fragment {
                             }
 
                         }
+                        houseListNearBy.sort(Comparator.comparingInt(House::getLikes).reversed());
                         if (houseListNearBy.size() < 3) {
                             Toast.makeText(requireContext(), "Please Search Other Location To Get More", Toast.LENGTH_SHORT).show();
                         } else {
@@ -516,6 +518,8 @@ public class HomeFragment extends Fragment {
             }
 
             //根据token搜索
+
+            //根据token搜索
             public void applySearch(View view) {
                 loadData();
                 //最后展示的结果List
@@ -531,35 +535,40 @@ public class HomeFragment extends Fragment {
 //                    filteredDataList = new ArrayList<>(dataList);
 //                }
                 //价格
-                if (tp.getpriceRange().size() != 0) {
+                if (tp.getpriceRange()!=null) {
                     filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
                 } else {
                     filteredDataList = houseTree.toList();
                 }
-                //suburb
-                if (tp.getLocation() != null) {
-                    for (House h : filteredDataList) {
-                        if (h.getSuburb().equals(tp.getLocation())) {
-                            temp.add(h);
+                boolean validSuburb = tp.getLocation() != null;
+                boolean validBed = tp.getBedrooms() != 0;
+                if (validBed && validSuburb) {
+                    for (House house : filteredDataList) {
+                        if (house.getXbxb() == tp.getBedrooms() && house.getSuburb().equals(tp.getLocation())) {
+                            temp.add(house);
                         }
                     }
-                    filteredDataList = temp;
-                    temp = new ArrayList<>();
-                }
-
-
-                //房子大小
-                if (tp.getBedrooms() != 0) {
-                    for (House h : filteredDataList) {
-                        if (h.getXbxb() == tp.getBedrooms()) {
-                            temp.add(h);
+                } else if (!validBed && validSuburb) {
+                    for (House house : filteredDataList) {
+                        if (house.getSuburb().equals(tp.getLocation())) {
+                            temp.add(house);
                         }
                     }
-                    filteredDataList = temp;
+                } else if (validBed && !validSuburb) {
+                    for (House house : filteredDataList) {
+                        if (house.getXbxb() == tp.getBedrooms()) {
+                            temp.add(house);
+                        }
+                    }
+                } else {
+                    for (House house : filteredDataList) {
+                        temp.add(house);
+                    }
                 }
+                temp.sort(Comparator.comparingInt(House::getLikes).reversed());
                 dataList = new ArrayList<>();
                 //把House类型的List转化为String List的显示结果
-                for (House house : filteredDataList) {
+                for (House house : temp) {
                     dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
 //                    System.out.println(house.toString());
                 }
@@ -567,6 +576,7 @@ public class HomeFragment extends Fragment {
                 adapter.notifyDataSetChanged();
 
             }
+
         });
 
         recyclerView.setAdapter(adapter);
@@ -611,6 +621,8 @@ public class HomeFragment extends Fragment {
 
 
                         }
+                        houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+
 // After data fetch is complete, reset the flag and schedule the next task
                         fetchingData = false;
                         handler.postDelayed(new Runnable() {
@@ -620,7 +632,7 @@ public class HomeFragment extends Fragment {
                             }
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-                        Toast.makeText(getActivity(), "Loaded", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
 
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
