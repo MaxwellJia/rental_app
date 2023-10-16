@@ -1,225 +1,3 @@
-//package com.example.forum.ui.home;
-//import android.view.View;
-//import android.annotation.SuppressLint;
-//import android.os.Bundle;
-//import android.text.Editable;
-//import android.text.TextWatcher;
-//import android.view.LayoutInflater;
-//import android.view.ViewGroup;
-//import android.widget.ArrayAdapter;
-//import android.widget.Filter;
-//import android.widget.MultiAutoCompleteTextView;
-//import android.widget.TextView;
-//
-//import androidx.annotation.NonNull;
-//import androidx.fragment.app.Fragment;
-//import androidx.lifecycle.ViewModelProvider;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import com.example.forum.R;
-//import com.example.forum.databinding.FragmentHomeBinding;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class HomeFragment extends Fragment {
-//    private RecyclerView recyclerView;
-//    private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
-//    private List<String> dataList = new ArrayList<>();
-//    private List<String> filteredDataList;
-//    private ArrayAdapter<String> arrayAdapter;
-//    private MultiAutoCompleteTextView multiAutoCompleteTextView;
-//    private int lastVisibleItemPosition = 0;
-//
-//    private FragmentHomeBinding binding;
-//
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-//
-//        binding = FragmentHomeBinding.inflate(inflater, container, false);
-//        View root = binding.getRoot();
-//
-//        final TextView textView = binding.textHome;
-//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-//        loadData();
-//
-//        recyclerView = binding.recyclerView;
-//        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-//
-//        adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-//            @NonNull
-//            @Override
-//            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-//                return new RecyclerView.ViewHolder(view) {};
-//            }
-//
-//            @Override
-//            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//                String item = dataList.get(position);
-//                ((TextView) holder.itemView).setText(item);
-//            }
-//
-//            @Override
-//            public int getItemCount() {
-//                return dataList.size();
-//            }
-//        };
-//        recyclerView.setAdapter(adapter);
-//        boolean isLoading = false;
-//
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-//                if (lastVisibleItemPosition == dataList.size() - 2) {
-//                    loadMoreData();
-//                }
-//            }
-//        });
-//
-//        fillAuto();
-//
-//        return root;
-//    }
-//
-//    private void loadData() {
-//        // 添加一些示例数据
-//        dataList.add("Item 1 800");
-//        dataList.add("Item 2 700");
-//        dataList.add("Item 3");
-//        dataList.add("Item 4");
-//        dataList.add("Item 5");
-//        dataList.add("Item 1");
-//        dataList.add("Item 2");
-//        dataList.add("Item 3");
-//        dataList.add("Item 4");
-//        dataList.add("Item 5");
-//        dataList.add("Item 1");
-//        dataList.add("Item 2");
-//        dataList.add("Item 3");
-//        dataList.add("Item 4");
-//        dataList.add("Item 5");
-//        dataList.add("Item 1");
-//        dataList.add("Item 2");
-//        dataList.add("Item 3");
-//        dataList.add("Item 4");
-//        dataList.add("Item 5");
-//        dataList.add("Item 1");
-//        dataList.add("Item 2");
-//        dataList.add("Item 3");
-//        dataList.add("Item 4");
-//        dataList.add("Item 5");
-//        dataList.add("Bruce");
-//    }
-//
-//    private void loadMoreData() {
-//        int nextPageStartIndex = dataList.size();
-//        for (int i = nextPageStartIndex; i < nextPageStartIndex + 5; i++) {
-//            dataList.add("Item " + (i + 1));
-//        }
-//        adapter.notifyDataSetChanged();
-//    }
-//
-//    public void fillAuto() {
-//        multiAutoCompleteTextView = binding.inputSearch;
-//        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, dataList);
-//        multiAutoCompleteTextView.setAdapter(arrayAdapter);
-//
-//        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
-//            @Override
-//            public int findTokenStart(CharSequence text, int cursor) {
-//                return 0;
-//            }
-//
-//            @Override
-//            public int findTokenEnd(CharSequence text, int cursor) {
-//                return text.length();
-//            }
-//
-//            @Override
-//            public CharSequence terminateToken(CharSequence text) {
-//                return text;
-//            }
-//        });
-//
-//        multiAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                showContentIfEmpty();
-//                arrayAdapter.getFilter().filter(s, new Filter.FilterListener() {
-//                    @Override
-//                    public void onFilterComplete(int count) {
-//                        recyclerView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
-//    }
-//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//        String item = filteredDataList.get(position);
-//        ((TextView) holder.itemView).setText(item);
-//    }
-//
-//    public int getItemCount() {
-//        return filteredDataList.size();
-//    }
-//    @SuppressLint("NotifyDataSetChanged")
-//    @SuppressWarnings("unused")
-//    public void applySearch(View view) {
-//        dataList.clear();
-//        loadData();
-//        filteredDataList = new ArrayList<>(dataList);
-//
-//        String query = multiAutoCompleteTextView.getText().toString().trim();
-//
-//        if (query.isEmpty()) {
-//            filteredDataList = new ArrayList<>(dataList);
-//        } else {
-//            filteredDataList = new ArrayList<>();
-//            for (String item : dataList) {
-//                if (item.toLowerCase().contains(query.toLowerCase())) {
-//                    filteredDataList.add(item);
-//                }
-//            }
-//        }
-//        dataList = filteredDataList;
-//        adapter.notifyDataSetChanged();
-//
-//    }
-//
-//
-//
-//    @SuppressLint("NotifyDataSetChanged")
-//    public void showContentIfEmpty(){
-//        multiAutoCompleteTextView = binding.inputSearch;
-//        String query = multiAutoCompleteTextView.getText().toString().trim();
-//        if (query.isEmpty()) {
-//            dataList.clear();
-//            loadData();
-//            adapter.notifyDataSetChanged();
-//        }
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
-//}
-
 package com.example.forum.ui.home;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -298,6 +76,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();//初始全部房源
     private List<House> filteredDataList;//搜索后符合条件的房子
+
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
     private int lastVisibleItemPosition = 0;
@@ -434,11 +213,13 @@ public class HomeFragment extends Fragment {
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        loadData();
         recyclerView.setVisibility(View.GONE);
 
         editText = binding.inputSearch;
+        loadData();
+
         arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, dataList);
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -467,9 +248,11 @@ public class HomeFragment extends Fragment {
                 if (s.length() == 0 && recyclerView.getVisibility() == View.VISIBLE) {
                     recyclerView.setVisibility(View.GONE);
                 }
+                showContentIfChanged(s.toString()); // 传递当前文本内容以检查是否有变化
             }
         });
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @NonNull
             @Override
@@ -480,7 +263,8 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
                 String item = dataList.get(position);
                 String[] recycleshow = item.split(";");
                 House searchHouse = new House(recycleshow[0], recycleshow[1], recycleshow[2], recycleshow[3], recycleshow[4], recycleshow[5], Integer.parseInt(recycleshow[6]), Integer.parseInt(recycleshow[7]), recycleshow[8], Integer.parseInt(recycleshow[9]));
@@ -492,13 +276,13 @@ public class HomeFragment extends Fragment {
                         // Handle item click
                         String selectedItem = dataList.get(position);
                         // Depending on the item clicked, you can navigate to a different activity and pass data
-                        String[] recycleshow = item.split(";");
+                        String[] recycleshow = selectedItem.split(";");
                         House searchHouse = new House(recycleshow[0], recycleshow[1], recycleshow[2], recycleshow[3], recycleshow[4], recycleshow[5], Integer.parseInt(recycleshow[6]), Integer.parseInt(recycleshow[7]), recycleshow[8], Integer.parseInt(recycleshow[9]));
 
                         Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                         // Add data to the intent
 
-                        intent.putExtra("house", (Serializable) searchHouse);
+                        intent.putExtra("houseData", (Serializable) searchHouse);
                         v.getContext().startActivity(intent);
                     }
                 });
@@ -509,6 +293,7 @@ public class HomeFragment extends Fragment {
                 return dataList.size();
             }
         };
+        recyclerView.setAdapter(adapter);
 
         Button searchButton = binding.buttonSearch;
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -521,77 +306,71 @@ public class HomeFragment extends Fragment {
 
             //根据token搜索
             public void applySearch(View view) {
-                loadData();
-                //最后展示的结果List
-                filteredDataList = new ArrayList<>();
-                //temp是一个暂时存储每次提取出来的房子
-                List<House> temp = new ArrayList<>();
-                String query = editText.getText().toString().trim();
-                TokenParse tp = new TokenParse(query);
-                //转换成AVL树
-                AVLTreeFactory avlTreeFactory = AVLTreeFactory.getInstance();
-                HouseTree houseTree = avlTreeFactory.houseTreeCreator(dataList);
+                if(!dataList.isEmpty()){
+                    //最后展示的结果List
+                    filteredDataList = new ArrayList<>();
+                    //temp是一个暂时存储每次提取出来的房子
+                    List<House> temp = new ArrayList<>();
+                    String query = editText.getText().toString().trim();
+                    TokenParse tp = new TokenParse(query);
+                    //转换成AVL树
+                    AVLTreeFactory avlTreeFactory = AVLTreeFactory.getInstance();
+                    HouseTree houseTree = avlTreeFactory.houseTreeCreator(dataList);
 //                if (query.isEmpty()) {
 //                    filteredDataList = new ArrayList<>(dataList);
 //                }
-                //价格
-                if (tp.getpriceRange()!=null) {
-                    filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
-                } else {
-                    filteredDataList = houseTree.toList();
-                }
-                boolean validSuburb = tp.getLocation() != null;
-                boolean validBed = tp.getBedrooms() != 0;
-                if (validBed && validSuburb) {
-                    for (House house : filteredDataList) {
-                        if (house.getXbxb() == tp.getBedrooms() && house.getSuburb().equals(tp.getLocation())) {
+                    //价格
+                    if (tp.getpriceRange()!=null) {
+                        filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
+                    } else {
+                        filteredDataList = houseTree.toList();
+                    }
+                    boolean validSuburb = tp.getLocation() != null;
+                    boolean validBed = tp.getBedrooms() != 0;
+                    if (validBed && validSuburb) {
+                        for (House house : filteredDataList) {
+                            if (house.getXbxb() == tp.getBedrooms() && house.getSuburb().equals(tp.getLocation())) {
+                                temp.add(house);
+                            }
+                        }
+                    } else if (!validBed && validSuburb) {
+                        for (House house : filteredDataList) {
+                            if (house.getSuburb().equals(tp.getLocation())) {
+                                temp.add(house);
+                            }
+                        }
+                    } else if (validBed && !validSuburb) {
+                        for (House house : filteredDataList) {
+                            if (house.getXbxb() == tp.getBedrooms()) {
+                                temp.add(house);
+                            }
+                        }
+                    } else {
+                        for (House house : filteredDataList) {
                             temp.add(house);
                         }
                     }
-                } else if (!validBed && validSuburb) {
-                    for (House house : filteredDataList) {
-                        if (house.getSuburb().equals(tp.getLocation())) {
-                            temp.add(house);
-                        }
-                    }
-                } else if (validBed && !validSuburb) {
-                    for (House house : filteredDataList) {
-                        if (house.getXbxb() == tp.getBedrooms()) {
-                            temp.add(house);
-                        }
-                    }
-                } else {
-                    for (House house : filteredDataList) {
-                        temp.add(house);
-                    }
-                }
-                temp.sort(Comparator.comparingInt(House::getLikes).reversed());
-                dataList = new ArrayList<>();
-                //把House类型的List转化为String List的显示结果
-                for (House house : temp) {
-                    dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
+                    temp.sort(Comparator.comparingInt(House::getLikes).reversed());
+                    //把House类型的List转化为String List的显示结果
+                    dataList=new ArrayList<>();
+
+                    for (House house : temp) {
+                        System.out.println(house);
+                        dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
 //                    System.out.println(house.toString());
+                        System.out.println(dataList);
+                    }
+
+                    Toast.makeText(requireContext(), "Find "+dataList.size()+" Place", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                    Log.d("Debug", "Adapter notified of data change");
                 }
-
-                adapter.notifyDataSetChanged();
-
             }
 
         });
 
-        recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition == dataList.size() - 2) {
-                    loadMoreData();
-                }
-            }
-        });
+
 
         return root;
     }
@@ -663,6 +442,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    dataList.clear();
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
                         dataList.add(item);
@@ -681,19 +461,23 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void loadMoreData() {
-        int nextPageStartIndex = dataList.size();
-        for (int i = nextPageStartIndex; i < nextPageStartIndex + 5; i++) {
-            dataList.add("More place to explore");
-        }
-        adapter.notifyDataSetChanged();
-    }
+
 
 
     @SuppressLint("NotifyDataSetChanged")
     public void showContentIfEmpty() {
         String query = editText.getText().toString().trim();
         if (query.isEmpty()) {
+            dataList.clear();
+            loadData();
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void showContentIfChanged(String newText) {
+        String query = editText.getText().toString().trim();
+        if (!newText.equals(query)) {
+            // 当文本发生变化时执行加载数据的操作
             dataList.clear();
             loadData();
             adapter.notifyDataSetChanged();
