@@ -70,6 +70,7 @@ public class House_Detail_Page extends AppCompatActivity {
         TextView textView6 = findViewById(R.id.textView6);
         textView6.setText(likes);
 
+        // likes button
         Button buttonLikes = findViewById(R.id.buttonLikes);
         buttonLikes.setOnClickListener(new View.OnClickListener() {
             @Override
