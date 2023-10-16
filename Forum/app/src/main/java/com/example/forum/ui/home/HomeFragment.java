@@ -226,7 +226,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int starts, int before, int count) {
                 showContentIfEmpty();
                 String query = s.toString();
 
@@ -234,11 +234,15 @@ public class HomeFragment extends Fragment {
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerViewhouse.setVisibility(View.GONE);
                     textview.setVisibility(View.GONE);
+                    searchNearby.setVisibility(View.GONE);
+                    start.setVisibility(View.GONE);
 
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     recyclerViewhouse.setVisibility(View.VISIBLE);
                     textview.setVisibility(View.VISIBLE);
+                    searchNearby.setVisibility(View.VISIBLE);
+                    start.setVisibility(View.VISIBLE);
 
                 }
             }
