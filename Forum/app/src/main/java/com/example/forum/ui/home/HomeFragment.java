@@ -68,6 +68,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewhouse;
     private List<House> houseList = new ArrayList<>();
     private TextView textview;
+    private TextView textViewforamount;
+
     LocationManager locationManager;
     LocationListener locationListener;
     private FragmentHomeBinding binding;
@@ -99,6 +101,10 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse.setVisibility(View.VISIBLE);
         // 初始化数据列表
         textview = root.findViewById(R.id.textViewMap);
+
+
+
+
         locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -176,10 +182,13 @@ public class HomeFragment extends Fragment {
                             houseList.clear();
                             for (House h : houseListNearBy) {
                                 houseList.add(h);
+
                             }
 
                             adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
                         }
+
+
 
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
@@ -204,6 +213,9 @@ public class HomeFragment extends Fragment {
         loadData();
 
         arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, dataList);
+
+
+
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -399,7 +411,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        textViewforamount = root.findViewById(R.id.HouseAmount);
         return root;
     }
 
@@ -440,6 +452,7 @@ public class HomeFragment extends Fragment {
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
 
+                        textViewforamount.setText(String.valueOf("Amount "+houseList.size()));
 
 
                     } else {
