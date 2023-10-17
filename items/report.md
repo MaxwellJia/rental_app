@@ -176,18 +176,20 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 ### Parser
 
 ### <u>Grammar(s)</u>
-*[How do you design the grammar? What are the advantages of your designs?]*
-*If there are several grammars, list them all under this section and what they relate to.*
 
 Production Rules:
 
-    <Non-Terminal> ::= <some output>
-    <Non-Terminal> ::= <some output>
+*<SearchQuery> ::= <Location> <PriceRange> <Bedrooms>*
+*<Location> ::= "location" ":" <SuburbName>*
+*<PriceRange> ::= "price" ":" <MinimumPrice> "-" <MaximumPrice>*
+*<Bedrooms> ::= "bedrooms" ":" <Number>*
+*<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid city names)*
+*<MinimumPrice> ::= <Number>*
+*<MaximumPrice> ::= <Number>*
+*<Number> ::= <digit>+ (representing an integer)*
 
 
 ### <u>Tokenizers and Parsers</u>
-
-*[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
 
 Tokenizers and parsers are used in the `TokenParse` class( https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java ) to extract and process information from user input in the context of a real estate app. They play a critical role in interpreting the user's search criteria, including location, price range, and the number of bedrooms.
 
