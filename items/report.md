@@ -39,10 +39,10 @@ The key area(s) of responsibilities for each member
 
 | UID        |  Name  |                                                                            Role |
 |:-----------|:------:|--------------------------------------------------------------------------------:|
-| [u7370733] | [Wangtao Jia] |                        [Front-end Developer, Back-end Developer,UI/UX Designer] |
+| [u7370733] | [Wangtao Jia] | [Front-end Developer, Back-end Developer,UI/UX Designer] |
 | [u7630926] | [Xiaochen Lu] | [Back-end Developer,Database Administrator,Quality Assurance Engineer (Tester)] |
 | [u7630421] | [Linsheng Zhou] | [Back-end Developer,Database Administrator,Quality Assurance Engineer (Tester)] |
-| [u6729279] | [Xiangji Li] |                        [Front-end Developer, Back-end Developer,UI/UX Designer] |
+| [u6729279] | [Xiangji Li] |   [Front-end Developer, Back-end Developer,UI/UX Designer] |
 
 
 ## Summary of Individual Contributions
