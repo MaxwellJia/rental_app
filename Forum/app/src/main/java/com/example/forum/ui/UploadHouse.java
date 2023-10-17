@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 public class UploadHouse implements Serializable {
-    private static final Random random = new Random(System.nanoTime());
     private transient Context mContext;
     public UploadHouse(Context context) {
         this.mContext = context;
