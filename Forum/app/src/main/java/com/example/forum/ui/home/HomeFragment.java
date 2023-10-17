@@ -334,14 +334,17 @@ public class HomeFragment extends Fragment {
         });
 
         //有新房源时更新
-        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("1");
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
         dR.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-
+                if (!fetchingData) {
+                    fetchingData = true;
                 updateWhenAddition();
-                Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
+
+                fetchingData=false;
+                }
             }
 
             @Override
