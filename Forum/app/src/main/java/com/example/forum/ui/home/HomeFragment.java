@@ -69,21 +69,17 @@ public class HomeFragment extends Fragment {
     TextView houseNo;
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
-    private int lastVisibleItemPosition = 0;
     private RecyclerView recyclerViewhouse;
     private List<House> houseList = new ArrayList<>();
     private TextView textview;
     private TextView textViewforamount;
+    TextView tvLocation;
     FloatingActionButton searchButton;
     private FragmentHomeBinding binding;
-    String district;
     HouseAdapter adapter1;
-    private Handler handler = new Handler();
-    private Handler uploadHandler = new Handler();
-    private final int INTERVAL = 30000; // 90 seconds in milliseconds
-    private final int UPLOADINTERVAL = 15000;
     private boolean fetchingData = false;
-
+    LocationManager locationManager;
+    LocationListener locationListener;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -109,15 +105,6 @@ public class HomeFragment extends Fragment {
         searchButton = root.findViewById(R.id.btn_nearby);
 
         houseNo = root.findViewById(R.id.HouseAmount);
-//        uploadHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                simulateUpload();
-//            }
-//        }, UPLOADINTERVAL);
-//        adapter1.notifyDataSetChanged();
-//        System.out.println(houseList);
-
 
         searchButton.setOnClickListener(v -> {
 // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
@@ -410,6 +397,45 @@ public class HomeFragment extends Fragment {
 
 
         textViewforamount = root.findViewById(R.id.HouseAmount);
+
+        /**
+         * This is listener for GPS location
+         *
+         * @author Linsheng Zhou
+         */
+        //Listener for getting GPS info
+        tvLocation=root.findViewById(R.id.textViewMap);
+        locationManager = (LocationManager)requireActivity().getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+                    // Reverse Geocoding
+                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                    // Retrieve district info
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (addresses.size() > 0) {
+                            // Let district shown on Home Fragment
+                            tvLocation.setText(addresses.get(0).getLocality());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onProviderDisabled(String provider) {
+                // Ask for permission GPS access
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+        applayUpdateGPS();
         return root;
     }
 
@@ -473,5 +499,21 @@ public class HomeFragment extends Fragment {
 
     public void simulateUpload() {
 
+    }
+    public void applayUpdateGPS() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
+
+                }, 0);
+                return;
+            }
+
+        }
+        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
     }
 }

@@ -57,32 +57,30 @@ import java.util.ArrayList;
 import java.util.List;
 import android.Manifest;
 public class Main_Page extends AppCompatActivity {
-    static String userr;
-    private String district;
+    static String userr;// Username pass from Login Page
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
-    TextView mySignature;
-    TextView title;
-    ImageView avatar;
-    TextView textView;
-    LocationManager locationManager;
-    LocationListener locationListener;
+    TextView mySignature;// Greeting description in side user profile
+    TextView title;// Username shown in side user profile
+    ImageView avatar;// Avatar in side user profile
+    TextView textView;// Location of simulated device in the world shown in Home Fragment
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Retrieve current username from last activity
         Intent intent = getIntent();
         userr = intent.getStringExtra("username");
+
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //Initialize firebase
         FirebaseApp.initializeApp(this);
+        // Initialize text for location shown
         textView=findViewById(R.id.textViewMap);
+
+        //Definition of start GPS detection button
         setSupportActionBar(binding.appBarMainPage.toolbar);
-        binding.appBarMainPage.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                applayUpdate();
-            }
-        });
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -96,37 +94,8 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
 
-                    // Reverse Geocoding
-                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                        if (addresses.size() > 0) {
-//                            mySignature.setText(addresses.get(0).getLocality());
-                            district = addresses.get(0).getLocality();
-                            textView.setText(district);
-
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
+        //Load user profile on side user profile, as well as start GPS access
         loadUserProfile(navigationView);
     }
 
@@ -143,9 +112,14 @@ public class Main_Page extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
+    /**
+     * This method does something.
+     *
+     * @param navigationView root view in navigationView which contains user profile components
+     * @author Linsheng Zhou
+     *
+     */
     public void loadUserProfile(NavigationView navigationView){
-//        applayUpdate();
         //Generate greetings in user profile
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -180,11 +154,12 @@ public class Main_Page extends AppCompatActivity {
                         if (!userr.equals(item[0])) {
                             continue;
                         }
+                        //Now current user info is loaded
                         title.setText(userr);
 
                         FirebaseStorage storage = FirebaseStorage.getInstance();
+                        //Avatars are stored on Firebase Storage
                         StorageReference storageRef = storage.getReference("avatars").child("image"+item[3]+".jpeg");
-
                         storageRef.getDownloadUrl()
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -220,22 +195,11 @@ public class Main_Page extends AppCompatActivity {
     public static String getUser(){
         return userr;
     }
-    public void applayUpdate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET
 
-                }, 0);
-                return;
-            }
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-//            }
-        }
-        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
-    }
+    /**
+     * This method examines device configuration and starts GPS listening
+     *
+     * @author Linsheng Zhou
+     */
+
 }
