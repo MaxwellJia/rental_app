@@ -363,9 +363,10 @@ public class HomeFragment extends Fragment {
                     adapter1.notifyDataSetChanged();
                     //Pop a toast message if there are more houses detected
                     if (houseList.size() > noOfTotalHouses) {
-                        noOfTotalHouses = houseList.size();
                         Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
                     }
+                    noOfTotalHouses = houseList.size();
+
                 } else {
                     Log.d("FirebaseData", "No data available or data is null");
                 }
