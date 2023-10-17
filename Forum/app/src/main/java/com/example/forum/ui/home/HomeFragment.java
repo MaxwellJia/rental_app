@@ -95,10 +95,10 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
 
         // 初始化适配器，这里你需要创建一个自定义适配器，比如 HouseAdapter
-        adapter1 = new HouseAdapter(houseList);
+
 
         // 设置适配器给 RecyclerView
-        recyclerViewhouse.setAdapter(adapter1);
+        //recyclerViewhouse.setAdapter(adapter1);
 
         // 使用线性布局管理器
         recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -107,15 +107,15 @@ public class HomeFragment extends Fragment {
         // 初始化数据列表
         textview = root.findViewById(R.id.textViewMap);
         searchButton = root.findViewById(R.id.btn_nearby);
-        refresh();
+
         houseNo = root.findViewById(R.id.HouseAmount);
-        uploadHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                simulateUpload();
-            }
-        }, UPLOADINTERVAL);
-        adapter1.notifyDataSetChanged();
+//        uploadHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                simulateUpload();
+//            }
+//        }, UPLOADINTERVAL);
+//        adapter1.notifyDataSetChanged();
 //        System.out.println(houseList);
 
 
@@ -155,6 +155,8 @@ public class HomeFragment extends Fragment {
                                 houseList.add(h);
                             }
                             houseNo.setText(houseList.size() + " Results");
+                            adapter1 = new HouseAdapter(houseList);
+                            recyclerViewhouse.setAdapter(adapter1);
                             adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
                         }
 
@@ -171,7 +173,6 @@ public class HomeFragment extends Fragment {
             });
 
         });
-
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -259,7 +260,42 @@ public class HomeFragment extends Fragment {
             }
         };
         recyclerView.setAdapter(adapter);
+        FirebaseDatabase firebaseDatabase11 = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference11 = firebaseDatabase11.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
+        databaseReference11.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    houseList.clear();
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                        String[] property = item.split(";");
+                        // Set the data houselist
+                        houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                Integer.parseInt(property[9])));
+
+
+                    }
+                    houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+                    houseNo.setText(houseList.size() + " Results");
+                    adapter1 = new HouseAdapter(houseList);
+                    recyclerViewhouse.setAdapter(adapter1);
+                    adapter1.notifyDataSetChanged();
+
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
         Button searchButton = binding.buttonSearch;
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,35 +370,41 @@ public class HomeFragment extends Fragment {
 
         });
 
-//        //有新房源时更新
-//        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-//
-//        dR.limitToLast(1).addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                updateWhenAddition();
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+
+        databaseReference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    houseList.clear();
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                        String[] property = item.split(";");
+                        // Set the data houselist
+                        houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                Integer.parseInt(property[9])));
+
+
+                    }
+                    houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+                    houseNo.setText(houseList.size() + " Results");
+                    adapter1 = new HouseAdapter(houseList);
+                    recyclerViewhouse.setAdapter(adapter1);
+                    adapter1.notifyDataSetChanged();
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
 
 // Attach the listener to the database reference
 
@@ -371,60 +413,6 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private void refresh() {
-        if (!fetchingData) {
-            fetchingData = true;
-
-            // Initialize Firebase
-            // Fetch data from Firebase and handle it here
-            FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
-            // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-            DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-            houseList.clear();
-            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                            String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
-                            String[] property = item.split(";");
-                            // Set the data houselist
-                            houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
-                                    Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
-                                    Integer.parseInt(property[9])));
-
-
-                        }
-                        houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
-                        houseNo.setText(houseList.size() + " Results");
-// After data fetch is complete, reset the flag and schedule the next task
-                        fetchingData = false;
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                refresh();
-                            }
-                        }, INTERVAL);
-                        adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-
-
-                    } else {
-                        Log.d("FirebaseData", "No data available or data is null");
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Handle any errors that may occur during the read operation
-                    Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-                }
-            });
-
-        }
-
-
-    }
 
     //全部数据
     private void loadData() {
@@ -455,44 +443,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void updateWhenAddition() {
-
-        fetchingData = true;
-        FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-        houseList.clear();
-        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
-                        String[] property = item.split(";");
-                        // Set the data houselist
-                        houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
-                                Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
-                                Integer.parseInt(property[9])));
-
-
-                    }
-                    houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
-                    houseNo.setText(houseList.size() + " Results");
-
-                } else {
-                    Log.d("FirebaseData", "No data available or data is null");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur during the read operation
-                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-            }
-        });
-
-
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void showContentIfEmpty() {

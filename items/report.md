@@ -223,9 +223,9 @@ Production Rules:
 5. [DataStructure] We use AVL tree data structure to support our app with account and house data.
    * Code:[Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java),[Class HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java)
 
-6. [DesignPattern] We used state, template, iterator, obsever and singleton design patterns.
+6. [DesignPattern] We used state, template, iterator, obsever and singleton design patterns as mentioned above.
 
-7. [DataProcess] We use firebase (json) and xml(upload function options data) to retrive data.
+7. [DataProcess] We use firebase (json) and xml(upload function options data) to retrive data as mentioned above.
 
 8. [Tests] We have some tests to test our functions.
    * Code:[Class HouseTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTreeTest.java),[Class AccountTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTreeTest.java),[Class TokenParseTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java)
