@@ -52,4 +52,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/delete_password" />
+
+    <TextView
+        android:id="@+id/textView_DeletionPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="177dp"
+        android:layout_marginBottom="43dp"
+        android:text="Account Deletion Page"
+        app:layout_constraintBottom_toTopOf="@+id/delete_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

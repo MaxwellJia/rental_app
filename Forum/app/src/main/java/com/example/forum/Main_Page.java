@@ -22,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -55,35 +58,42 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.Manifest;
+
 public class Main_Page extends AppCompatActivity {
-    static String userr;
-    private String district;
+    static String userr;// Username pass from Login Page
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
-    TextView mySignature;
-    TextView title;
-    ImageView avatar;
-    TextView textView;
-    LocationManager locationManager;
-    LocationListener locationListener;
+    TextView mySignature;// Greeting description in side user profile
+    TextView title;// Username shown in side user profile
+    ImageView avatar;// Avatar in side user profile
+    TextView textView;// Location of simulated device in the world shown in Home Fragment
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Retrieve current username from last activity
         Intent intent = getIntent();
         userr = intent.getStringExtra("username");
+
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //Initialize firebase
         FirebaseApp.initializeApp(this);
-        textView=findViewById(R.id.textViewMap);
+        // Initialize text for location shown
+        textView = findViewById(R.id.textViewMap);
+
+        //Definition of start GPS detection button
         setSupportActionBar(binding.appBarMainPage.toolbar);
         binding.appBarMainPage.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                applayUpdate();
+                logOut();
+                Intent intent1=new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent1);
             }
         });
-
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -96,37 +106,8 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
 
-                    // Reverse Geocoding
-                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                        if (addresses.size() > 0) {
-//                            mySignature.setText(addresses.get(0).getLocality());
-                            district = addresses.get(0).getLocality();
-                            textView.setText(district);
-
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
+        //Load user profile on side user profile, as well as start GPS access
         loadUserProfile(navigationView);
     }
 
@@ -144,8 +125,13 @@ public class Main_Page extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void loadUserProfile(NavigationView navigationView){
-//        applayUpdate();
+    /**
+     * This method does something.
+     *
+     * @param navigationView root view in navigationView which contains user profile components
+     * @author Linsheng Zhou
+     */
+    public void loadUserProfile(NavigationView navigationView) {
         //Generate greetings in user profile
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -163,9 +149,9 @@ public class Main_Page extends AppCompatActivity {
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
-        mySignature=headerView.findViewById(R.id.mySignature);
+        mySignature = headerView.findViewById(R.id.mySignature);
         avatar = headerView.findViewById(R.id.imageViewAvatar);
-        mySignature.setText(greeting+", "+userr+"!");
+        mySignature.setText(greeting + ", " + userr + "!");
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
         DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
@@ -180,11 +166,12 @@ public class Main_Page extends AppCompatActivity {
                         if (!userr.equals(item[0])) {
                             continue;
                         }
+                        //Now current user info is loaded
                         title.setText(userr);
 
                         FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = storage.getReference("avatars").child("image"+item[3]+".jpeg");
-
+                        //Avatars are stored on Firebase Storage
+                        StorageReference storageRef = storage.getReference("avatars").child("image" + item[3] + ".jpeg");
                         storageRef.getDownloadUrl()
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -217,25 +204,50 @@ public class Main_Page extends AppCompatActivity {
             }
         });
     }
-    public static String getUser(){
+
+    public static String getUser() {
         return userr;
     }
-    public void applayUpdate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET
 
-                }, 0);
-                return;
+    /**
+     * This method examines device configuration and starts GPS listening
+     *
+     * @author Linsheng Zhou
+     */
+    private void logOut() {
+        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    // Store raw data strings
+                    List<String> valuesList = new ArrayList<>();
+
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        valuesList.add(item);
+                    }
+                    // Create an AVL Tree to store accounts
+                    AVLTreeFactory factory = AVLTreeFactory.getInstance();
+                    AccountTree at = factory.accountTreeCreator(valuesList);
+                    // Based on binary search principle, return the account object given the username
+                    Account target = at.search(userr);
+                    target.state = 0;
+                    databaseReference.setValue(at.toList());
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
             }
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-//            }
-        }
-        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
     }
 }
