@@ -27,6 +27,9 @@ public class House_Detail_Page extends AppCompatActivity {
 
         Intent intent = getIntent();
         House house = (House) intent.getExtras().getSerializable("houseData");
+        int imageNumber = intent.getIntExtra("imageid",0);
+        Toast.makeText(this,String.valueOf(imageNumber),Toast.LENGTH_LONG).show();
+
         if (house == null){
             Toast.makeText(this,"111",Toast.LENGTH_LONG).show();
         }
@@ -80,10 +83,11 @@ public class House_Detail_Page extends AppCompatActivity {
         });
 
 
-
+        String imageName = "houseinside" + String.valueOf(imageNumber).substring(String.valueOf(imageNumber).length()-1);
+        int imageResId = getResources().getIdentifier(imageName, "drawable", getPackageName());
 
         ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setImageResource(R.raw.sydneyopera0);
+        imageView.setImageResource(imageResId);
     }
 
     /** Upload updated likes to firebase */
