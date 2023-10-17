@@ -339,9 +339,12 @@ public class HomeFragment extends Fragment {
         dR.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-
+                if (!fetchingData) {
+                    fetchingData = true;
                 updateWhenAddition();
                 Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
+                fetchingData=false;
+                }
             }
 
             @Override
