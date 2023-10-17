@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.service.controls.actions.FloatAction;
 import android.util.Log;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -42,6 +43,7 @@ import android.widget.Toast;
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,7 +63,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();//初始全部房源
     private List<House> filteredDataList;//搜索后符合条件的房子
-
+    TextView houseNo;
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
     private int lastVisibleItemPosition = 0;
@@ -69,14 +71,14 @@ public class HomeFragment extends Fragment {
     private List<House> houseList = new ArrayList<>();
     private TextView textview;
     private TextView textViewforamount;
-
-    LocationManager locationManager;
-    LocationListener locationListener;
+    FloatingActionButton searchButton;
     private FragmentHomeBinding binding;
     String district;
     HouseAdapter adapter1;
     private Handler handler = new Handler();
+    private Handler uploadHandler=new Handler();
     private final int INTERVAL = 90000; // 90 seconds in milliseconds
+    private final int UPLOADINTERVAL = 15000;
     private boolean fetchingData = false;
 
     @Override
@@ -101,50 +103,22 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse.setVisibility(View.VISIBLE);
         // 初始化数据列表
         textview = root.findViewById(R.id.textViewMap);
-        locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-
-                    // Reverse Geocoding
-                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                        if (addresses.size() > 0) {
-//                            mySignature.setText(addresses.get(0).getLocality());
-                            district = addresses.get(0).getLocality();
-                            textview.setText(district);
-
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
+        searchButton=root.findViewById(R.id.btn_nearby);
         refresh();
-
-
+        houseNo=root.findViewById(R.id.HouseAmount);
+        uploadHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                simulateUpload();
+            }
+        }, UPLOADINTERVAL);
+        adapter1.notifyDataSetChanged();
 //        System.out.println(houseList);
 
-        Button start = binding.btnLocationStart;
-        start.setOnClickListener(v -> {
-            applayUpdate();
-        });
 
-        Button searchNearby = binding.btnNearby;
 
-        searchNearby.setOnClickListener(v -> {
+
+        searchButton.setOnClickListener(v -> {
 // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
@@ -179,7 +153,7 @@ public class HomeFragment extends Fragment {
                             for (House h : houseListNearBy) {
                                 houseList.add(h);
                             }
-
+                            houseNo.setText(houseList.size()+" Results");
                             adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
                         }
 
@@ -221,16 +195,15 @@ public class HomeFragment extends Fragment {
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerViewhouse.setVisibility(View.GONE);
                     textview.setVisibility(View.GONE);
-                    searchNearby.setVisibility(View.GONE);
-                    start.setVisibility(View.GONE);
+                    searchButton.setVisibility(View.GONE);
+                    houseNo.setVisibility(View.GONE);
 
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     recyclerViewhouse.setVisibility(View.VISIBLE);
                     textview.setVisibility(View.VISIBLE);
-                    searchNearby.setVisibility(View.VISIBLE);
-                    start.setVisibility(View.VISIBLE);
-
+                    searchButton.setVisibility(View.VISIBLE);
+                    houseNo.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -360,44 +333,35 @@ public class HomeFragment extends Fragment {
 
         });
 
-
+        //有新房源时更新
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("1");
 
         dR.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                // This method is called when new data is added.
-                // You can access the new data in the 'dataSnapshot' object.
-                String newData = dataSnapshot.getValue(String.class);
 
-                // 'previousChildName' is the key of the previous child in the query (if any).
-                // This can help you distinguish new additions from updates.
-                refresh();
+                updateWhenAddition();
                 Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
-                // Your code to handle the new data addition here.
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                // This method is called when an existing child's data is updated.
-                // Handle existing data changes here.
 
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // This method is called when a child is removed from the database.
-                // Handle data removal here.
+
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                // This method is called when a child's position changes (not relevant for new data additions).
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle any database error.
+
             }
         });
 
@@ -431,7 +395,7 @@ public class HomeFragment extends Fragment {
 
                         }
                         houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
-
+                        houseNo.setText(houseList.size()+" Results");
 // After data fetch is complete, reset the flag and schedule the next task
                         fetchingData = false;
                         handler.postDelayed(new Runnable() {
@@ -442,7 +406,7 @@ public class HomeFragment extends Fragment {
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
 
-                        textViewforamount.setText(String.valueOf("Amount "+houseList.size()));
+
 
 
                     } else {
@@ -465,11 +429,8 @@ public class HomeFragment extends Fragment {
     //全部数据
     private void loadData() {
 
-        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
         DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -494,7 +455,44 @@ public class HomeFragment extends Fragment {
     }
 
 
+    public void updateWhenAddition() {
+        if (!fetchingData) {
+            fetchingData = true;
+            FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+            houseList.clear();
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                            String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                            String[] property = item.split(";");
+                            // Set the data houselist
+                            houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                    Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                    Integer.parseInt(property[9])));
+
+
+                        }
+                        houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+                        houseNo.setText(houseList.size()+" Results");
+                        fetchingData = false;
+                    } else {
+                        Log.d("FirebaseData", "No data available or data is null");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle any errors that may occur during the read operation
+                    Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+                }
+            });
+
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void showContentIfEmpty() {
@@ -522,22 +520,8 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    public void applayUpdate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET
 
-                }, 0);
-                return;
-            }
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-//            }
-        }
-        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+    public void simulateUpload(){
+
     }
 }

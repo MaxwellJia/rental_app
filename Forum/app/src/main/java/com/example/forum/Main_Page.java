@@ -64,7 +64,7 @@ public class Main_Page extends AppCompatActivity {
     TextView mySignature;
     TextView title;
     ImageView avatar;
-    TextView suburbDisplay;
+    TextView textView;
     LocationManager locationManager;
     LocationListener locationListener;
     @Override
@@ -75,15 +75,15 @@ public class Main_Page extends AppCompatActivity {
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         FirebaseApp.initializeApp(this);
-
+        textView=findViewById(R.id.textViewMap);
         setSupportActionBar(binding.appBarMainPage.toolbar);
         binding.appBarMainPage.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                applayUpdate();
             }
         });
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -96,7 +96,37 @@ public class Main_Page extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+//                textView.setText("New Location:\nLatitude:" + location.getLatitude() + "\nLongitude:" + location.getLongitude());
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
 
+                    // Reverse Geocoding
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (addresses.size() > 0) {
+//                            mySignature.setText(addresses.get(0).getLocality());
+                            district = addresses.get(0).getLocality();
+                            textView.setText(district);
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
         loadUserProfile(navigationView);
     }
 
@@ -190,5 +220,22 @@ public class Main_Page extends AppCompatActivity {
     public static String getUser(){
         return userr;
     }
+    public void applayUpdate() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
 
+                }, 0);
+                return;
+            }
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+//            }
+        }
+        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+    }
 }
