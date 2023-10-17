@@ -342,7 +342,7 @@ public class HomeFragment extends Fragment {
                 if (!fetchingData) {
                     fetchingData = true;
                 updateWhenAddition();
-                Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
+
                 fetchingData=false;
                 }
             }
