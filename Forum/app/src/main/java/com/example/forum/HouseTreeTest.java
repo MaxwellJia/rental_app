@@ -63,7 +63,7 @@ public class HouseTreeTest {
         tree.insert(house2);
         tree.insert(house3);
         tree.insert(house4);
-
+        System.out.println(tree.getRoot().getHeight());
         assertEquals(house3, tree.getRoot());
         assertEquals(house2, tree.getRoot().getLeft());
         assertEquals(house4, tree.getRoot().getRight());
