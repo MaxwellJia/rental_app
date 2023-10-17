@@ -28,7 +28,6 @@ public class House_Detail_Page extends AppCompatActivity {
         Intent intent = getIntent();
         House house = (House) intent.getExtras().getSerializable("houseData");
         int imageNumber = intent.getIntExtra("imageid",0);
-        Toast.makeText(this,String.valueOf(imageNumber),Toast.LENGTH_LONG).show();
 
         if (house == null){
             Toast.makeText(this,"111",Toast.LENGTH_LONG).show();

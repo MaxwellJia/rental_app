@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -78,8 +79,8 @@ public class HomeFragment extends Fragment {
     String district;
     HouseAdapter adapter1;
     private Handler handler = new Handler();
-    private Handler uploadHandler=new Handler();
-    private final int INTERVAL = 90000; // 90 seconds in milliseconds
+    private Handler uploadHandler = new Handler();
+    private final int INTERVAL = 30000; // 90 seconds in milliseconds
     private final int UPLOADINTERVAL = 15000;
     private boolean fetchingData = false;
 
@@ -105,9 +106,9 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse.setVisibility(View.VISIBLE);
         // 初始化数据列表
         textview = root.findViewById(R.id.textViewMap);
-        searchButton=root.findViewById(R.id.btn_nearby);
+        searchButton = root.findViewById(R.id.btn_nearby);
         refresh();
-        houseNo=root.findViewById(R.id.HouseAmount);
+        houseNo = root.findViewById(R.id.HouseAmount);
         uploadHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -116,8 +117,6 @@ public class HomeFragment extends Fragment {
         }, UPLOADINTERVAL);
         adapter1.notifyDataSetChanged();
 //        System.out.println(houseList);
-
-
 
 
         searchButton.setOnClickListener(v -> {
@@ -155,7 +154,7 @@ public class HomeFragment extends Fragment {
                             for (House h : houseListNearBy) {
                                 houseList.add(h);
                             }
-                            houseNo.setText(houseList.size()+" Results");
+                            houseNo.setText(houseList.size() + " Results");
                             adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
                         }
 
@@ -272,7 +271,7 @@ public class HomeFragment extends Fragment {
 
             //根据token搜索
             public void applySearch(View view) {
-                if(!dataList.isEmpty()){
+                if (!dataList.isEmpty()) {
                     //最后展示的结果List
                     filteredDataList = new ArrayList<>();
                     //temp是一个暂时存储每次提取出来的房子
@@ -286,7 +285,7 @@ public class HomeFragment extends Fragment {
 //                    filteredDataList = new ArrayList<>(dataList);
 //                }
                     //价格
-                    if (tp.getpriceRange()!=null) {
+                    if (tp.getpriceRange() != null) {
                         filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
                     } else {
                         filteredDataList = houseTree.toList();
@@ -318,7 +317,7 @@ public class HomeFragment extends Fragment {
                     }
                     temp.sort(Comparator.comparingInt(House::getLikes).reversed());
                     //把House类型的List转化为String List的显示结果
-                    dataList=new ArrayList<>();
+                    dataList = new ArrayList<>();
 
                     for (House house : temp) {
                         System.out.println(house);
@@ -327,7 +326,7 @@ public class HomeFragment extends Fragment {
                         System.out.println(dataList);
                     }
 
-                    Toast.makeText(requireContext(), "Find "+dataList.size()+" Place", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Find " + dataList.size() + " Place", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
                     Log.d("Debug", "Adapter notified of data change");
                 }
@@ -335,20 +334,35 @@ public class HomeFragment extends Fragment {
 
         });
 
-        //有新房源时更新
-        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
-        dR.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                updateWhenAddition();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle any errors that occur.
-            }
-        });
+//        //有新房源时更新
+//        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+//
+//        dR.limitToLast(1).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                updateWhenAddition();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
 // Attach the listener to the database reference
 
@@ -383,7 +397,7 @@ public class HomeFragment extends Fragment {
 
                         }
                         houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
-                        houseNo.setText(houseList.size()+" Results");
+                        houseNo.setText(houseList.size() + " Results");
 // After data fetch is complete, reset the flag and schedule the next task
                         fetchingData = false;
                         handler.postDelayed(new Runnable() {
@@ -393,8 +407,6 @@ public class HomeFragment extends Fragment {
                             }
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-
-
 
 
                     } else {
@@ -444,42 +456,42 @@ public class HomeFragment extends Fragment {
 
 
     public void updateWhenAddition() {
-        if (!fetchingData) {
-            fetchingData = true;
-            FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-            houseList.clear();
-            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                            String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
-                            String[] property = item.split(";");
-                            // Set the data houselist
-                            houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
-                                    Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
-                                    Integer.parseInt(property[9])));
+        fetchingData = true;
+        FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+        houseList.clear();
+        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                        String[] property = item.split(";");
+                        // Set the data houselist
+                        houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                Integer.parseInt(property[9])));
 
 
-                        }
-                        houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
-                        houseNo.setText(houseList.size()+" Results");
-                        fetchingData = false;
-                    } else {
-                        Log.d("FirebaseData", "No data available or data is null");
                     }
-                }
+                    houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+                    houseNo.setText(houseList.size() + " Results");
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Handle any errors that may occur during the read operation
-                    Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
                 }
-            });
+            }
 
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -509,7 +521,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void simulateUpload(){
+    public void simulateUpload() {
 
     }
 }

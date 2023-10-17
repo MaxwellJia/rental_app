@@ -183,7 +183,7 @@ Production Rules:
 - `<Location> ::= "location" ":" <SuburbName>`
 - `<PriceRange> ::= "price" ":" <MinimumPrice> "-" <MaximumPrice>`
 - `<Bedrooms> ::= "bedrooms" ":" <Number>`
-- `<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid city names)`
+- `<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid Suburb names)`
 - `<MinimumPrice> ::= <Number>`
 - `<MaximumPrice> ::= <Number>`
 - `<Number> ::= <digit>+ (representing an integer)`
