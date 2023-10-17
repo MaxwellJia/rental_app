@@ -55,6 +55,7 @@ import android.widget.Toast;
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -374,6 +375,45 @@ public class HomeFragment extends Fragment {
         });
 
 
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("1");
+
+        dR.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                // This method is called when new data is added.
+                // You can access the new data in the 'dataSnapshot' object.
+                String newData = dataSnapshot.getValue(String.class);
+
+                // 'previousChildName' is the key of the previous child in the query (if any).
+                // This can help you distinguish new additions from updates.
+                refresh();
+                Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
+                // Your code to handle the new data addition here.
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                // This method is called when an existing child's data is updated.
+                // Handle existing data changes here.
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // This method is called when a child is removed from the database.
+                // Handle data removal here.
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+                // This method is called when a child's position changes (not relevant for new data additions).
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any database error.
+            }
+        });
 
 
         return root;
