@@ -2,7 +2,6 @@ package com.example.forum;
 
 import android.content.Context;
 
-import com.example.forum.ui.UploadHouse;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

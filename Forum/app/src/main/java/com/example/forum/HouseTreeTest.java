@@ -63,10 +63,9 @@ public class HouseTreeTest {
         tree.insert(house2);
         tree.insert(house3);
         tree.insert(house4);
-
-        assertEquals(house3, tree.getRoot());
-        assertEquals(house2, tree.getRoot().getLeft());
-        assertEquals(house4, tree.getRoot().getRight());
+        assertEquals(house2, tree.getRoot());
+        assertEquals(house1, tree.getRoot().getLeft());
+        assertEquals(house3, tree.getRoot().getRight());
     }
 
     @Test(expected = java.util.NoSuchElementException.class)

@@ -3,7 +3,6 @@ package com.example.forum.ui.gallery;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,12 @@ import com.example.forum.GenerateData;
 import com.example.forum.Main_Page;
 import com.example.forum.R;
 import com.example.forum.databinding.FragmentGalleryBinding;
-import com.example.forum.ui.UploadHouse;
+import com.example.forum.UploadHouse;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.xmlpull.v1.XmlPullParser;
-
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,7 +99,6 @@ public class GalleryFragment extends Fragment {
                     updateStreet(streets);
                     // Do something with the selected item
                 }else {
-                    Toast.makeText(getActivity(), "please choose your suburb first", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -173,7 +167,7 @@ public class GalleryFragment extends Fragment {
         String email = Main_Page.getUser();
         String recommend = "0";
 
-        //updata data
+        //update data
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
         String data = city+";"+suburb_data+";"+street_data+";"+street_no_data+";"+unit_data+";"+price_data+";"+bedroom_no+";"+email+";"+recommend+";";
