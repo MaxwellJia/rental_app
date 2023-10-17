@@ -21,30 +21,6 @@ public class HouseTree implements Iterable<House>{
         this.root = root;
     }
 
-    public List<House> getHousesByPrice(int price) {
-        List<House> result = new ArrayList<>();
-        getHousesByPrice(root, price, result);
-        return result;
-    }
-
-    private void getHousesByPrice(House node, int price, List<House> result) {
-        if (node == null) {
-            return;
-        }
-
-        int priceComparison = Integer.compare(price, node.getPrice());
-
-        if (priceComparison < 0) {
-            getHousesByPrice(node.getLeft(), price, result);
-        } else if (priceComparison > 0) {
-            getHousesByPrice(node.getRight(), price, result);
-        } else {
-            result.add(node);
-            getHousesByPrice(node.getLeft(), price, result);
-            getHousesByPrice(node.getRight(), price, result);
-        }
-    }
-
     public List<House> getHousesPriceRange(int lowerBound, int upperBound) {
         List<House> result = new ArrayList<>();
         getHousesPriceRange(root, lowerBound, upperBound, result);
@@ -71,7 +47,6 @@ public class HouseTree implements Iterable<House>{
             getHousesPriceRange(node.getRight(), lowerBound, upperBound, result);
         }
     }
-
 
     public void insert(House house) {
         root = insert(root, house);
