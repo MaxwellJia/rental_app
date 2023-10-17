@@ -9,9 +9,9 @@ import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Handler;
+
 import android.provider.Settings;
-import android.service.controls.actions.FloatAction;
+
 import android.util.Log;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -26,7 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,7 +45,6 @@ import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,9 +58,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.internal.cache.DiskLruCache;
-
 public class HomeFragment extends Fragment {
+    private int noOfTotalHouses;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();//初始全部房源
@@ -247,42 +245,10 @@ public class HomeFragment extends Fragment {
             }
         };
         recyclerView.setAdapter(adapter);
-        FirebaseDatabase firebaseDatabase11 = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference11 = firebaseDatabase11.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+        //This is the first load of front cardview houses
+        //Later only changes of database will trigger reload
+        firstLoadInHomeFragment();
 
-        databaseReference11.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                    houseList.clear();
-                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
-                        String[] property = item.split(";");
-                        // Set the data houselist
-                        houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
-                                Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
-                                Integer.parseInt(property[9])));
-
-
-                    }
-                    houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
-                    houseNo.setText(houseList.size() + " Results");
-                    adapter1 = new HouseAdapter(houseList);
-                    recyclerViewhouse.setAdapter(adapter1);
-                    adapter1.notifyDataSetChanged();
-
-                } else {
-                    Log.d("FirebaseData", "No data available or data is null");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur during the read operation
-                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-            }
-        });
         Button searchButton = binding.buttonSearch;
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -343,13 +309,9 @@ public class HomeFragment extends Fragment {
                     dataList = new ArrayList<>();
 
                     for (House house : temp) {
-                        System.out.println(house);
                         dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
-//                    System.out.println(house.toString());
-                        System.out.println(dataList);
                     }
-
-                    Toast.makeText(requireContext(), "Find " + dataList.size() + " Place", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Find " + dataList.size() + " Places", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
                     Log.d("Debug", "Adapter notified of data change");
                 }
@@ -359,7 +321,6 @@ public class HomeFragment extends Fragment {
 
         FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
         databaseReference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -373,14 +334,17 @@ public class HomeFragment extends Fragment {
                         houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
                                 Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
                                 Integer.parseInt(property[9])));
-
-
                     }
                     houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
                     houseNo.setText(houseList.size() + " Results");
                     adapter1 = new HouseAdapter(houseList);
                     recyclerViewhouse.setAdapter(adapter1);
                     adapter1.notifyDataSetChanged();
+                    //Pop a toast message if there are more houses detected
+                    if (houseList.size() > noOfTotalHouses) {
+                        noOfTotalHouses = houseList.size();
+                        Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Log.d("FirebaseData", "No data available or data is null");
                 }
@@ -436,6 +400,7 @@ public class HomeFragment extends Fragment {
             }
         };
         applayUpdateGPS();
+
         return root;
     }
 
@@ -468,7 +433,41 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void firstLoadInHomeFragment() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    houseList.clear();
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                        String[] property = item.split(";");
+                        // Set the data houselist
+                        houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                Integer.parseInt(property[9])));
+                    }
+                    houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+                    houseNo.setText(houseList.size() + " Results");
+                    adapter1 = new HouseAdapter(houseList);
+                    recyclerViewhouse.setAdapter(adapter1);
+                    adapter1.notifyDataSetChanged();
+                    noOfTotalHouses = houseList.size();
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void showContentIfEmpty() {
@@ -517,3 +516,4 @@ public class HomeFragment extends Fragment {
         locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
     }
 }
+
