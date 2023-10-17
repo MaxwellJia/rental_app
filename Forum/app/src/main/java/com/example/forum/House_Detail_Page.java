@@ -30,7 +30,7 @@ public class House_Detail_Page extends AppCompatActivity {
         int imageNumber = intent.getIntExtra("imageid",0);
 
         if (house == null){
-            Toast.makeText(this,"111",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"House gone",Toast.LENGTH_LONG).show();
         }
 
         assert house != null;
