@@ -40,12 +40,22 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
 
         int[] imageResources = {
                 R.drawable.houseappearence1,
-                R.drawable.houseappearence2
+                R.drawable.houseappearence2,
+                R.drawable.houseappearence3,
+                R.drawable.houseappearence4,
+                R.drawable.houseappearence5,
+                R.drawable.houseappearence6,
+                R.drawable.houseappearence7,
+                R.drawable.houseappearence8,
+                R.drawable.houseappearence9,
+                R.drawable.houseappearence10,
+
         };
 
 
         Random random = new Random();
         int randomImageResource = imageResources[random.nextInt(imageResources.length)];
+//        holder.houimage.setAlpha(0.65f);
         holder.houimage.setImageResource(randomImageResource);
 
 

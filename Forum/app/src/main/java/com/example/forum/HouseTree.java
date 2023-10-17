@@ -21,9 +21,6 @@ public class HouseTree implements Iterable<House>{
         this.root = root;
     }
 
-
-
-
     public List<House> getHousesByPrice(int price) {
         List<House> result = new ArrayList<>();
         getHousesByPrice(root, price, result);
@@ -158,9 +155,6 @@ public class HouseTree implements Iterable<House>{
         }
         return getHeight(node.getLeft()) - getHeight(node.getRight());
     }
-
-
-
 
     @Override
     public Iterator<House> iterator() {
