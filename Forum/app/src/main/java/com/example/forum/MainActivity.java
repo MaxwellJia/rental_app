@@ -27,35 +27,23 @@ import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    private boolean userLoggedIn = false; // 用户登录状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
+    //Jump to login page
     public void jump(View v) {
-
-        setContentView(R.layout.activity_log_in);
-        Intent intent = getIntent();
-        userLoggedIn = intent.getBooleanExtra("USER_LOGGED_IN", false);
-
         buttonFun();
+        Intent loginIntent = new Intent(this, LogIn.class);
+        startActivity(loginIntent);
+        finish();
 
-        if (!userLoggedIn) {
-            // 如果用户未登录，重定向到登录界面
-            Intent loginIntent = new Intent(this, LogIn.class);
-            startActivity(loginIntent);
-            finish();
-            return;
-        }
-        setContentView(R.layout.activity_main);//还未添加跳转页面
     }
 
     public void buttonFun() {
-        Random random=new Random();
-
+        Random random = new Random();
 
     }
 

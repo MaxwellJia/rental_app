@@ -1,36 +1,27 @@
 package com.example.forum;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This activity provides UI for users to log in
+ *
+ * @author Linsheng Zhou
+ */
 public class LogIn extends AppCompatActivity {
-
-    String currentUser=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +29,11 @@ public class LogIn extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
     }
 
-
-
     public void applyLogin(View view) {
-
+        // Find edit text for username and password
         EditText usernameEditText = findViewById(R.id.input_account);
         EditText passwordEditText = findViewById(R.id.input_password);
-
+        // Read username and password
         String enteredUsername = usernameEditText.getText().toString();
         String enteredPassword = passwordEditText.getText().toString();
 
@@ -57,33 +46,39 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-
+                    // Store raw data strings
                     List<String> valuesList = new ArrayList<>();
 
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         String item = itemSnapshot.getValue(String.class);
                         valuesList.add(item);
                     }
-
+                    // Create an AVL Tree to store accounts
                     AVLTreeFactory factory=AVLTreeFactory.getInstance();
                     AccountTree at=factory.accountTreeCreator(valuesList);
-
+                    // Based on binary search principle, return the account object given the username
                     Account target= at.search(enteredUsername);
 
                     if (target==null) {
+                        //Such username is not found in AVL tree
                         Toast.makeText(getApplicationContext(), "Username doesn't exist!", Toast.LENGTH_SHORT).show();
                     } else {
+                        //This username exists in AVL tree
                         if (enteredPassword.equals(target.password)) {
+                            //Correct password
                             if(target.state==0){
+                                // This account is offline
                                 Intent intent = new Intent(getApplicationContext(), Main_Page.class);
                                 intent.putExtra("username",enteredUsername);
 //                                target.state=1;
 //                                databaseReference.setValue(at.toList());
                                 startActivity(intent);
                             }else {
+                                // This account is online on another device and refuse login
                                 Toast.makeText(getApplicationContext(), "This account is online in another device!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            //Wrong password
                             Toast.makeText(getApplicationContext(), "Wrong password! Try again!", Toast.LENGTH_SHORT).show();
 
                         }
@@ -102,7 +97,7 @@ public class LogIn extends AppCompatActivity {
             }
         });
     }
-
+    // Jump to account deletion activity
     public void gotoDelete(View v){
         Intent intent=new Intent(this, AccountDelete.class);
         startActivity(intent);

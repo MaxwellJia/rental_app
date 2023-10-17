@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * This class uses AVL tree to organize, search or delete users' details
+ * This class uses AVL tree to organize, proceed, retrieve, store and delete users' details
  * Iterator DP is accepted to perform traverse of this AVL tree
  *
  * @author Linsheng Zhou
@@ -272,7 +272,7 @@ public class AccountTree implements Iterable<Account> {
         }
     }
 
-    // Traver to transform AVL tree with Account nodes to list of raw data strings, waiting to be stored in database
+    // Traverse to transform AVL tree with Account nodes to list of raw data strings, waiting to be stored in database
     public List<String> toList() {
         List<String> storage = new ArrayList<>();
         Iterator<Account> it = this.iterator();
