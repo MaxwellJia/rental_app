@@ -179,14 +179,14 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 Production Rules:
 
-<SearchQuery> ::= <Location> <PriceRange> <Bedrooms>
-<Location> ::= "location" ":" <SuburbName>
-<PriceRange> ::= "price" ":" <MinimumPrice> "-" <MaximumPrice>
-<Bedrooms> ::= "bedrooms" ":" <Number>
-<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid city names)
-<MinimumPrice> ::= <Number>
-<MaximumPrice> ::= <Number>
-<Number> ::= <digit>+ (representing an integer)
+- `<SearchQuery> ::= <Location> <PriceRange> <Bedrooms>`
+- `<Location> ::= "location" ":" <SuburbName>`
+- `<PriceRange> ::= "price" ":" <MinimumPrice> "-" <MaximumPrice>`
+- `<Bedrooms> ::= "bedrooms" ":" <Number>`
+- `<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid city names)`
+- `<MinimumPrice> ::= <Number>`
+- `<MaximumPrice> ::= <Number>`
+- `<Number> ::= <digit>+ (representing an integer)`
 
 
 ### <u>Tokenizers and Parsers</u>
