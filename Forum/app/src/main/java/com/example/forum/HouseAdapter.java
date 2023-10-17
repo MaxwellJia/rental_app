@@ -57,7 +57,7 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
         int aa=random.nextInt(imageResources.length);
         int bb=aa+1;
         int randomImageResource = imageResources[aa];
-//        holder.houimage.setAlpha(0.65f);
+        holder.houimage.setAlpha(0.5f);
         holder.houimage.setImageResource(randomImageResource);
 
 
