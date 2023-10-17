@@ -457,6 +457,7 @@ public class HomeFragment extends Fragment {
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
 
 
+
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
                     }
