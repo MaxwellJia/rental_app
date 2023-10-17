@@ -58,6 +58,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.internal.cache.DiskLruCache;
+
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
@@ -336,37 +338,20 @@ public class HomeFragment extends Fragment {
         //有新房源时更新
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
-        dR.addChildEventListener(new ChildEventListener() {
+        dR.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                if (!fetchingData) {
-                    fetchingData = true;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 updateWhenAddition();
-
-                fetchingData=false;
-                }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur.
             }
         });
+
+// Attach the listener to the database reference
+
 
         textViewforamount = root.findViewById(R.id.HouseAmount);
         return root;
