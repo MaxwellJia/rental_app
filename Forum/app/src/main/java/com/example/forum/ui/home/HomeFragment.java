@@ -267,47 +267,50 @@ public class HomeFragment extends Fragment {
                     List<House> temp = new ArrayList<>();
                     String query = editText.getText().toString().trim();
                     TokenParse tp = new TokenParse(query);
-                    //转换成AVL树
+                    //Transform raw data string list to House AVL Tree
                     AVLTreeFactory avlTreeFactory = AVLTreeFactory.getInstance();
                     HouseTree houseTree = avlTreeFactory.houseTreeCreator(dataList);
-//                if (query.isEmpty()) {
-//                    filteredDataList = new ArrayList<>(dataList);
-//                }
-                    //价格
+                    //Price
                     if (tp.getpriceRange() != null) {
+                        //If price range is given, binary search based on lower bound and upper bound
                         filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
                     } else {
+                        //If range of price is not given, return the list of all houses
                         filteredDataList = houseTree.toList();
                     }
-                    boolean validSuburb = tp.getLocation() != null;
-                    boolean validBed = tp.getBedrooms() != 0;
+                    boolean validSuburb = tp.getLocation() != null;//If district string is valid
+                    boolean validBed = tp.getBedrooms() != 0;//If size integer is valid
                     if (validBed && validSuburb) {
+                        //Both is given
                         for (House house : filteredDataList) {
                             if (house.getXbxb() == tp.getBedrooms() && house.getSuburb().equals(tp.getLocation())) {
                                 temp.add(house);
                             }
                         }
                     } else if (!validBed && validSuburb) {
+                        //Only district is given
                         for (House house : filteredDataList) {
                             if (house.getSuburb().equals(tp.getLocation())) {
                                 temp.add(house);
                             }
                         }
                     } else if (validBed && !validSuburb) {
+                        //Only size is given
                         for (House house : filteredDataList) {
                             if (house.getXbxb() == tp.getBedrooms()) {
                                 temp.add(house);
                             }
                         }
                     } else {
+                        //Neither is given
                         for (House house : filteredDataList) {
                             temp.add(house);
                         }
                     }
+                    //Sort by decreasing likes
                     temp.sort(Comparator.comparingInt(House::getLikes).reversed());
                     //把House类型的List转化为String List的显示结果
                     dataList = new ArrayList<>();
-
                     for (House house : temp) {
                         dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
                     }
@@ -319,6 +322,7 @@ public class HomeFragment extends Fragment {
 
         });
 
+        //Listener for changes in database, immediately update with interactions
         FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
         databaseReference1.addValueEventListener(new ValueEventListener() {
@@ -357,9 +361,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-// Attach the listener to the database reference
-
-
+        //This is the bottom text view about search numbers of houses
         textViewforamount = root.findViewById(R.id.HouseAmount);
 
         /**
@@ -405,7 +407,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    //全部数据
+    //Prepare and Load data before search
     private void loadData() {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -494,11 +496,11 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
-    public void simulateUpload() {
-
-    }
+    /**
+     * This method checks for version and permissions
+     * Starts swift update
+     * @author Linsheng Zhou
+     */
     public void applayUpdateGPS() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
