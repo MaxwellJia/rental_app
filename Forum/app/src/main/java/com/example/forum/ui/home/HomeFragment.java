@@ -455,7 +455,7 @@ public class HomeFragment extends Fragment {
                             }
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-                        Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
+
 
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
