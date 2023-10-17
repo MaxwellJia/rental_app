@@ -286,11 +286,10 @@ Feature Category: Firebase Integration <br>
 * Your meetings should also have a reasonable date spanning across Week 6 to 11.*
 
 
-- *[Team Meeting 1](meeting1.md)*
-- ...
-- ...
-- [Team Meeting 4](link_to_md_file.md)
-- ... (Add any descriptions if needed) ...
+- *[Team Meeting 1](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
+- *[Team Meeting 2](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
+- *[Team Meeting 3](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting3.md)*
+- [Team Meeting 4](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)
 
 <hr>
 
@@ -301,4 +300,16 @@ Feature Category: Firebase Integration <br>
 This shall include an agreed procedure for situations including (but not limited to):
 - e.g., if a member fails to meet the initial plan and/or deadlines
 - e.g., if your group has issues, how will your group reach consensus or solve the problem?
-- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project? 
+- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project?
+
+Protocols:
+
+Protocol1: When someone is sick, the task of this person will be arranged to other people.
+
+Protocol2: It's not reasonable to be sick for a long time, this person's contribution will be reduced if this case.
+
+Protocol3: Teammates must attend all meetings to write code.
+
+Protocol4: If we have some problems, we need to have meetings. We need to find tutor or lecturer if we can't handle.
+
+Protocol5: If someone fails to meet the initial plan and/or deadlines, this person must give enough reasons to others and give clear date to finish the job.
