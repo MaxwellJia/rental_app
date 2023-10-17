@@ -334,7 +334,7 @@ public class HomeFragment extends Fragment {
         });
 
         //有新房源时更新
-        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("1");
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
         dR.addChildEventListener(new ChildEventListener() {
             @Override
