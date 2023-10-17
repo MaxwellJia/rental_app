@@ -161,28 +161,31 @@ public class TokenParse {
         boolean validInput = false;
 
         String[] parts = input.split("\\s+");
-        for (String part : parts) {
-            if (part.contains("-")) {
-                validInput = true;
-                String[] rangeParts = part.split("-");
-                if (rangeParts.length == 2) {
-                    int firstNumber = Integer.parseInt(rangeParts[0]);
-                    int secondNumber = Integer.parseInt(rangeParts[1]);
-                    priceRange.add(Math.min(firstNumber, secondNumber));
-                    priceRange.add(Math.max(firstNumber, secondNumber));
-                }
-            } else {
-                try {
-                    int number = Integer.parseInt(part);
-                    if (number > 100) {
-                        priceRange.add(number - 100);
-                        priceRange.add(number + 100);
-                        validInput = true;
+            for (String part : parts) {
+                if(!containsLetters(part.toString())){
+                    if (part.contains("-")) {
+                    validInput = true;
+                    String[] rangeParts = part.split("-");
+                    if (rangeParts.length == 2) {
+                        int firstNumber = Integer.parseInt(rangeParts[0]);
+                        int secondNumber = Integer.parseInt(rangeParts[1]);
+                        priceRange.add(Math.min(firstNumber, secondNumber));
+                        priceRange.add(Math.max(firstNumber, secondNumber));
                     }
-                } catch (NumberFormatException e) {
+                } else {
+                    try {
+                        int number = Integer.parseInt(part);
+                        if (number > 100) {
+                            priceRange.add(number - 100);
+                            priceRange.add(number + 100);
+                            validInput = true;
+                        }
+                    } catch (NumberFormatException e) {
+                    }
                 }
             }
         }
+
 
         if (validInput) {
             return priceRange;
