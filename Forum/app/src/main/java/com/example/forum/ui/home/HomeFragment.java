@@ -68,6 +68,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewhouse;
     private List<House> houseList = new ArrayList<>();
     private TextView textview;
+    private TextView textViewforamount;
+
     LocationManager locationManager;
     LocationListener locationListener;
     private FragmentHomeBinding binding;
@@ -399,7 +401,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        textViewforamount = root.findViewById(R.id.HouseAmount);
         return root;
     }
 
@@ -440,6 +442,7 @@ public class HomeFragment extends Fragment {
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
 
+                        textViewforamount.setText(String.valueOf("Amount "+houseList.size()));
 
 
                     } else {
