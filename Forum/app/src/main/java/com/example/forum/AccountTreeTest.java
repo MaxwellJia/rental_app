@@ -17,6 +17,7 @@ public class AccountTreeTest {
         Account account5 = new Account("user5", "password5", 5, 105);
         Account account6 = new Account("user6", "password6", 6, 106);
         Account account7 = new Account("user7", "password7", 7, 107);
+
         // Add more accounts to the dataset as needed
 
         accountTree = new AccountTree(account1);
@@ -26,6 +27,7 @@ public class AccountTreeTest {
         accountTree.insert(account5);
         accountTree.insert(account6);
         accountTree.insert(account7);
+
         // Insert more accounts into the tree as needed
     }
 

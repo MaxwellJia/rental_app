@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
     String district;
     HouseAdapter adapter1;
     private Handler handler = new Handler();
-    private final int INTERVAL = 30000; // 30 seconds in milliseconds
+    private final int INTERVAL = 90000; // 90 seconds in milliseconds
     private boolean fetchingData = false;
 
     @Override
