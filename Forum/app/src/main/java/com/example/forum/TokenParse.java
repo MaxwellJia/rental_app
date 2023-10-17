@@ -156,7 +156,6 @@ public class TokenParse {
         return matcher.matches();
     }
 
-
     private List<Integer> extractMinMaxPrice(String input) {
         List<Integer> priceRange = new ArrayList<>();
         boolean validInput = false;
@@ -192,27 +191,18 @@ public class TokenParse {
         }
     }
 
-
     private int extractBedrooms(String input) {
         String[] parts = input.split("\\s+");
 
         int FindroomNumber = 0;
         for (String part : parts) {
-            if (part.matches("\\d+") && Integer.parseInt(part) < 10) {
+            if (part.matches("\\d+") && Integer.parseInt(part) < 7) {
                 FindroomNumber = Integer.parseInt(part);
                 break;
             }
         }
         return FindroomNumber;
     }
-
-//    public static void main(String[] args) {
-//        TokenParse aa=new TokenParse("600 belssadsadss 5");
-//        System.out.println(aa.getBedrooms());
-//        System.out.println(aa.getLocation());
-//        System.out.println(aa.getpriceRange());
-//    }
-
 
 }
 

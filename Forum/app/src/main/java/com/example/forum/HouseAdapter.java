@@ -54,8 +54,10 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
 
 
         Random random = new Random();
-        int randomImageResource = imageResources[random.nextInt(imageResources.length)];
-//        holder.houimage.setAlpha(0.65f);
+        int aa=random.nextInt(imageResources.length);
+        int bb=aa+1;
+        int randomImageResource = imageResources[aa];
+        holder.houimage.setAlpha(0.5f);
         holder.houimage.setImageResource(randomImageResource);
 
 
@@ -69,7 +71,7 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
                 System.out.println(house.getStreet());
                     Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                     intent.putExtra("houseData", (Serializable) house);
-                    intent.putExtra("imageid",randomImageResource);
+                    intent.putExtra("imageid",bb);
                     v.getContext().startActivity(intent);
             }
         });
