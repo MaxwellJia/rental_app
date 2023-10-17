@@ -82,8 +82,8 @@ public class House_Detail_Page extends AppCompatActivity {
             }
         });
 
-
-        String imageName = "houseinside" + String.valueOf(imageNumber).substring(String.valueOf(imageNumber).length()-1);
+        // load inside image relative to house appearance
+        String imageName = "houseinside" + imageNumber;
         int imageResId = getResources().getIdentifier(imageName, "drawable", getPackageName());
 
         ImageView imageView = findViewById(R.id.imageView2);
