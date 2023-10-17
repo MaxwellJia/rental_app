@@ -86,6 +86,7 @@ public class AccountTreeTest {
         assertTrue(accountTree.toList().contains("user5;password5;5;105"));
         assertTrue(accountTree.toList().contains("user6;password6;6;106"));
         assertTrue(accountTree.toList().contains("user7;password7;7;107"));
+
     }
 }
 
