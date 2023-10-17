@@ -1,4 +1,4 @@
-package com.example.forum.ui;
+package com.example.forum;
 
 import android.content.Context;
 import android.util.Xml;

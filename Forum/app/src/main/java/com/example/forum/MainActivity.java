@@ -54,47 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonFun() {
-////        List<String> accountList=new ArrayList<>();
-////        accountList.add("comp2100@anu.edu.au"+";"+"comp2100");
-////        accountList.add("comp6442@anu.edu.au"+";"+"comp6442");
-////        accountList.add("1"+";"+"1");
         Random random=new Random();
-////        for(int i=0;i<497;i++){
-////            accountList.add("u7"+(100000+random.nextInt(900000))+";"+"123456");
-////        }
-////        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-////        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
-////        databaseReference.setValue(accountList);
-//        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
-//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-//        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
-//
-//        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-//                    List<String> valuesList=new ArrayList<>();
-//                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-//                        String item = itemSnapshot.getValue(String.class);
-//
-//                        valuesList.add(item+";"+0+";"+random.nextInt(10));
-//                    }
-//
-//
-//                    databaseReference.setValue(valuesList);
-//                    // You can use the jsonString as needed in your app
-//                } else {
-//                    Log.d("FirebaseData", "No data available or data is null");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Handle any errors that may occur during the read operation
-//                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
-//            }
-//        });
+
 
     }
 
