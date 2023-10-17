@@ -12,22 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.forum.HouseData;
-import com.example.forum.MainActivity;
 import com.example.forum.Main_Page;
 import com.example.forum.R;
-import com.example.forum.ReadData;
-import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentGalleryBinding;
+import com.example.forum.ui.UploadHouse;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +48,7 @@ public class GalleryFragment extends Fragment {
     View root;
     private List<String> userList = new ArrayList<>();
     private static final Random random = new Random(System.nanoTime());
+    private UploadHouse uploadOP;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         GalleryViewModel galleryViewModel =
@@ -62,8 +56,8 @@ public class GalleryFragment extends Fragment {
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         root = binding.getRoot();
-
-        List<String> states = getProvinces();
+        uploadOP = new UploadHouse(getActivity());
+        List<String> states = uploadOP.getProvinces();
         List<String> xbxb = Arrays.asList("select","1", "2", "3", "4", "5", "6");
         Spinner state = root.findViewById(R.id.province);
         Spinner suburb = root.findViewById(R.id.suburb);
@@ -84,7 +78,7 @@ public class GalleryFragment extends Fragment {
                 // Handle item selection here
                 if (position != 0) {
                     selectedState = state.getSelectedItem().toString();
-                    List<String> suburbs = getSuburbs(selectedState);
+                    List<String> suburbs = uploadOP.getSuburbs(selectedState);
                     updateSuburbs(suburbs);
                     // Do something with the selected item
                 }else {
@@ -102,7 +96,7 @@ public class GalleryFragment extends Fragment {
                 // Handle item selection here
                 if (position != 0) {
                     selectedSuburb = suburb.getSelectedItem().toString();
-                    List<String> streets = getStreetsForSelectedSuburb(selectedState,selectedSuburb);
+                    List<String> streets = uploadOP.getStreetsForSelectedSuburb(selectedState,selectedSuburb);
                     updateStreet(streets);
                     // Do something with the selected item
                 }else {
@@ -120,8 +114,9 @@ public class GalleryFragment extends Fragment {
             public void onClick(View v) {
                 //silumate data
 //                userList.subList(0,3).clear();
-//                for (int i =0; i<2000; i++){
+//                for (int i =0; i<500; i++) {
 //                    generateData(v);
+//                }
                     submit_house_inf(v);
             }
 
@@ -135,61 +130,58 @@ public class GalleryFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    private List<String> getProvinces() {
-        List<String> provinces = new ArrayList<>();
-        try {
-            // Get the resource ID for the XML file
-            InputStream is = getActivity().getAssets().open("addressBook.xml");
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setInput(is, null);
-            int eventType = parser.getEventType();
-            boolean isInsideTargetProvince = false;
-            //find all province
-            while ((eventType != XmlPullParser.END_DOCUMENT)) {
-                if (eventType == XmlPullParser.START_TAG && "province".equals(parser.getName())) {
-                    provinces.add(parser.getAttributeValue(null, "name"));
-                }
-                eventType = parser.next();
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        provinces.add(0,"select your city");
-        return provinces;
-    }
+//    private List<String> getProvinces() {
+//        List<String> provinces = new ArrayList<>();
+//        try {
+//            // Get the resource ID for the XML file
+//            InputStream is = getActivity().getAssets().open("addressBook.xml");
+//            XmlPullParser parser = Xml.newPullParser();
+//            parser.setInput(is, null);
+//            int eventType = parser.getEventType();
+//            boolean isInsideTargetProvince = false;
+//            //find all province
+//            while ((eventType != XmlPullParser.END_DOCUMENT)) {
+//                if (eventType == XmlPullParser.START_TAG && "province".equals(parser.getName())) {
+//                    provinces.add(parser.getAttributeValue(null, "name"));
+//                }
+//                eventType = parser.next();
+//            }
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        provinces.add(0,"select your city");
+//        return provinces;
+//    }
 
-    public void onNothingSelected(AdapterView<?> parentView) {
-        // This method is optional
-    }
 
-    private List<String> getSuburbs(String targetProvince) {
-        List<String> suburbs = new ArrayList<>();
-        try {
-            // Get the resource ID for the XML file
-            InputStream is = getActivity().getAssets().open("addressBook.xml");
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setInput(is, null);
-            int eventType = parser.getEventType();
-            boolean isInsideTargetProvince = false;
-            //find all province
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    if ("province".equals(parser.getName()) && targetProvince.equals(parser.getAttributeValue(null, "name"))) {
-                        isInsideTargetProvince = true;
-                    } else if (isInsideTargetProvince && "suburb".equals(parser.getName())) {
-                        suburbs.add(parser.getAttributeValue(null, "name"));
-                    }
-                } else if (eventType == XmlPullParser.END_TAG && "province".equals(parser.getName())) {
-                    isInsideTargetProvince = false;
-                }
-                eventType = parser.next();
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        suburbs.add(0,"select your suburb");
-        return suburbs;
-    }
+//    private List<String> getSuburbs(String targetProvince) {
+//        List<String> suburbs = new ArrayList<>();
+//        try {
+//            // Get the resource ID for the XML file
+//            InputStream is = getActivity().getAssets().open("addressBook.xml");
+//            XmlPullParser parser = Xml.newPullParser();
+//            parser.setInput(is, null);
+//            int eventType = parser.getEventType();
+//            boolean isInsideTargetProvince = false;
+//            //find all province
+//            while (eventType != XmlPullParser.END_DOCUMENT) {
+//                if (eventType == XmlPullParser.START_TAG) {
+//                    if ("province".equals(parser.getName()) && targetProvince.equals(parser.getAttributeValue(null, "name"))) {
+//                        isInsideTargetProvince = true;
+//                    } else if (isInsideTargetProvince && "suburb".equals(parser.getName())) {
+//                        suburbs.add(parser.getAttributeValue(null, "name"));
+//                    }
+//                } else if (eventType == XmlPullParser.END_TAG && "province".equals(parser.getName())) {
+//                    isInsideTargetProvince = false;
+//                }
+//                eventType = parser.next();
+//            }
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        suburbs.add(0,"select your suburb");
+//        return suburbs;
+//    }
 
     public void onStateSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
         if (position != 0) {  // If an actual option is selected
@@ -204,41 +196,41 @@ public class GalleryFragment extends Fragment {
         suburb.setSelection(0);
     }
 
-    public List<String> getStreetsForSelectedSuburb(String selectedProvince, String selectedSuburb) {
-        List<String> streets = new ArrayList<>();
-        try {
-            XmlPullParser parser = Xml.newPullParser();
-            InputStream is = getActivity().getAssets().open("addressBook.xml");
-            parser.setInput(is, null);
-            int eventType = parser.getEventType();
-            boolean insideTargetProvince = false;
-            boolean insideTargetSuburb = false;
-
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    String tagName = parser.getName();
-                    if ("province".equals(tagName) && selectedProvince.equals(parser.getAttributeValue(null, "name"))) {
-                        insideTargetProvince = true;
-                    } else if (insideTargetProvince && "suburb".equals(tagName) && selectedSuburb.equals(parser.getAttributeValue(null, "name"))) {
-                        insideTargetSuburb = true;
-                    } else if (insideTargetSuburb && "street".equals(tagName)) {
-                        streets.add(parser.nextText());
-                    }
-                } else if (eventType == XmlPullParser.END_TAG) {
-                    if ("province".equals(parser.getName())) {
-                        insideTargetProvince = false;
-                    } else if ("suburb".equals(parser.getName())) {
-                        insideTargetSuburb = false;
-                    }
-                }
-                eventType = parser.next();
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        streets.add(0,"select your street");
-        return streets;
-    }
+//    public List<String> getStreetsForSelectedSuburb(String selectedProvince, String selectedSuburb) {
+//        List<String> streets = new ArrayList<>();
+//        try {
+//            XmlPullParser parser = Xml.newPullParser();
+//            InputStream is = getActivity().getAssets().open("addressBook.xml");
+//            parser.setInput(is, null);
+//            int eventType = parser.getEventType();
+//            boolean insideTargetProvince = false;
+//            boolean insideTargetSuburb = false;
+//
+//            while (eventType != XmlPullParser.END_DOCUMENT) {
+//                if (eventType == XmlPullParser.START_TAG) {
+//                    String tagName = parser.getName();
+//                    if ("province".equals(tagName) && selectedProvince.equals(parser.getAttributeValue(null, "name"))) {
+//                        insideTargetProvince = true;
+//                    } else if (insideTargetProvince && "suburb".equals(tagName) && selectedSuburb.equals(parser.getAttributeValue(null, "name"))) {
+//                        insideTargetSuburb = true;
+//                    } else if (insideTargetSuburb && "street".equals(tagName)) {
+//                        streets.add(parser.nextText());
+//                    }
+//                } else if (eventType == XmlPullParser.END_TAG) {
+//                    if ("province".equals(parser.getName())) {
+//                        insideTargetProvince = false;
+//                    } else if ("suburb".equals(parser.getName())) {
+//                        insideTargetSuburb = false;
+//                    }
+//                }
+//                eventType = parser.next();
+//            }
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        streets.add(0,"select your street");
+//        return streets;
+//    }
     public void updateStreet(List<String> streets){
         Spinner street = root.findViewById(R.id.street);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, streets);
@@ -271,7 +263,7 @@ public class GalleryFragment extends Fragment {
         String recommend = "0";
 
         //updata data
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("test");//child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
 
 // Create a new child and get its key
 //        String key = mDatabase.child("1").push().getKey();
@@ -297,13 +289,13 @@ public class GalleryFragment extends Fragment {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
         String bedroom = String.valueOf(random.nextInt(6) + 1);
         String unit = String.valueOf(random.nextInt(10)+1)+String.valueOf(random.nextInt(8)+String.valueOf(random.nextInt(8)));
-        List<String> states = getProvinces();
+        List<String> states = uploadOP.getProvinces();
         int state_choice = random.nextInt(states.size()-1)+1;
         String state = states.get(state_choice);
-        List<String> suburbs = getSuburbs(state);
+        List<String> suburbs = uploadOP.getSuburbs(state);
         int suburb_choice = random.nextInt(suburbs.size()-1)+1;
         String suburb = suburbs.get(suburb_choice);
-        List<String> streets = getStreetsForSelectedSuburb(state, suburb);
+        List<String> streets = uploadOP.getStreetsForSelectedSuburb(state, suburb);
         int street_choice = random.nextInt(streets.size()-1)+1;
         String street = streets.get(street_choice);
         String building_no = String.valueOf(random.nextInt(100)+1);
@@ -352,6 +344,5 @@ public class GalleryFragment extends Fragment {
         });
 
     }
-
 
 }
