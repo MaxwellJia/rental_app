@@ -2,6 +2,7 @@ package com.example.forum.ui.home;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -41,6 +42,7 @@ import com.example.forum.House_Detail_Page;
 
 import android.widget.Toast;
 
+import com.example.forum.MainActivity;
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
@@ -57,14 +59,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
-    private int noOfTotalHouses;
+    private int noOfTotalHouses;//Number of all houses in the first load
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
     private List<String> dataList = new ArrayList<>();//初始全部房源
     private List<House> filteredDataList;//搜索后符合条件的房子
-    TextView houseNo;
+    TextView houseNo;//Store the no of search result on front page
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
     private RecyclerView recyclerViewhouse;
@@ -78,6 +81,7 @@ public class HomeFragment extends Fragment {
     private boolean fetchingData = false;
     LocationManager locationManager;
     LocationListener locationListener;
+    Geocoder geocoder;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -98,28 +102,28 @@ public class HomeFragment extends Fragment {
         recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recyclerViewhouse.setVisibility(View.VISIBLE);
-        // 初始化数据列表
+
+
+        /**
+         * Front page search based on current district
+         *
+         * @author Linsheng Zhou
+         */
         textview = root.findViewById(R.id.textViewMap);
         searchButton = root.findViewById(R.id.btn_nearby);
-
         houseNo = root.findViewById(R.id.HouseAmount);
-
         searchButton.setOnClickListener(v -> {
-// FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+            // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
-            DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
+            DatabaseReference databaseReference = firebaseDatabase.getReference("House")
+                    .child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
             //首页地区房子
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
-
                     if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                         List<House> houseListNearBy = new ArrayList<>();
-
-
                         for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                             String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
                             String[] property = item.split(";");
@@ -129,7 +133,6 @@ public class HomeFragment extends Fragment {
                                         Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
                                         Integer.parseInt(property[9])));
                             }
-
                         }
                         houseListNearBy.sort(Comparator.comparingInt(House::getLikes).reversed());
                         if (houseListNearBy.size() < 3) {
@@ -144,7 +147,6 @@ public class HomeFragment extends Fragment {
                             recyclerViewhouse.setAdapter(adapter1);
                             adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
                         }
-
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
                     }
@@ -158,7 +160,11 @@ public class HomeFragment extends Fragment {
             });
 
         });
-
+        /**
+         * This method does something.
+         *
+         * @author Xiangji Li
+         */
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setVisibility(View.GONE);
@@ -202,7 +208,10 @@ public class HomeFragment extends Fragment {
                 showContentIfChanged(s.toString()); // 传递当前文本内容以检查是否有变化
             }
         });
-
+        /**
+         * This method does something.
+         * @author Xiangji Li
+         */
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @NonNull
@@ -245,10 +254,17 @@ public class HomeFragment extends Fragment {
             }
         };
         recyclerView.setAdapter(adapter);
-        //This is the first load of front cardview houses
+
+        //This is the first load of front card view houses
         //Later only changes of database will trigger reload
         firstLoadInHomeFragment();
 
+
+        /**
+         *  Based on TokenParser result search the house AVL tree
+         *
+         * @author Xiangji Li, Linsheng Zhou
+         */
         Button searchButton = binding.buttonSearch;
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,9 +272,7 @@ public class HomeFragment extends Fragment {
                 applySearch(v);
             }
 
-            //根据token搜索
-
-            //根据token搜索
+            //
             public void applySearch(View view) {
                 if (!dataList.isEmpty()) {
                     //最后展示的结果List
@@ -321,8 +335,11 @@ public class HomeFragment extends Fragment {
             }
 
         });
-
-        //Listener for changes in database, immediately update with interactions
+        /**
+         * Listener for changes in database, immediately update with interactions.
+         *
+         * @author All Members
+         */
         FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
         databaseReference1.addValueEventListener(new ValueEventListener() {
@@ -370,8 +387,8 @@ public class HomeFragment extends Fragment {
          * @author Linsheng Zhou
          */
         //Listener for getting GPS info
-        tvLocation=root.findViewById(R.id.textViewMap);
-        locationManager = (LocationManager)requireActivity().getSystemService(LOCATION_SERVICE);
+        tvLocation = root.findViewById(R.id.textViewMap);
+        locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(android.location.Location location) {
@@ -381,7 +398,7 @@ public class HomeFragment extends Fragment {
                     double longitude = location.getLongitude();
 
                     // Reverse Geocoding
-                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                    geocoder = new Geocoder(getActivity(), Locale.getDefault());
                     // Retrieve district info
                     try {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
@@ -394,6 +411,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onProviderDisabled(String provider) {
                 // Ask for permission GPS access
@@ -406,8 +424,12 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-
-    //Prepare and Load data before search
+    /**
+     * Prepare and Load data before search, store them
+     *
+     * @return dataList Stored in this List
+     * @author Xiangji Li
+     */
     private void loadData() {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -421,7 +443,6 @@ public class HomeFragment extends Fragment {
                         String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
                         dataList.add(item);
                     }
-
                 } else {
                     Log.d("FirebaseData", "No data available or data is null");
                 }
@@ -435,6 +456,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * First load when creating HomeFragment
+     *
+     * @return houseList CardView display
+     * @author All Members
+     */
     private void firstLoadInHomeFragment() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
@@ -481,6 +508,12 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * This method does something.
+     *
+     * @param newText
+     * @author Xiangji Li
+     */
     public void showContentIfChanged(String newText) {
         String query = editText.getText().toString().trim();
         if (!newText.equals(query)) {
@@ -496,9 +529,11 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
     /**
      * This method checks for version and permissions
      * Starts swift update
+     *
      * @author Linsheng Zhou
      */
     public void applayUpdateGPS() {
@@ -513,7 +548,6 @@ public class HomeFragment extends Fragment {
                 }, 0);
                 return;
             }
-
         }
         locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
     }

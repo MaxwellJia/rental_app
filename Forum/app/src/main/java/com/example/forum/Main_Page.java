@@ -22,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -55,7 +58,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.Manifest;
+
 public class Main_Page extends AppCompatActivity {
     static String userr;// Username pass from Login Page
     private AppBarConfiguration mAppBarConfiguration;
@@ -77,11 +82,18 @@ public class Main_Page extends AppCompatActivity {
         //Initialize firebase
         FirebaseApp.initializeApp(this);
         // Initialize text for location shown
-        textView=findViewById(R.id.textViewMap);
+        textView = findViewById(R.id.textViewMap);
 
         //Definition of start GPS detection button
         setSupportActionBar(binding.appBarMainPage.toolbar);
-
+        binding.appBarMainPage.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logOut();
+                Intent intent1=new Intent(getApplicationContext(),LogIn.class);
+                startActivity(intent1);
+            }
+        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -112,14 +124,14 @@ public class Main_Page extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
     /**
      * This method does something.
      *
      * @param navigationView root view in navigationView which contains user profile components
      * @author Linsheng Zhou
-     *
      */
-    public void loadUserProfile(NavigationView navigationView){
+    public void loadUserProfile(NavigationView navigationView) {
         //Generate greetings in user profile
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -137,9 +149,9 @@ public class Main_Page extends AppCompatActivity {
         // Get the 3 elements: avatar, title and signature line
         View headerView = navigationView.getHeaderView(0);
         title = headerView.findViewById(R.id.nametitle);
-        mySignature=headerView.findViewById(R.id.mySignature);
+        mySignature = headerView.findViewById(R.id.mySignature);
         avatar = headerView.findViewById(R.id.imageViewAvatar);
-        mySignature.setText(greeting+", "+userr+"!");
+        mySignature.setText(greeting + ", " + userr + "!");
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
         DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
@@ -159,7 +171,7 @@ public class Main_Page extends AppCompatActivity {
 
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         //Avatars are stored on Firebase Storage
-                        StorageReference storageRef = storage.getReference("avatars").child("image"+item[3]+".jpeg");
+                        StorageReference storageRef = storage.getReference("avatars").child("image" + item[3] + ".jpeg");
                         storageRef.getDownloadUrl()
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -192,7 +204,8 @@ public class Main_Page extends AppCompatActivity {
             }
         });
     }
-    public static String getUser(){
+
+    public static String getUser() {
         return userr;
     }
 
@@ -201,5 +214,40 @@ public class Main_Page extends AppCompatActivity {
      *
      * @author Linsheng Zhou
      */
+    private void logOut() {
+        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
+        DatabaseReference databaseReference = firebaseDatabase.getReference("UsersData").child("1");
 
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    // Store raw data strings
+                    List<String> valuesList = new ArrayList<>();
+
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        String item = itemSnapshot.getValue(String.class);
+                        valuesList.add(item);
+                    }
+                    // Create an AVL Tree to store accounts
+                    AVLTreeFactory factory = AVLTreeFactory.getInstance();
+                    AccountTree at = factory.accountTreeCreator(valuesList);
+                    // Based on binary search principle, return the account object given the username
+                    Account target = at.search(userr);
+                    target.state = 0;
+                    databaseReference.setValue(at.toList());
+                } else {
+                    Log.d("FirebaseData", "No data available or data is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that may occur during the read operation
+                Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+            }
+        });
+    }
 }

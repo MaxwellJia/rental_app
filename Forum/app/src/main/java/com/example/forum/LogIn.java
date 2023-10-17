@@ -70,8 +70,8 @@ public class LogIn extends AppCompatActivity {
                                 // This account is offline
                                 Intent intent = new Intent(getApplicationContext(), Main_Page.class);
                                 intent.putExtra("username",enteredUsername);
-//                                target.state=1;
-//                                databaseReference.setValue(at.toList());
+                                target.state=1;
+                                databaseReference.setValue(at.toList());
                                 startActivity(intent);
                             }else {
                                 // This account is online on another device and refuse login
