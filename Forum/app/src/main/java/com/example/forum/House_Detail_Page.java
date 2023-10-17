@@ -1,11 +1,9 @@
 package com.example.forum;
 
 import android.content.Intent;
-import android.media.effect.Effect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class House_Detail_Page extends AppCompatActivity {
     String likes;
 
@@ -32,6 +27,9 @@ public class House_Detail_Page extends AppCompatActivity {
 
         Intent intent = getIntent();
         House house = (House) intent.getExtras().getSerializable("houseData");
+        int imageNumber = intent.getIntExtra("imageid",0);
+        Toast.makeText(this,String.valueOf(imageNumber),Toast.LENGTH_LONG).show();
+
         if (house == null){
             Toast.makeText(this,"111",Toast.LENGTH_LONG).show();
         }
@@ -85,10 +83,11 @@ public class House_Detail_Page extends AppCompatActivity {
         });
 
 
-
+        String imageName = "houseinside" + String.valueOf(imageNumber).substring(String.valueOf(imageNumber).length()-1);
+        int imageResId = getResources().getIdentifier(imageName, "drawable", getPackageName());
 
         ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setImageResource(R.raw.sydneyopera0);
+        imageView.setImageResource(imageResId);
     }
 
     /** Upload updated likes to firebase */
@@ -124,9 +123,7 @@ public class House_Detail_Page extends AppCompatActivity {
                                     }else {
                                         newValue = newValue + likes + ";";
                                     }
-
                                 }
-
                                 //Here we should update the value in the database, using DatabaseReference
                                 itemSnapshot.getRef().setValue(newValue);
 
