@@ -2,93 +2,98 @@ package com.example.forum;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AccountTreeTest {
-    private AccountTree accountTree;
+
+    private AccountTree tree;
 
     @Before
     public void setUp() {
-        // Create an AVL tree with a larger dataset of accounts for testing
-        Account account1 = new Account("user1", "password1", 1, 101);
-        Account account2 = new Account("user2", "password2", 2, 102);
-        Account account3 = new Account("user3", "password3", 3, 103);
-        Account account4 = new Account("user4", "password4", 4, 104);
-        Account account5 = new Account("user5", "password5", 5, 105);
-        Account account6 = new Account("user6", "password6", 6, 106);
-        Account account7 = new Account("user7", "password7", 7, 107);
-
-        // Add more accounts to the dataset as needed
-
-        accountTree = new AccountTree(account1);
-        accountTree.insert(account2);
-        accountTree.insert(account3);
-        accountTree.insert(account4);
-        accountTree.insert(account5);
-        accountTree.insert(account6);
-        accountTree.insert(account7);
-
-        // Insert more accounts into the tree as needed
+        tree = new AccountTree(null);
     }
 
     @Test
-    public void testSearchExistingAccount() {
-        Account foundAccount = accountTree.search("user3");
-        assertNotNull(foundAccount);
-        assertEquals("user3", foundAccount.account);
-        assertEquals("password3", foundAccount.password);
-    }
-
-    @Test
-    public void testSearchNonExistingAccount() {
-        Account foundAccount = accountTree.search("nonexistent");
-        assertNull(foundAccount);
+    public void testEmptyTree() {
+        assertNull(tree.getRoot());
+        List<String> result = tree.toList();
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void testInsertAndSearch() {
-        Account newAccount = new Account("user8", "password8", 8, 108);
-        accountTree.insert(newAccount);
-        Account foundAccount = accountTree.search("user8");
-        assertNotNull(foundAccount);
-        assertEquals("user8", foundAccount.account);
-        assertEquals("password8", foundAccount.password);
+        Account account1 = new Account("Alice", "pass1", 1, 1);
+        tree.insert(account1);
+        assertEquals(account1, tree.search("Alice"));
+
+        Account account2 = new Account("Bob", "pass2", 2, 2);
+        tree.insert(account2);
+        assertEquals(account2, tree.search("Bob"));
+
+        assertNull(tree.search("Eve"));
     }
 
     @Test
-    public void testDeleteExistingAccount() {
-        accountTree.delete("user4");
-        Account deletedAccount = accountTree.search("user4");
-        assertNull(deletedAccount);
+    public void testInsertAndDelete() {
+        Account account1 = new Account("Alice", "pass1", 1, 1);
+        Account account2 = new Account("Bob", "pass2", 2, 2);
+
+        tree.insert(account1);
+        tree.insert(account2);
+
+        tree.delete("Alice");
+        assertNull(tree.search("Alice"));
+        assertEquals(account2, tree.search("Bob"));
+
+        tree.delete("Bob");
+        assertNull(tree.search("Bob"));
+    }
+
+    @Test(expected = java.util.NoSuchElementException.class)
+    public void testIteratorException() {
+        tree.iterator().next();
     }
 
     @Test
-    public void testDeleteNonExistingAccount() {
-        accountTree.delete("nonexistent");
-        // Ensure that deleting a non-existing account doesn't cause errors
-    }
+    public void testIteratorTraversal() {
+        Account account1 = new Account("Alice", "pass1", 1, 1);
+        Account account2 = new Account("Bob", "pass2", 2, 2);
+        Account account3 = new Account("Eve", "pass3", 3, 3);
 
-    @Test
-    public void testInOrderTraversal() {
-        StringBuilder result = new StringBuilder();
-        for (Account account : accountTree) {
-            result.append(account.account).append(" ");
-        }
-        assertEquals("user1 user2 user3 user4 user5 user6 user7", result.toString().trim());
+        tree.insert(account1);
+        tree.insert(account2);
+        tree.insert(account3);
+
+        Iterator<Account> iterator = tree.iterator();
+
+        assertTrue(iterator.hasNext());
+        assertEquals(account1, iterator.next());
+
+        assertTrue(iterator.hasNext());
+        assertEquals(account2, iterator.next());
+
+        assertTrue(iterator.hasNext());
+        assertEquals(account3, iterator.next());
+
+        assertFalse(iterator.hasNext());
     }
 
     @Test
     public void testToList() {
-        // Convert the tree to a list and check if it contains the expected values
-        assertEquals(7, accountTree.toList().size());
-        assertTrue(accountTree.toList().contains("user1;password1;1;101"));
-        assertTrue(accountTree.toList().contains("user2;password2;2;102"));
-        assertTrue(accountTree.toList().contains("user3;password3;3;103"));
-        assertTrue(accountTree.toList().contains("user4;password4;4;104"));
-        assertTrue(accountTree.toList().contains("user5;password5;5;105"));
-        assertTrue(accountTree.toList().contains("user6;password6;6;106"));
-        assertTrue(accountTree.toList().contains("user7;password7;7;107"));
+        Account account1 = new Account("Alice", "pass1", 1, 1);
+        Account account2 = new Account("Bob", "pass2", 2, 2);
 
+        tree.insert(account1);
+        tree.insert(account2);
+
+        List<String> result = tree.toList();
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains("Alice;pass1;1;1"));
+        assertTrue(result.contains("Bob;pass2;2;2"));
     }
 }
-
