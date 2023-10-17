@@ -295,7 +295,7 @@ public class HomeFragment extends Fragment {
 
             //根据token搜索
             public void applySearch(View view) {
-                if(!dataList.isEmpty()){
+                if (!dataList.isEmpty()) {
                     //最后展示的结果List
                     filteredDataList = new ArrayList<>();
                     //temp是一个暂时存储每次提取出来的房子
@@ -309,7 +309,7 @@ public class HomeFragment extends Fragment {
 //                    filteredDataList = new ArrayList<>(dataList);
 //                }
                     //价格
-                    if (tp.getpriceRange()!=null) {
+                    if (tp.getpriceRange() != null) {
                         filteredDataList = houseTree.getHousesPriceRange(tp.getpriceRange().get(0), tp.getpriceRange().get(1));
                     } else {
                         filteredDataList = houseTree.toList();
@@ -341,7 +341,7 @@ public class HomeFragment extends Fragment {
                     }
                     temp.sort(Comparator.comparingInt(House::getLikes).reversed());
                     //把House类型的List转化为String List的显示结果
-                    dataList=new ArrayList<>();
+                    dataList = new ArrayList<>();
 
                     for (House house : temp) {
                         System.out.println(house);
@@ -350,7 +350,7 @@ public class HomeFragment extends Fragment {
                         System.out.println(dataList);
                     }
 
-                    Toast.makeText(requireContext(), "Find "+dataList.size()+" Place", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Find " + dataList.size() + " Place", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
                     Log.d("Debug", "Adapter notified of data change");
                 }
@@ -358,48 +358,37 @@ public class HomeFragment extends Fragment {
 
         });
 
-
+        //有新房源时更新
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("House").child("1");
 
         dR.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                // This method is called when new data is added.
-                // You can access the new data in the 'dataSnapshot' object.
-                String newData = dataSnapshot.getValue(String.class);
 
-                // 'previousChildName' is the key of the previous child in the query (if any).
-                // This can help you distinguish new additions from updates.
-                refresh();
+                updateWhenAddition();
                 Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
-                // Your code to handle the new data addition here.
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                // This method is called when an existing child's data is updated.
-                // Handle existing data changes here.
 
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // This method is called when a child is removed from the database.
-                // Handle data removal here.
+
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                // This method is called when a child's position changes (not relevant for new data additions).
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle any database error.
+
             }
         });
-
-
         return root;
     }
 
@@ -407,10 +396,7 @@ public class HomeFragment extends Fragment {
         if (!fetchingData) {
             fetchingData = true;
 
-            // Initialize Firebase
-            // Fetch data from Firebase and handle it here
             FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
-            // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
             DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
             houseList.clear();
             databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -430,7 +416,6 @@ public class HomeFragment extends Fragment {
                         }
                         houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
 
-// After data fetch is complete, reset the flag and schedule the next task
                         fetchingData = false;
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -439,8 +424,6 @@ public class HomeFragment extends Fragment {
                             }
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-
-
 
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
@@ -453,20 +436,14 @@ public class HomeFragment extends Fragment {
                     Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
                 }
             });
-
         }
-
-
     }
 
     //全部数据
     private void loadData() {
 
-        // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
         DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -491,7 +468,43 @@ public class HomeFragment extends Fragment {
     }
 
 
+    public void updateWhenAddition() {
+        if (!fetchingData) {
+            fetchingData = true;
+            FirebaseDatabase firebaseDatabase1 = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference1 = firebaseDatabase1.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+            houseList.clear();
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                            String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
+                            String[] property = item.split(";");
+                            // Set the data houselist
+                            houseList.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
+                                    Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
+                                    Integer.parseInt(property[9])));
+
+
+                        }
+                        houseList.sort(Comparator.comparingInt(House::getLikes).reversed());
+                        fetchingData = false;
+                    } else {
+                        Log.d("FirebaseData", "No data available or data is null");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle any errors that may occur during the read operation
+                    Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
+                }
+            });
+
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void showContentIfEmpty() {
