@@ -156,34 +156,36 @@ public class TokenParse {
         return matcher.matches();
     }
 
-
     private List<Integer> extractMinMaxPrice(String input) {
         List<Integer> priceRange = new ArrayList<>();
         boolean validInput = false;
 
         String[] parts = input.split("\\s+");
-        for (String part : parts) {
-            if (part.contains("-")) {
-                validInput = true;
-                String[] rangeParts = part.split("-");
-                if (rangeParts.length == 2) {
-                    int firstNumber = Integer.parseInt(rangeParts[0]);
-                    int secondNumber = Integer.parseInt(rangeParts[1]);
-                    priceRange.add(Math.min(firstNumber, secondNumber));
-                    priceRange.add(Math.max(firstNumber, secondNumber));
-                }
-            } else {
-                try {
-                    int number = Integer.parseInt(part);
-                    if (number > 100) {
-                        priceRange.add(number - 100);
-                        priceRange.add(number + 100);
-                        validInput = true;
+            for (String part : parts) {
+                if(!containsLetters(part.toString())){
+                    if (part.contains("-")) {
+                    validInput = true;
+                    String[] rangeParts = part.split("-");
+                    if (rangeParts.length == 2) {
+                        int firstNumber = Integer.parseInt(rangeParts[0]);
+                        int secondNumber = Integer.parseInt(rangeParts[1]);
+                        priceRange.add(Math.min(firstNumber, secondNumber));
+                        priceRange.add(Math.max(firstNumber, secondNumber));
                     }
-                } catch (NumberFormatException e) {
+                } else {
+                    try {
+                        int number = Integer.parseInt(part);
+                        if (number > 100) {
+                            priceRange.add(number - 100);
+                            priceRange.add(number + 100);
+                            validInput = true;
+                        }
+                    } catch (NumberFormatException e) {
+                    }
                 }
             }
         }
+
 
         if (validInput) {
             return priceRange;
@@ -192,27 +194,18 @@ public class TokenParse {
         }
     }
 
-
     private int extractBedrooms(String input) {
         String[] parts = input.split("\\s+");
 
         int FindroomNumber = 0;
         for (String part : parts) {
-            if (part.matches("\\d+") && Integer.parseInt(part) < 10) {
+            if (part.matches("\\d+") && Integer.parseInt(part) < 7) {
                 FindroomNumber = Integer.parseInt(part);
                 break;
             }
         }
         return FindroomNumber;
     }
-
-//    public static void main(String[] args) {
-//        TokenParse aa=new TokenParse("600 belssadsadss 5");
-//        System.out.println(aa.getBedrooms());
-//        System.out.println(aa.getLocation());
-//        System.out.println(aa.getpriceRange());
-//    }
-
 
 }
 
