@@ -2,14 +2,10 @@ package com.example.forum.ui.home;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
@@ -26,30 +22,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forum.AVLTreeFactory;
 import com.example.forum.House;
 import com.example.forum.HouseAdapter;
-import com.example.forum.HouseData;
 import com.example.forum.HouseTree;
 import com.example.forum.House_Detail_Page;
 
-import android.Manifest;
 import android.widget.Toast;
 
 import com.example.forum.R;
@@ -62,11 +49,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.eazegraph.lib.models.PieModel;
-
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -455,7 +439,8 @@ public class HomeFragment extends Fragment {
                             }
                         }, INTERVAL);
                         adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
-                        Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
+
+
 
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
