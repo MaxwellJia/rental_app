@@ -7,7 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class is the unitTest for AccountTree.class including validation test and edge test
+ *
+ * @author Xiaochen Lu
+ */
 public class AccountTreeTest {
 
     private AccountTree tree;
@@ -17,6 +21,9 @@ public class AccountTreeTest {
         tree = new AccountTree(null);
     }
 
+    /**
+     * Test if the tree is empty upon initialization.
+     */
     @Test
     public void testEmptyTree() {
         assertNull(tree.getRoot());
@@ -24,6 +31,9 @@ public class AccountTreeTest {
         assertTrue(result.isEmpty());
     }
 
+    /**
+     * Test insertion of accounts and searching for them by name.
+     */
     @Test
     public void testInsertAndSearch() {
         Account account1 = new Account("Alice", "pass1", 1, 1);
@@ -37,6 +47,9 @@ public class AccountTreeTest {
         assertNull(tree.search("Eve"));
     }
 
+    /**
+     * Test insertion and deletion of accounts.
+     */
     @Test
     public void testInsertAndDelete() {
         Account account1 = new Account("Alice", "pass1", 1, 1);
@@ -53,11 +66,17 @@ public class AccountTreeTest {
         assertNull(tree.search("Bob"));
     }
 
+    /**
+     * Test if the iterator throws an exception when the tree is empty.
+     */
     @Test(expected = java.util.NoSuchElementException.class)
     public void testIteratorException() {
         tree.iterator().next();
     }
 
+    /**
+     * Test if the iterator correctly traverses through accounts in the tree.
+     */
     @Test
     public void testIteratorTraversal() {
         Account account1 = new Account("Alice", "pass1", 1, 1);
@@ -82,6 +101,9 @@ public class AccountTreeTest {
         assertFalse(iterator.hasNext());
     }
 
+    /**
+     * Test the conversion of the tree to a list representation.
+     */
     @Test
     public void testToList() {
         Account account1 = new Account("Alice", "pass1", 1, 1);
@@ -97,3 +119,4 @@ public class AccountTreeTest {
         assertTrue(result.contains("Bob;pass2;2;2"));
     }
 }
+

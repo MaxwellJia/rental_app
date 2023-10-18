@@ -12,7 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
+/**
+ * The UploadHouse class provides methods for simulating upload house operation to satisfy the demand of more than 2500 data in the database
+ *
+ * @author Xiaochen Lu
+ */
 public class GenerateData implements Serializable {
     private static final Random random = new Random(System.nanoTime());
     private transient Context mContext;
@@ -22,6 +26,12 @@ public class GenerateData implements Serializable {
         this.mContext = context;
         uploadOP = new UploadHouse(mContext);
     }
+    /**
+     * Generates random house-related data.
+     *
+     * @param userList List of possible usernames to associate with a house.
+     * @return A map containing a unique house ID and its associated data.
+     */
     public Map<String, Object> generateData(List<String> userList){
         String bedroom = String.valueOf(random.nextInt(6) + 1);
         String unit = String.valueOf(random.nextInt(10)+1)+String.valueOf(random.nextInt(8)+String.valueOf(random.nextInt(8)));
@@ -50,6 +60,12 @@ public class GenerateData implements Serializable {
         return updates;
     }
 
+    /**
+     * Simulates adding generated house data to the Firebase database.
+     *
+     * @param num      Number of data entries to generate and add.
+     * @param userlist List of possible usernames to associate with houses.
+     */
     public void simulateData(int num, List<String> userlist){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
         for (int i = 0; i < num ; i++ ){

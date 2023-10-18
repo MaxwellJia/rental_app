@@ -8,17 +8,23 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
+/**
+ * This class is the unitTest for TokenParse.class including validation test and edge test
+ *
+ * @author Xiaochen Lu
+ */
 public class TokenParseTest {
 
     private TokenParse parser;
 
     @Before
     public void setUp() {
+        // Initializing the parser to null before each test
         parser = null;
     }
 
     @Test
+    // Test the basic functionality of the location parser
     public void testLocationParsing() {
         parser = new TokenParse("City");
         assertEquals("City", parser.getLocation());
@@ -35,6 +41,7 @@ public class TokenParseTest {
     }
 
     @Test
+    // Test the parsing of price ranges, including some edge cases
     public void testMinMaxPriceParsing() {
         parser = new TokenParse("1000-2000");
         assertEquals(Arrays.asList(1000, 2000), parser.getpriceRange());
@@ -60,6 +67,7 @@ public class TokenParseTest {
     }
 
     @Test
+    // Test the parsing of bedroom counts, including edge cases
     public void testBedroomParsing() {
         parser = new TokenParse("3 bedrooms");
         assertEquals(3, parser.getBedrooms());
@@ -78,6 +86,7 @@ public class TokenParseTest {
     }
 
     @Test
+    // Test a more complex input string
     public void testComplexString() {
         parser = new TokenParse("I want 3 bedrooms in kin with price range 1000-2000");
         assertEquals("Kingston", parser.getLocation());
@@ -86,13 +95,13 @@ public class TokenParseTest {
     }
 
     @Test
+    // Test another variation of a complex input string
     public void testAnotherComplexString() {
         parser = new TokenParse("4 br in nor for 3000");
         assertEquals("North Adelaide", parser.getLocation());
         assertEquals(4, parser.getBedrooms());
         assertEquals(Arrays.asList(2900, 3100), parser.getpriceRange());
     }
-
-    // Add more test cases as needed
 }
+
 

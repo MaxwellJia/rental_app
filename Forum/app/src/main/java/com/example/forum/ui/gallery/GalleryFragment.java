@@ -35,9 +35,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
+/**
+ * This class is the UpLoadHouse activity which is used to upload house information
+ *
+ * @author Xiaochen Lu
+ */
 public class GalleryFragment extends Fragment {
-
+    // Variable declarations
     private FragmentGalleryBinding binding;
     String selectedState;
     String selectedSuburb;
@@ -51,12 +55,14 @@ public class GalleryFragment extends Fragment {
     private int dataMode = 1; //0:simulate data, 1: normal mode
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
-
+        //1.initialize the ViewModel
+        GalleryViewModel galleryViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
+        //2.Inflate the Fragment's layout using Data Binding
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         root = binding.getRoot();
+        // 3. Initialize the UploadHouse helper object
         uploadOP = new UploadHouse(getActivity());
+        // 4. Fetch and set up State and Bedroom options
         List<String> states = uploadOP.getProvinces();
         List<String> xbxb = Arrays.asList("select","1", "2", "3", "4", "5", "6");
         Spinner state = root.findViewById(R.id.province);
@@ -70,6 +76,7 @@ public class GalleryFragment extends Fragment {
         xbxb_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bedroom.setAdapter(xbxb_adapter);
         bedroom.setSelection(0);
+        // 5. Set listeners for the State Spinner
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -88,6 +95,7 @@ public class GalleryFragment extends Fragment {
                 // You can leave this empty if you don't have any specific functionality for it
             }
         });
+        // 6. Set listeners for the Suburb Spinner
         suburb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -107,6 +115,7 @@ public class GalleryFragment extends Fragment {
             }
         });
         Button submit = root.findViewById(R.id.submit_house_inf);
+        // 7. Setup the Submit button click listener
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +137,7 @@ public class GalleryFragment extends Fragment {
         binding = null;
     }
 
+    //update the Suburb Spinner according to the value of the State Spinner
     public void updateSuburbs(List<String> suburbs){
         Spinner suburb = root.findViewById(R.id.suburb);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, suburbs);
@@ -135,7 +145,7 @@ public class GalleryFragment extends Fragment {
         suburb.setAdapter(adapter);
         suburb.setSelection(0);
     }
-
+    //update the Street Spinner according to the value of the Suburb Spinner
     public void updateStreet(List<String> streets){
         Spinner street = root.findViewById(R.id.street);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, streets);
@@ -143,8 +153,14 @@ public class GalleryFragment extends Fragment {
         street.setAdapter(adapter);
         street.setSelection(0);
     }
-
+    /**
+     * submit the house inf to the firebase
+     *
+     * @param  V to let the compiler know this method can be considered as an Onclick item
+     *
+     */
     public void submit_house_inf(View V){//submit house inf to firebase
+        //get the variables which need to be uploaded from the fragment
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentTime = sdf.format(new Date());
         Spinner bedroom= root.findViewById(R.id.bedroom);
@@ -167,14 +183,16 @@ public class GalleryFragment extends Fragment {
         String email = Main_Page.getUser();
         String recommend = "0";
 
-        //update data
+        //Connect the firebase
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-
+        //generate data
         String data = city+";"+suburb_data+";"+street_data+";"+street_no_data+";"+unit_data+";"+price_data+";"+bedroom_no+";"+email+";"+recommend+";";
-
+        //update House data in Map form
         Map<String, Object> updates = new HashMap<>();
         updates.put(id, data);
+        //upload: add the new one to origin
         mDatabase.updateChildren(updates);
+        //jump to the main page finish and restart
         Toast.makeText(getActivity(), "successfully submit", Toast.LENGTH_SHORT);
         Intent intent = getActivity().getIntent();
         getActivity().finish();
@@ -182,7 +200,7 @@ public class GalleryFragment extends Fragment {
         startActivity(intent);
 
     }
-
+    //load user data from firebase
     private void loaduserdata(){
         // FirebaseDatabase uses the singleton design pattern (we cannot directly create a new instance of it).
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
