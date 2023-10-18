@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/** This class shows house detail information when users click from main page
+ * @author Wangtao Jia*/
+
 public class House_Detail_Page extends AppCompatActivity {
     String likes;
 
