@@ -121,7 +121,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application UML
 
-![ClassDiagram][https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/media/_examples/ClassDiagramExample.png]<br>
+![ClassDiagram](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/media/_examples/ClassDiagramExample.png)<br>
 *[Replace the above with a class diagram. You can look at how we have linked an image here as an example of how you can do it too.]*
 
 <hr>
