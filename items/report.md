@@ -97,11 +97,23 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ## Application Description
 
-*[What is your application, what does it do? Include photos or diagrams if necessary]*
+*My app, called "Myplace", is a rental housing application. Upon logging in, users can:*
 
-*Here is a pet specific application example*
+*1.Location-Based Search: Users can search for rental properties near their current location.*
+|   |
+|---|
+| ![Location-Based](/Users/colin/StudioProjects/ga-23s2finall/items/media/_examples/mainpage.png){height=400px}|
 
-*PetBook is a social media application specifically targetting pet owners... it provides... certified practitioners, such as veterians are indicated by a label next to their profile...*
+*2.View Property Details: Users can view detailed information about available rental properties.*
+|   |   |
+|---|---|
+| ![Mainpage](/Users/colin/StudioProjects/ga-23s2finall/items/media/_examples/mainpage1.png){height=400px}  | ![house detail](/Users/colin/StudioProjects/ga-23s2finall/items/media/_examples/housedetail.png){height=400px}   |
+
+
+*3.Customized Search: Users can refine their search by specifying location, price, and the number of bedrooms they desire.*
+
+*4.Listing Properties: The app provides functionality for both regular users and real estate agents to upload details about properties they want to rent out.*
+
 
 ### Application Use Cases and or Examples
 
