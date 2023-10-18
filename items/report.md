@@ -152,9 +152,9 @@ This is an important section of your report and should include all technical dec
 
 - Details about the design patterns used (where in the code, justification of the choice, etc)
 
-*Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.
+*Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.*
 
-###1
+***1***
 
 **Parser and Grammar:**
 
@@ -174,7 +174,7 @@ This is an important section of your report and should include all technical dec
 
 - **Event Handling:** It sets an `OnClickListener` for each item in the RecyclerView. When a user clicks on a house listing, it starts a new activity, `House_Detail_Page`, and passes data related to the selected house along with the random image resource ID (`imageid`). This event handling allows users to view detailed information about a specific house.
 
-###2
+***2***
 
 <hr>
 
