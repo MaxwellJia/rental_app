@@ -34,7 +34,7 @@ public class TokenParse {
 
         String FindLocation = null;
         for (String part : parts) {
-            // 使用正则表达式检查是否包含字母，如果包含，则将其识别为地点
+            // Use regular expressions to check for the presence of letters, if found, identify it as a location
             if (containsLetters(part)) {
                 if (part.matches("(?i)^cit.*$")) {
                     FindLocation = "City";
@@ -150,7 +150,7 @@ public class TokenParse {
     }
 
     private boolean containsLetters(String input) {
-        // 使用正则表达式检查字符串中是否包含字母
+        // Use regular expressions to check if the string contains letters
         Pattern pattern = Pattern.compile(".*[a-zA-Z].*");
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
@@ -159,7 +159,7 @@ public class TokenParse {
     private List<Integer> extractMinMaxPrice(String input) {
         List<Integer> priceRange = new ArrayList<>();
         boolean validInput = false;
-
+        //get price range
         String[] parts = input.split("\\s+");
             for (String part : parts) {
                 if(!containsLetters(part.toString())){
@@ -196,7 +196,7 @@ public class TokenParse {
 
     private int extractBedrooms(String input) {
         String[] parts = input.split("\\s+");
-
+        //get bedroom numbers
         int FindroomNumber = 0;
         for (String part : parts) {
             if (part.matches("\\d+") && Integer.parseInt(part) < 7) {

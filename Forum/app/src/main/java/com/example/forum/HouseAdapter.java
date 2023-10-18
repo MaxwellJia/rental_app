@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> {
-
     private List<House> houseList;
-
     public HouseAdapter(List<House> houseList) {
         this.houseList = houseList;
     }
@@ -25,18 +23,16 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflates the layout for individual house listings in the RecyclerView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.house_cardview, parent, false);
         return new ViewHolder(view);
     }
-
-
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // 获取当前位置的房源数据
+        // Get the data for the house at the current position
         House house = houseList.get(position);
 
-        //随机背景图片
+        // Random background image selection for house listings
 
         int[] imageResources = {
                 R.drawable.houseappearence1,
@@ -61,13 +57,15 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
         holder.houimage.setImageResource(randomImageResource);
 
 
-    // 将房源数据填充到 house_cardview.xml 中的各个视图中
+        // Set the image with a slight opacity for visual effect
         holder.textViewTitle.setText(house.getCity()+" "+house.getSuburb());
         holder.textViewDescription.setText(house.getStreet()+" "+house.getStreetNumber()+" $"+house.getPrice()+" "+house.getXbxb()+" Bedroom");
 
+        // Set an OnClickListener for each house item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Start a new activity to display detailed information about the selected house
                 System.out.println(house.getStreet());
                     Intent intent = new Intent(v.getContext(), House_Detail_Page.class);
                     intent.putExtra("houseData", (Serializable) house);
@@ -85,14 +83,13 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle;
         TextView textViewDescription;
-
         ImageView houimage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Initialize TextViews and ImageView for house details
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
-
             houimage=itemView.findViewById(R.id.houimage);
 
         }

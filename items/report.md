@@ -88,8 +88,23 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - 
 
 
-3. **UID2, Name2**  I have xx% contribution, as follows: <br>
-- ...
+3. **u7629279, Xiangji Li**  I have 25% contribution, as follows: <br>
+    - **Code Contribution in the final App**
+    - Feature Token - class TokenParse: [TokenParse.java] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java), 
+    - Feature CardViewAdapter - class HouseAdapter: [HouseAdapter.java] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseAdapter.java)
+    - Feature Recycleview and SearchText - class HomeFragment: [HomeFragment.java] ((https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L161-263),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L385-485))
+    - UI Design - HomepageCardview Show: [HomeFragment.java] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L423-459)
+    - UI Design - LoginPage，HomeFragment Show: [activity_log_in.xml],[activity_main],[fragment_home],[house_cardview] ((https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_log_in.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_main.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/fragment_home.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/house_cardview.xml))
+   
+    - **Code and App Design**
+    - Being responsible for HomePage fragment design. Using CardView and recycleView to load data. Implemented the HouseAdapter class for managing and displaying a list of house listings in a RecyclerView.Designed the layout for individual house listings by inflating the "house_cardview" layout.
+      Dynamically selected random background images from a set of resources for each house listing, enhancing the visual appeal of the app.Bound data from the House objects to the respective UI elements, including title, description, and background image.Set an OnClickListener for each house item, enabling users to view detailed information about a selected house.Contributed to the overall functionality and presentation of house listings in the app's UI.*
+    - Being responsible for Search edittext. `TokenParse` class, which is responsible for parsing input data to extract location, price range, and number of bedrooms. This class plays a crucial role in filtering and searching for house listings based on user input.It plays a fundamental role in the functionality of the app, allowing users to filter and search for house listings based on their preferences. * <br><br>
+   
+    - **Others**: (only if significant and significantly different from an "average contribution")
+    - responsible for part of report writing and slides preparation 
+    - responsible for Meeting minutes.
+   
 4. **UID2, Name2**  I have xx% contribution, as follows: <br>
 - ...
 

@@ -66,8 +66,8 @@ public class HomeFragment extends Fragment {
     private int noOfTotalHouses;//Number of all houses in the first load
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
-    private List<String> dataList = new ArrayList<>();//初始全部房源
-    private List<House> filteredDataList;//搜索后符合条件的房子
+    private List<String> dataList = new ArrayList<>();//All Initial House Listings
+    private List<House> filteredDataList;//Search for Houses Meeting Criteria
     TextView houseNo;//Store the no of search result on front page
     private ArrayAdapter<String> arrayAdapter;
     private EditText editText;
@@ -91,16 +91,10 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // 使用视图对象查找RecyclerView
+        // Use the view object to find the RecyclerView.
         recyclerViewhouse = root.findViewById(R.id.recyclerViewforhouse);
 
-        // 初始化适配器，这里你需要创建一个自定义适配器，比如 HouseAdapter
-
-
-        // 设置适配器给 RecyclerView
-        //recyclerViewhouse.setAdapter(adapter1);
-
-        // 使用线性布局管理器
+        // Use a linear layout manager
         recyclerViewhouse.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recyclerViewhouse.setVisibility(View.VISIBLE);
@@ -121,7 +115,7 @@ public class HomeFragment extends Fragment {
             // Get a reference to the users collection in the database and then get the specific user (as specified by the user id in this case).
             DatabaseReference databaseReference = firebaseDatabase.getReference("House")
                     .child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
-            //首页地区房子
+            //Homepage regional houses
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -148,7 +142,7 @@ public class HomeFragment extends Fragment {
                             houseNo.setText(houseList.size() + " Results");
                             adapter1 = new HouseAdapter(houseList);
                             recyclerViewhouse.setAdapter(adapter1);
-                            adapter1.notifyDataSetChanged(); // 通知适配器数据已更改
+                            adapter1.notifyDataSetChanged(); // Notify adapter that data has changed
                         }
                     } else {
                         Log.d("FirebaseData", "No data available or data is null");
@@ -208,7 +202,7 @@ public class HomeFragment extends Fragment {
                 if (s.length() == 0 && recyclerView.getVisibility() == View.VISIBLE) {
                     recyclerView.setVisibility(View.GONE);
                 }
-                showContentIfChanged(s.toString()); // 传递当前文本内容以检查是否有变化
+                showContentIfChanged(s.toString()); // Pass the current text content to check for changes
             }
         });
         /**
@@ -278,9 +272,9 @@ public class HomeFragment extends Fragment {
             //
             public void applySearch(View view) {
                 if (!dataList.isEmpty()) {
-                    //最后展示的结果List
+                    //The final displayed result List
                     filteredDataList = new ArrayList<>();
-                    //temp是一个暂时存储每次提取出来的房子
+                    //temp is a temporary storage for each extracted house
                     List<House> temp = new ArrayList<>();
                     String query = editText.getText().toString().trim();
                     TokenParse tp = new TokenParse(query);
@@ -326,7 +320,7 @@ public class HomeFragment extends Fragment {
                     }
                     //Sort by decreasing likes
                     temp.sort(Comparator.comparingInt(House::getLikes).reversed());
-                    //把House类型的List转化为String List的显示结果
+                    //Convert the List of House objects into a String List for display.
                     dataList = new ArrayList<>();
                     for (House house : temp) {
                         dataList.add(house.getId() + ";" + house.getCity() + ";" + house.getSuburb() + ";" + house.getStreet() + ";" + house.getStreetNumber() + ";" + house.getUnit() + ";" + house.getPrice() + ";" + house.getXbxb() + ";" + house.getEmail() + ";" + house.getLikes() + ";");
@@ -482,7 +476,7 @@ public class HomeFragment extends Fragment {
     public void showContentIfChanged(String newText) {
         String query = editText.getText().toString().trim();
         if (!newText.equals(query)) {
-            // 当文本发生变化时执行加载数据的操作
+            // Execute data loading operations when the text changes.
             dataList.clear();
             loadData();
             adapter.notifyDataSetChanged();
