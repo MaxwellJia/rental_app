@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.github.blackfizz:eazegraph:1.2.5l@aar">
+  <library name="Gradle: com.github.blackfizz:eazegraph:1.2.5l@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="jar://$APPLICATION_HOME_DIR$/caches/transforms-3/e633ae35545c7e2c5635950c749066f4/transformed/eazegraph-1.2.5l/jars/classes.jar!/" />
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/e633ae35545c7e2c5635950c749066f4/transformed/eazegraph-1.2.5l/res" />

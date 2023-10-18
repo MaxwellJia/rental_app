@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar">
+  <library name="Gradle: androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
       <root url="jar://$APPLICATION_HOME_DIR$/caches/transforms-3/d920d56c1bf8d39e6d14ed1062cd0673/transformed/swiperefreshlayout-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>

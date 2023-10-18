@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.customview:customview:1.1.0@aar">
+  <library name="Gradle: androidx.customview:customview:1.1.0@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/286877114190e2addae4f0b723d7c54b/transformed/customview-1.1.0/AndroidManifest.xml" />
       <root url="jar://$APPLICATION_HOME_DIR$/caches/transforms-3/286877114190e2addae4f0b723d7c54b/transformed/customview-1.1.0/jars/classes.jar!/" />

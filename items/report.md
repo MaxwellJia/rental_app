@@ -60,21 +60,21 @@ A generic summary will not be acceptable and may result in a significant lose of
 *you should ALSO provide links to the specified classes and/or functions*
 Note that the core criteria of contribution is based on `code contribution` (the technical developing of the App).
 
-*Here is an example: (Note that you should remove the entire section (e.g. "others") if it is not applicable)*
-
-1. **UID1, Name1**  I have 30% contribution, as follows: <br>
+1. **u7630926, Xiaochen Lu**  I have 25% contribution, as follows: <br>
   - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+    - Feature UploadHouse Information - class UploadHouse: [UploadHouse.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/UploadHouse.java), class GalleryFragment: [GalleryFragment.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/gallery/GalleryFragment.java)
+    - Feature Data Simulation - class GenerateData: [Generate.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/GenerateData.java)
+    - Feature ReadFromLocalDataBase - class UploadHouse: [UploadHouse.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/UploadHouse.java)
+    - UI Design - class GalleryFragment: [GalleryFragment.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/gallery/GalleryFragment.java), XML fragment_gallery: [fragment_gallery.XML](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/fragment_gallery.xml)
+    - AccountTreeTest.java: [AccountTreeTest.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTreeTest.java), HouseTreeTest.java:[HouseTreeTest.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTreeTest.java), TokenParseTest.java: [TokenParseTest.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java)
 
   - **Code and App Design** 
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+    - Being responsible for local database management. Using XML structure to store local data*
+    - Being responsible for UploadHouse fragment design. This fragment is used to let users rent out their house by uploading their * <br><br>
 
   - **Others**: (only if significant and significantly different from an "average contribution") 
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+    - responsible for  part of report writing and slides preparation *
+    - responsible for unit test
 
 2. **UID2, Name2**  I have xx% contribution, as follows: <br>
   - ...
@@ -149,14 +149,20 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 *I used the following data structures in my project:*
 
 1. *LinkedList*
-   * *Objective: used for storing xxxx for xxx feature.*
-   * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
-   * *Reasons:*
-      * *It is more efficient than Arraylist for insertion with a time complexity O(1)*
-      * *We don't need to access the item by index for xxx feature because...*
-      * For the (part), the data ... (characteristics) ...
+   * *Objective: used for storing the raw data strings loaded from firebase dabase as we store them linearly there and store the search results after price comparison. Sometimes we need to search in other properties, like districts and sizes rather than price. We also display search results in recycle view, which is achieved by designing a linear adapter. *
+  * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+  * *Reasons:*
+     * *On the front page we don't need to search by price.*
+     * *Since firebase database is a linear structure, if we want to read data from there, we need to load data one by one and form a list*
+     * For the (part), the data ... (characteristics) ...
 
-2. ...
+2. *AVL Tree *
+    * *Objective: used for storing, sorting and search accounts and houses for basic feature.*
+    * *Code Locations: defined in [Class Account, AccountTree and House, HouseTree]
+    * *Reasons:*
+        * *It is more efficient than Arraylist for search with a time complexity O(h) ,where h means the height of AVL tree*
+        * *We don't need to access the item by index for xxx feature because...*
+        * For the (part), the data ... (characteristics) ...
 
 3. ...
 
@@ -165,12 +171,23 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 ### Design Patterns
 *[What design patterns did your team utilise? Where and why?]*
 
-1. *xxx Pattern*
-   * *Objective: used for storing xxxx for xxx feature.*
-   * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+1. *State Pattern*
+   * *Objective: Login status of a user, 0 for offline and 1 for online.*
+   * *Code Locations: defined in [Class Account](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Account.java#L11); processed in [Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L70-75) and [Activity Main_Page, method logOut]([Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L271-306)
    * *Reasons:*
-      * ...
-
+      * We want to guarantee that any account can only be logged on one device to avoid interruption of actions.
+      * Once logged in, the status becomes 1 and after signing out, it becomes 0 and this account can be logged in elsewhere.
+2. *Singleton Pattern*
+    * *Objective: Only one instance of AVLTreeFactory is created. Firebase database is also an application of Singleton.*
+    * *Code Locations: defined in [Class AVLTreeFactory](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AVLTreeFactory.java#13) ; processed in [Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L56-58) and [Fragment Home, method applySearch(View v)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L287-289), as well as anywhere we load from and reload to FB database.
+    * *Reasons:*
+        * We want to guarantee that only one instance is created.
+3.`*Iterator Pattern*
+    * *Objective: Use stack to traverse AVL tree, not by recursion.*
+    * *Code Locations: defined in [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L229-285) and [class HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java#L136-190); processed using [Activity AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L83) and [Fragment Home, method applySearch(View v)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L295-296)
+    * *Reasons:*
+        * After deletion of a node in Account Tree, we need to transform it to raw data strings ready to store them back to FB database, so we need to visit all accounts in this AVL tree.
+        * When searching for houses, we first construct the AVL tree for houses. If price is not detected by Tokenizer and Parser, then we transform them to a list so that we can search by district and size because this House AVLTree is sorted by prices.  
 <hr>
 
 ### Parser
@@ -312,7 +329,7 @@ We sort houses according to the number of likes, likes data is saved in firebase
 
 *Here is an example:*
 
-1. Tests for Search
+1. Tests for AccountTreeTest
    - Code: [TokenizerTest Class, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java) for the [Tokenizer Class, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43)
    - *Number of test cases: ...*
    - *Code coverage: ...*

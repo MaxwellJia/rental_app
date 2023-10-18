@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.activity:activity:1.7.1@aar">
+  <library name="Gradle: androidx.activity:activity:1.7.1@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/6a95f8cb0f47cb35bf6afef3776969ba/transformed/activity-1.7.1/AndroidManifest.xml" />
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/6a95f8cb0f47cb35bf6afef3776969ba/transformed/activity-1.7.1/res" />

@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.android.gms:play-services-maps:18.1.0@aar">
+  <library name="Gradle: com.google.android.gms:play-services-maps:18.1.0@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/ccf608644ef7afcb866155a59fe9a8ed/transformed/play-services-maps-18.1.0/res" />
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/ccf608644ef7afcb866155a59fe9a8ed/transformed/play-services-maps-18.1.0/AndroidManifest.xml" />

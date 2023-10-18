@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.android.gms:play-services-measurement-impl:21.3.0@aar">
+  <library name="Gradle: com.google.android.gms:play-services-measurement-impl:21.3.0@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/5023769829aecf1485f71546a8a28d41/transformed/play-services-measurement-impl-21.3.0/AndroidManifest.xml" />
       <root url="jar://$APPLICATION_HOME_DIR$/caches/transforms-3/5023769829aecf1485f71546a8a28d41/transformed/play-services-measurement-impl-21.3.0/jars/classes.jar!/" />

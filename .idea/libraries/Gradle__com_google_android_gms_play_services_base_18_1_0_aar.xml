@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.android.gms:play-services-base:18.1.0@aar">
+  <library name="Gradle: com.google.android.gms:play-services-base:18.1.0@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/a20986474e613a87ca4fdd07c7579ebb/transformed/play-services-base-18.1.0/res" />
       <root url="file://$APPLICATION_HOME_DIR$/caches/transforms-3/a20986474e613a87ca4fdd07c7579ebb/transformed/play-services-base-18.1.0/AndroidManifest.xml" />

@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.drawerlayout:drawerlayout:1.1.1@aar">
+  <library name="Gradle: androidx.drawerlayout:drawerlayout:1.1.1@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
       <root url="jar://$APPLICATION_HOME_DIR$/caches/transforms-3/86cf6b670be4925b03a7ccdf12dc4b90/transformed/drawerlayout-1.1.1/annotations.zip!/" />
     </ANNOTATIONS>
