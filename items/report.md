@@ -214,10 +214,11 @@ Production Rules:
    * [Class GalleryFragment(upload house function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/gallery/GalleryFragment.java)
    * [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
 
-3. [LoadShowData]. We reload our house data from firebase every 90 seconds. Data will be shown if there are any users who uploaded houses
+3. [LoadShowData]. We reload our house data from firebase when firebase is updated. Data will be shown if there are any users who uploaded houses or like some houses. Also, we show houses and like information to our users and users are able to see changes if these changes database is updated.(medium)
+   * Code to show and update Data[Class HomeFragment, Method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
    <br>
 
-4. [Search]. User is able to search according to suburb, price, bedroom number in search bar, we also show some possible results while user is entering to help our users. We use tokenisers and parser to do this in our app. For example, we can enter "city 500-600 6 Bedroom" in search bar to find aim house.
+4. [Search]. User is able to search according to suburb, price, bedroom number in search bar, we also show some possible results while user is entering to help our users. We use tokenisers and parser to do this in our app. For example, we can enter "city 500-600 6 Bedroom" in search bar to find aim house. (medium)
    * Code:[Class TokenParse](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java),[Class HomeFragment, method applySearch](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
 
 5. [DataStructure] We use AVL tree data structure to support our app with account and house data.
@@ -231,21 +232,53 @@ Production Rules:
    * Code:[Class HouseTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTreeTest.java),[Class AccountTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTreeTest.java),[Class TokenParseTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java)
 
 ### Custom Features
-Feature Category: Privacy <br>
-1. [Privacy-Request]. Description of the feature  (easy)
-   * Code: [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-   * Description of your implementation: ... <br>
-     <br>
+Feature Category: Search-related features <br>
+1. [Search-Invalid]. If you search some invalid like cit in search bar and the press search, it now can get correct results now. If the first three characters is correct and there are relative places in our database, we will show the correct place name. (medium)
+   * Code:[Class TokenParse, Method extractLocation](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java)
 
-2. [Privacy-Block]. Description ... ... (medium)
-   ... ...
-   <br><br>
+2. [Search-Filter]. We use the number of likes to rank the search results, the house with more likes is ranked in the top of search result.
+   * Code: [Class HomeFragment, Method searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
+
+Feature Category: Greater Data Usage, Handling and Sophistication <br>
+1. [Data-Formats]. We read json and xml files in our app.  (easy)
+   * Code: [google-services.json](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/google-services.json), [addressBook.xml](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/assets/addressBook.xml)
+   * Description of your implementation: We firebase json file to load user data and house data. We also use xml files to load options data in upload function <br>
+
+2. [Data-Profile]. We create user profile page in side bar at left top (easy)
+    * Code: [Class Main_Page, method loadUserProfile](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java)
+    * Description of your implementation: There are avatar, greeting messages, user email and relative information shown in side bar at left top<br>
+   
+3. [Data-GPS]. We can show house around the location of the app by pressing button under search button at right top (easy)
+    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java)
+    * Description of your implementation: When user get in, we will get user's gps in backend, when user click the button under search button, we will show houses (Acton for example) around the location on the page.<br>
+   
+4. [Data-Graphical]. We create pie chart in sideshowfragment to show our available houses data (medium)
+    * Code: [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java)
+    * Description of your implementation: This class shows the overview house data in our app in different color
+
+5. [Data-Deletion]]. Users can delete their account in our app in log in page by delete button (medium)
+    * Code: [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java)
+    * Description of your implementation: We can help our user to delete account and this account will be deleted in firebase too. <br>
+
 
 Feature Category: Firebase Integration <br>
-3. [FB-Auth] Description of the feature (easy)
-   * Code: [Class X, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-   * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
-   * Description of your implementation: ... <br>
+1. [FB-Auth] We use firebase to store our users data to log in (easy)
+   * Code: [Class LogIn](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java)
+   * Description of your implementation: This class retrieve data from firebase to verify users' enter username and password to let users with authentication to log in.
+
+2. [FB-Persist] We persist all our data on firebase including users' information and house information, users can get notifications if the data based has been changed  (hard)
+    * Code: [Class HomeFragment, method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
+    * Description of your implementation: We someone else upload houses in our app, user can receive notification. The like function is also link to firebase in real-time.
+
+Feature Category: User Interactivity
+1. [Interact-Micro] Users are able to like house, they can also like many times. (easy)
+    * Code: [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
+    * Description of your implementation: Users are able to like houses and the number of like is accessed to firebase in real-time.
+
+Feature Category: Privacy
+1. [Privacy-Request] When use gps function, this must be accepted by users on the phone. (easy)
+    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java)
+    * Description of your implementation: Users must accept some conditions to use GPS for the first time use the app.
 
 <hr>
 
