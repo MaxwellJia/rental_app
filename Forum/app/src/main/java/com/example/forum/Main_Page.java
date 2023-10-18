@@ -93,8 +93,7 @@ public class Main_Page extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 logOut();
-                Intent intent1=new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent1);
+                finish();
             }
         });
         binding.appBarMainPage.btnGPS.setOnClickListener(new View.OnClickListener() {
