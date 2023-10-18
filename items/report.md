@@ -111,8 +111,14 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 
 *3.Customized Search: Users can refine their search by specifying location, price, and the number of bedrooms they desire.*
+|   |
+|---|
+| ![Search](items/media/_examples/search.png){height=400px}|
 
 *4.Listing Properties: The app provides functionality for both regular users and real estate agents to upload details about properties they want to rent out.*
+|   |
+|---|
+| ![Rent out](items/media/_examples/rentout.png){height=400px}|
 
 
 ### Application Use Cases and or Examples
