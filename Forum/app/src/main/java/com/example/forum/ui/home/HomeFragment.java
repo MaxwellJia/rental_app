@@ -364,7 +364,7 @@ public class HomeFragment extends Fragment {
                     adapter1.notifyDataSetChanged();
                     //Pop a toast message if there are more houses detected
                     if (houseList.size() > noOfTotalHouses) {
-                        Toast.makeText(getContext(), "New Houses Available!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "New Houses Available!", Toast.LENGTH_SHORT).show();
                     }
                     noOfTotalHouses = houseList.size();
 
