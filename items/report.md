@@ -154,6 +154,25 @@ This is an important section of your report and should include all technical dec
 
 *Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.
 
+**1**
+**Parser and Grammar:**
+
+- It's an Android app adapter for displaying house listings. The data displayed in the RecyclerView driven by the data provided in the `houseList`.
+
+**Design Patterns:**
+
+- **Adapter Design Pattern:** The code implements the Adapter design pattern, which is a structural pattern commonly used in Android development for efficiently binding data to UI components. It allows the RecyclerView to work with the data source (`houseList`) and efficiently populate the UI views.(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseAdapter.java)
+
+**Technical Decisions:**
+
+- **Data Binding:** The code uses data binding to connect the data from the `houseList` to the UI elements in the RecyclerView. This decision helps maintain a clean separation of data and UI components.
+
+- **Random Image Selection:** It uses a random image selection from an array of image resources. This provides a variety of visuals for each house listing, making the app more visually appealing. The use of randomization enhances the user experience.
+
+- **Serializable Data Transfer:** To pass data between activities, the code utilizes the `Serializable` interface. While this method works for small data objects, it may not be the most efficient option for larger datasets or complex data structures.
+
+- **Event Handling:** It sets an `OnClickListener` for each item in the RecyclerView. When a user clicks on a house listing, it starts a new activity, `House_Detail_Page`, and passes data related to the selected house along with the random image resource ID (`imageid`). This event handling allows users to view detailed information about a specific house.
+
 <hr>
 
 ### Data Structures
