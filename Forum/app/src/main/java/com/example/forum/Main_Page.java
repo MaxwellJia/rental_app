@@ -63,13 +63,17 @@ import android.Manifest;
 
 public class Main_Page extends AppCompatActivity {
     static String userr;// Username pass from Login Page
+    static String district;// Username pass from Login Page
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
     TextView mySignature;// Greeting description in side user profile
     TextView title;// Username shown in side user profile
     ImageView avatar;// Avatar in side user profile
     TextView textView;// Location of simulated device in the world shown in Home Fragment
-
+    LocationManager locationManager;
+    LocationListener locationListener;
+    TextView tvLocation;
+    Geocoder geocoder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +86,7 @@ public class Main_Page extends AppCompatActivity {
         //Initialize firebase
         FirebaseApp.initializeApp(this);
         // Initialize text for location shown
-        textView = findViewById(R.id.textViewMap);
-
+        tvLocation = findViewById(R.id.textViewMap);
         //Definition of start GPS detection button
         setSupportActionBar(binding.appBarMainPage.toolbar);
         binding.appBarMainPage.fab.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +95,12 @@ public class Main_Page extends AppCompatActivity {
                 logOut();
                 Intent intent1=new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent1);
+            }
+        });
+        binding.appBarMainPage.btnGPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                applayUpdateGPS();
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -109,6 +118,50 @@ public class Main_Page extends AppCompatActivity {
 
         //Load user profile on side user profile, as well as start GPS access
         loadUserProfile(navigationView);
+        /**
+         * This is listener for GPS location
+         * [Data-GPS] is achieved
+         * @author Linsheng Zhou
+         */
+        //Listener for getting GPS info
+        tvLocation = findViewById(R.id.textViewMap);
+        district="dsdsadasdw";
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+                    // Reverse Geocoding
+                    geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    // Retrieve district info
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (addresses.size() > 0) {
+                            // Let district shown on Home Fragment
+                            if(!district.equals(addresses.get(0).getLocality())){
+                                Toast.makeText(getApplicationContext(), "You are in "+addresses.get(0).getLocality()+".", Toast.LENGTH_SHORT).show();
+
+                            }
+                            district=addresses.get(0).getLocality();
+                            tvLocation.setText(district);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                // Ask for permission GPS access
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
     }
 
     @Override
@@ -127,7 +180,7 @@ public class Main_Page extends AppCompatActivity {
 
     /**
      * This method does something.
-     *
+     * [Data-Profile] is achieved
      * @param navigationView root view in navigationView which contains user profile components
      * @author Linsheng Zhou
      */
@@ -208,6 +261,9 @@ public class Main_Page extends AppCompatActivity {
     public static String getUser() {
         return userr;
     }
+    public static String getDistrict() {
+        return district;
+    }
 
     /**
      * This method examines device configuration and starts GPS listening
@@ -249,5 +305,27 @@ public class Main_Page extends AppCompatActivity {
                 Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
             }
         });
+    }
+
+    /**
+     * This method checks for version and permissions
+     * Starts swift update
+     *
+     * @author Linsheng Zhou
+     */
+    public void applayUpdateGPS() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
+
+                }, 0);
+                return;
+            }
+        }
+        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
     }
 }

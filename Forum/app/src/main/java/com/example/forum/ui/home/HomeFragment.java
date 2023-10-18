@@ -43,6 +43,7 @@ import com.example.forum.House_Detail_Page;
 import android.widget.Toast;
 
 import com.example.forum.MainActivity;
+import com.example.forum.Main_Page;
 import com.example.forum.R;
 import com.example.forum.TokenParse;
 import com.example.forum.databinding.FragmentHomeBinding;
@@ -79,9 +80,8 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     HouseAdapter adapter1;
     private boolean fetchingData = false;
-    LocationManager locationManager;
-    LocationListener locationListener;
-    Geocoder geocoder;
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment {
          * @author Linsheng Zhou
          */
         textview = root.findViewById(R.id.textViewMap);
+        textview.setText(Main_Page.getDistrict());
         searchButton = root.findViewById(R.id.btn_nearby);
         houseNo = root.findViewById(R.id.HouseAmount);
         searchButton.setOnClickListener(v -> {
@@ -127,7 +128,7 @@ public class HomeFragment extends Fragment {
                         for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                             String item = "" + itemSnapshot.getKey() + ";" + itemSnapshot.getValue(String.class);
                             String[] property = item.split(";");
-                            if (property[2].equals(textview.getText().toString())) {
+                            if (property[2].equals(Main_Page.getDistrict())) {
                                 // Set the data houselist
                                 houseListNearBy.add(new House(property[0], property[1], property[2], property[3], property[4], property[5],
                                         Integer.parseInt(property[6]), Integer.parseInt(property[7]), property[8],
@@ -382,45 +383,8 @@ public class HomeFragment extends Fragment {
         //This is the bottom text view about search numbers of houses
         textViewforamount = root.findViewById(R.id.HouseAmount);
 
-        /**
-         * This is listener for GPS location
-         *
-         * @author Linsheng Zhou
-         */
-        //Listener for getting GPS info
-        tvLocation = root.findViewById(R.id.textViewMap);
-        locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
 
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
 
-                    // Reverse Geocoding
-                    geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                    // Retrieve district info
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                        if (addresses.size() > 0) {
-                            // Let district shown on Home Fragment
-                            tvLocation.setText(addresses.get(0).getLocality());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                // Ask for permission GPS access
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
-        applayUpdateGPS();
 
         return root;
     }
@@ -531,26 +495,5 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    /**
-     * This method checks for version and permissions
-     * Starts swift update
-     *
-     * @author Linsheng Zhou
-     */
-    public void applayUpdateGPS() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET
-
-                }, 0);
-                return;
-            }
-        }
-        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
-    }
 }
 

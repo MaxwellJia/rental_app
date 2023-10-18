@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * This activity enables users to delete their accounts from our system if they no loner use it.
- *
+ * [Data-Deletion] is achieved
  * @author Linsheng Zhou
  */
 public class AccountDelete extends AppCompatActivity {
