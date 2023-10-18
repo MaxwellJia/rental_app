@@ -102,12 +102,12 @@ Note that the core criteria of contribution is based on `code contribution` (the
 *1.Location-Based Search: Users can search for rental properties near their current location.*
 |   |
 |---|
-| ![Location-Based](/Users/colin/StudioProjects/ga-23s2finall/items/media/_examples/mainpage.png){height=400px}|
+| ![Location-Based](items/media/_examples/mainpage.png){height=400px}|
 
 *2.View Property Details: Users can view detailed information about available rental properties.*
 |   |   |
 |---|---|
-| ![Mainpage](/Users/colin/StudioProjects/ga-23s2finall/items/media/_examples/mainpage1.png){height=400px}  | ![house detail](/Users/colin/StudioProjects/ga-23s2finall/items/media/_examples/housedetail.png){height=400px}   |
+| ![Mainpage](items/media/_examples/mainpage1.png){height=400px}  | ![house detail](items/media/_examples/housedetail.png){height=400px}   |
 
 
 *3.Customized Search: Users can refine their search by specifying location, price, and the number of bedrooms they desire.*
