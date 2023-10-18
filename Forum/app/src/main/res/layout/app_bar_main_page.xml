@@ -30,5 +30,15 @@
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_lock_power_off" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="80dp"
+        android:clickable="true"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@android:drawable/ic_menu_compass" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
