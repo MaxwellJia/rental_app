@@ -123,31 +123,16 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application Use Cases and or Examples
 
-*[Provide use cases and examples of people using your application. Who are the target users of your application? How do the users use your application?]*
+*Target Users: Individuals looking to rent properties*
 
-*Here is a pet training application example*
+* *Users can explore rental properties near their current location.*
+* *Users can search for properties in specific locations.*
+* *Users can view property details, including pricing, room configurations, and contact information of the landlord.*
 
-*Molly wants to inquiry about her cat, McPurr's recent troublesome behaviour*
-1. *Molly notices that McPurr has been hostile since...*
-2. *She makes a post about... with the tag...*
-3. *Lachlan, a vet, writes a reply to Molly's post...*
-4. ...
-5. *Molly gives Lachlan's reply a 'tick' response*
+*Target Users: Real estate agents or property owners looking to rent out their properties*
 
-*Here is a map navigation application example*
-
-*Targets Users: Drivers*
-
-* *Users can use it to navigate in order to reach the destinations.*
-* *Users can learn the traffic conditions*
-* ...
-
-*Target Users: Those who want to find some good restaurants*
-
-* *Users can find nearby restaurants and the application can give recommendations*
-* ...
-
-*List all the use cases in text descriptions or create use case diagrams. Please refer to https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-use-case-diagram/ for use case diagram.*
+* *Real estate agents or property owners can upload details of their available properties.*
+* *They can also check the rental status of properties similar to their own and provide information about their properties.*
 
 <hr> 
 
