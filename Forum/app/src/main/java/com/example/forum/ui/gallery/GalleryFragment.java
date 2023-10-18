@@ -194,10 +194,10 @@ public class GalleryFragment extends Fragment {
         mDatabase.updateChildren(updates);
         //jump to the main page finish and restart
         Toast.makeText(getActivity(), "successfully submit", Toast.LENGTH_SHORT);
-        Intent intent = getActivity().getIntent();
-        getActivity().finish();
-        // Create an instance of the new fragment
-        startActivity(intent);
+//        Intent intent = getActivity().getIntent();
+//        getActivity().finish();
+//        // Create an instance of the new fragment
+//        startActivity(intent);
 
     }
     //load user data from firebase
