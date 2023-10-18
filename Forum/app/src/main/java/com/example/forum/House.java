@@ -2,22 +2,27 @@ package com.example.forum;
 
 import java.io.Serializable;
 
+/**
+ * This class defines what properties should be included in each house
+ *
+ * @author All Members
+ */
 public class House implements Serializable {
-    private String id;//key
-    private String city;//value[0]
-    private String suburb;//value[1]
-    private String street;//value[2]
+    private String id;//key(timestamp)
+    private String city;//value[0](CBR)
+    private String suburb;//value[1](Acton)
+    private String street;//value[2](Daley Road)
     private String streetNumber;//value[3]
-    private String unit;//Value[4]
-    private int price;//value[5]
-    private int xbxb;//value[6]
-    private String email;//value[7]
-    private int likes;//value[8]
+    private String unit;//Value[4](165)
+    private int price;//value[5](Fortnight fees)
+    private int xbxb;//value[6](Sizes)
+    private String email;//value[7](Contactor E-mail)
+    private int likes;//value[8](Likes received from users)
 
     public int height;//Helper to balance AVL tree
-    public House left;
+    public House left;// Left child
 
-    public House right;
+    public House right;// Right child
 
     public House(String id, String city, String suburb, String street, String streetNumber, String unit, int price, int xbxb, String email, int likes) {
         this.id = id;
@@ -55,56 +60,28 @@ public class House implements Serializable {
         return suburb;
     }
 
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
-    }
-
     public String getStreet() {
         return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
     }
 
     public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
-    }
-
     public String getUnit() {
         return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public int getXbxb() {
         return xbxb;
     }
 
-    public void setXbxb(int xbxb) {
-        this.xbxb = xbxb;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public int getHeight() {
@@ -138,7 +115,8 @@ public class House implements Serializable {
     public void setLikes(int likes) {
         this.likes = likes;
     }
-    public String toString(){
-        return id+";"+city+";"+suburb+";$"+price+";B"+xbxb;
+
+    public String toString() {
+        return id + ";" + city + ";" + suburb + ";$" + price + ";B" + xbxb;
     }
 }

@@ -5,20 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
-public class AccountTree  implements Iterable<Account> {
-
+/**
+ * This class uses AVL tree to organize, proceed, retrieve, store and delete users' details
+ * Iterator DP is accepted to perform traverse of this AVL tree
+ *
+ * @author Linsheng Zhou
+ */
+public class AccountTree implements Iterable<Account> {
+    // Constructor
     public AccountTree(Account account) {
-        root=account;
+        root = account;
     }
 
-    public Account root;
+    public Account root;//Root account in this AVL tree
 
     public Account getRoot() {
         return root;
-    }
-
-    public void setRoot(Account root) {
-        this.root = root;
     }
 
     // Helper method to get the height of a node
@@ -69,6 +71,8 @@ public class AccountTree  implements Iterable<Account> {
     }
 
     // Insert a new node into the AVL tree
+    // It's feasible because each string has a value and we can compare them with String.compareTo() method
+    // Only the same string has the same value
     public void insert(Account toInsert) {
         root = insert(root, toInsert);
     }
@@ -77,17 +81,17 @@ public class AccountTree  implements Iterable<Account> {
         if (node == null) {
             return toInsert;
         }
-
+        // This AVL tree is sorted by the values of username strings
         if (toInsert.account.compareTo(node.account) < 0) {
             node.left = insert(node.left, toInsert);
         } else if (toInsert.account.compareTo(node.account) > 0) {
             node.right = insert(node.right, toInsert);
         } else {
-            // Handle duplicate accounts if needed
+            // No action for duplicate username, as each user has a unique username
         }
 
         updateHeight(node);
-
+        // Compare the heights of left sub-tree and right sub-tree
         int balance = getBalance(node);
 
         // Perform rotations to balance the tree
@@ -132,6 +136,7 @@ public class AccountTree  implements Iterable<Account> {
             return node; // Found the node with the specified account name
         }
     }
+
     // Delete a node with a given account name
     public void delete(String account) {
         root = delete(root, account);
@@ -220,13 +225,17 @@ public class AccountTree  implements Iterable<Account> {
         }
         return current;
     }
-    // Traverse the AVL tree in-order and return a list of all accounts
 
+    // Traverse the AVL tree in-order and return a list of all accounts
     @Override
     public Iterator<Account> iterator() {
         return new AccountTreeIterator(root);
     }
 
+    // 1. First push the leftmost wing of nodes in stack
+    // 2. Read and pop
+    // 3. If Right child exists, then push the right child and continue to push all leftmost wing nodes
+    // 4. Return when stack is empty
     private class AccountTreeIterator implements Iterator<Account> {
         private Stack<Account> stack;
 
@@ -263,12 +272,13 @@ public class AccountTree  implements Iterable<Account> {
         }
     }
 
-    public List<String> toList(){
-        List<String> storage=new ArrayList<>();
+    // Traverse to transform AVL tree with Account nodes to list of raw data strings, waiting to be stored in database
+    public List<String> toList() {
+        List<String> storage = new ArrayList<>();
         Iterator<Account> it = this.iterator();
         while (it.hasNext()) {
             Account account = it.next();
-            storage.add(account.account+";"+account.password+";"+account.state+";"+account.imageId);
+            storage.add(account.account + ";" + account.password + ";" + account.state + ";" + account.imageId);
         }
         return storage;
     }

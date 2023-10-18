@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/** This class shows house detail information when users click from main page
+ * @author Wangtao Jia*/
+
 public class House_Detail_Page extends AppCompatActivity {
     String likes;
 
@@ -28,10 +31,9 @@ public class House_Detail_Page extends AppCompatActivity {
         Intent intent = getIntent();
         House house = (House) intent.getExtras().getSerializable("houseData");
         int imageNumber = intent.getIntExtra("imageid",0);
-        Toast.makeText(this,String.valueOf(imageNumber),Toast.LENGTH_LONG).show();
 
         if (house == null){
-            Toast.makeText(this,"111",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"House gone",Toast.LENGTH_LONG).show();
         }
 
         assert house != null;

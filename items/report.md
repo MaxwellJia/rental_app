@@ -39,10 +39,10 @@ The key area(s) of responsibilities for each member
 
 | UID        |  Name  |                                                                            Role |
 |:-----------|:------:|--------------------------------------------------------------------------------:|
-| [u7370733] | [Wangtao Jia] | [Front-end Developer, Back-end Developer,UI/UX Designer] |
+| [u7370733] | [Wangtao Jia] |                        [Front-end Developer, Back-end Developer,UI/UX Designer] |
 | [u7630926] | [Xiaochen Lu] | [Back-end Developer,Database Administrator,Quality Assurance Engineer (Tester)] |
 | [u7630421] | [Linsheng Zhou] | [Back-end Developer,Database Administrator,Quality Assurance Engineer (Tester)] |
-| [u6729279] | [Xiangji Li] |   [Front-end Developer, Back-end Developer,UI/UX Designer] |
+| [u6729279] | [Xiangji Li] |                        [Front-end Developer, Back-end Developer,UI/UX Designer] |
 
 
 ## Summary of Individual Contributions
@@ -121,7 +121,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application UML
 
-![ClassDiagramExample](media/_examples/ClassDiagramExample.png) <br>
+![ClassDiagram](media/_examples/COMP6442.jpg)<br>
 *[Replace the above with a class diagram. You can look at how we have linked an image here as an example of how you can do it too.]*
 
 <hr>
@@ -176,45 +176,18 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 ### Parser
 
 ### <u>Grammar(s)</u>
+*[How do you design the grammar? What are the advantages of your designs?]*
+*If there are several grammars, list them all under this section and what they relate to.*
 
 Production Rules:
 
-*<SearchQuery> ::= <Location> <PriceRange> <Bedrooms>*
-*<Location> ::= "location" ":" <SuburbName>*
-*<PriceRange> ::= "price" ":" <MinimumPrice> "-" <MaximumPrice>*
-*<Bedrooms> ::= "bedrooms" ":" <Number>*
-*<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid city names)*
-*<MinimumPrice> ::= <Number>*
-*<MaximumPrice> ::= <Number>*
-*<Number> ::= <digit>+ (representing an integer)*
+    <Non-Terminal> ::= <some output>
+    <Non-Terminal> ::= <some output>
 
 
 ### <u>Tokenizers and Parsers</u>
 
-Tokenizers and parsers are used in the `TokenParse` class( https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java ) to extract and process information from user input in the context of a real estate app. They play a critical role in interpreting the user's search criteria, including location, price range, and the number of bedrooms.
-
-*Location Extraction*
-
-The `extractLocation` method (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L31-150 )tokenizes the input and identifies the location specified by the user. It employs regular expressions to check for the presence of alphabetic characters in the input. If a location is identified, it is assigned to the `location` field of the `TokenParse` class.
-
-Advantages:
-- Robust identification of location based on patterns.
-- Flexibility to recognize various location names.
-
-*Price Range Extraction*
-
-The `extractMinMaxPrice` method (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L159-195 )tokenizes the input to identify the minimum and maximum price values. It handles different input formats, including hyphen-separated ranges and single price values with context. The extracted price range is stored as a list in the `priceRange` field.
-
-Advantages:
-- Versatile recognition of price ranges.
-- Adjustment of the range for input values greater than 100.
-
-*Bedrooms Extraction*
-
-The `extractBedrooms` method (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L197-210) tokenizes the input to identify the number of bedrooms specified by the user. It extracts numeric values representing the number of bedrooms and assigns the result to the `bedrooms` field.
-
-Advantages:
-- Accurate identification of the number of bedrooms.
+*[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
 
 <hr>
 
@@ -230,17 +203,32 @@ Advantages:
 *List all features you have completed in their separate categories with their featureId. THe features must be one of the basic/custom features, or an approved feature from Voice Four Feature.*
 
 ### Basic Features
-1. [LogIn]. Description of the feature ... (easy)
-   * Code: [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-   * Description of feature: ... <br>
-   * Description of your implementation: ... <br>
+1. [LogIn]. LogIn page is used in this app, only users with right password can log in (easy)
+   * Code: [Class LogIn, methods applyLogin, onCreate](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java) and [relative UML](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_log_in.xml)
+   * Description of feature: 500 user data including username and password are saved in firebase, only these users can access our app through LogIn. <br>
+   * Description of your implementation: We store user data in firebase and retrieve data to verify if the entered user data is avaiable and let user get to main page if it's correct, toast user doesn't exist otherwise. <br>
 
-2. [DataFiles]. Description  ... ... (...)
-   * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
-   * Link to the Firebase repo: ...
+2. [DataFiles]. We feed app 500 user data and 2278 houses data with some attributes, data is all saved in firebase. Besides, we save our options data of uploading house in local xml file. Besides, we made a like function to help users to like the house, the like data is linked to house and saved in firebase.(easy)
+   * Code to the Data File [google-services.json](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/google-services.json), [addressBook.xml](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/assets/addressBook.xml), ...
+   * Link to the Firebase repo: [Firebase repo](https://console.firebase.google.com/project/ga-23s2-a5f8f/database/ga-23s2-a5f8f-default-rtdb/data/~2F)
+   * [Class GalleryFragment(upload house function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/gallery/GalleryFragment.java)
+   * [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
 
-3. ...
+3. [LoadShowData]. We reload our house data from firebase every 90 seconds. Data will be shown if there are any users who uploaded houses
    <br>
+
+4. [Search]. User is able to search according to suburb, price, bedroom number in search bar, we also show some possible results while user is entering to help our users. We use tokenisers and parser to do this in our app. For example, we can enter "city 500-600 6 Bedroom" in search bar to find aim house.
+   * Code:[Class TokenParse](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java),[Class HomeFragment, method applySearch](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
+
+5. [DataStructure] We use AVL tree data structure to support our app with account and house data.
+   * Code:[Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java),[Class HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java)
+
+6. [DesignPattern] We used state, template, iterator, obsever and singleton design patterns as mentioned above.
+
+7. [DataProcess] We use firebase (json) and xml(upload function options data) to retrive data as mentioned above.
+
+8. [Tests] We have some tests to test our functions.
+   * Code:[Class HouseTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTreeTest.java),[Class AccountTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTreeTest.java),[Class TokenParseTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java)
 
 ### Custom Features
 Feature Category: Privacy <br>
@@ -266,6 +254,9 @@ Feature Category: Firebase Integration <br>
 - If implemented, explain how your solution addresses the task (any detail requirements will be released with the surprised feature specifications).
 - State that "Suprised feature is not implemented" otherwise.
 
+The first feature is implement:
+We sort houses according to the number of likes, likes data is saved in firebase.
+
 <br> <hr>
 
 ## Summary of Known Errors and Bugs
@@ -275,12 +266,8 @@ Feature Category: Firebase Integration <br>
 
 *Here is an example:*
 
-1. *Bug 1:*
-   - *A space bar (' ') in the sign in email will crash the application.*
-   - ...
-
-2. *Bug 2:*
-3. ...
+1. *It will stuck some time if your click Like button many times in a short time:*
+   - Because it takes some time to store data on firebase, you just can't press it too fast.
 
 <br> <hr>
 
@@ -316,7 +303,7 @@ Feature Category: Firebase Integration <br>
 - *[Team Meeting 1](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
 - *[Team Meeting 2](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
 - *[Team Meeting 3](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting3.md)*
-- [Team Meeting 4](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)
+- *[Team Meeting 4](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)*
 
 <hr>
 
