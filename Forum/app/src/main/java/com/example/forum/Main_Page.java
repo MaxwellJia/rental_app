@@ -143,7 +143,6 @@ public class Main_Page extends AppCompatActivity {
                             // Let district shown on Home Fragment
                             if(!district.equals(addresses.get(0).getLocality())){
                                 Toast.makeText(getApplicationContext(), "You are in "+addresses.get(0).getLocality()+".", Toast.LENGTH_SHORT).show();
-
                             }
                             district=addresses.get(0).getLocality();
                             tvLocation.setText(district);

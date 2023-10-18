@@ -80,7 +80,9 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     HouseAdapter adapter1;
     private boolean fetchingData = false;
-
+    LocationManager locationManager;
+    LocationListener locationListener;
+    Geocoder geocoder;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -383,9 +385,6 @@ public class HomeFragment extends Fragment {
         //This is the bottom text view about search numbers of houses
         textViewforamount = root.findViewById(R.id.HouseAmount);
 
-
-
-
         return root;
     }
 
@@ -428,6 +427,7 @@ public class HomeFragment extends Fragment {
      * @author All Members
      */
     private void firstLoadInHomeFragment() {
+
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
