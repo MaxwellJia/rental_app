@@ -463,10 +463,15 @@ We sort houses according to the number of likes. Likes data is a property of eac
 * Your meetings should also have a reasonable date spanning across Week 6 to 11.*
 
 
-- *[Team Meeting 1](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
-- *[Team Meeting 2](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
-- *[Team Meeting 3](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting3.md)*
-- *[Team Meeting 4](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)*
+- *[Team Meeting 1] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
+- *[Team Meeting 2] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
+- *[Team Meeting 3] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting3.md)*
+- *[Team Meeting 4] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)*
+- *[Team Meeting 5] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting5.md)*
+- *[Team Meeting 6] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting6.md)*
+- *[Team Meeting 7] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting7.md)*
+- *[Team Meeting 8] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting8.md)*
+- *[Team Meeting 9] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting9.md)*
 
 <hr>
 
