@@ -154,7 +154,8 @@ This is an important section of your report and should include all technical dec
 
 *Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.
 
-**1**
+###1
+
 **Parser and Grammar:**
 
 - It's an Android app adapter for displaying house listings. The data displayed in the RecyclerView driven by the data provided in the `houseList`.
@@ -172,6 +173,8 @@ This is an important section of your report and should include all technical dec
 - **Serializable Data Transfer:** To pass data between activities, the code utilizes the `Serializable` interface. While this method works for small data objects, it may not be the most efficient option for larger datasets or complex data structures.
 
 - **Event Handling:** It sets an `OnClickListener` for each item in the RecyclerView. When a user clicks on a house listing, it starts a new activity, `House_Detail_Page`, and passes data related to the selected house along with the random image resource ID (`imageid`). This event handling allows users to view detailed information about a specific house.
+
+###2
 
 <hr>
 
