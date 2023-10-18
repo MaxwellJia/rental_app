@@ -80,9 +80,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     HouseAdapter adapter1;
     private boolean fetchingData = false;
-    LocationManager locationManager;
-    LocationListener locationListener;
-    Geocoder geocoder;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,7 +103,10 @@ public class HomeFragment extends Fragment {
          * @author Linsheng Zhou
          */
         textview = root.findViewById(R.id.textViewMap);
-        textview.setText(Main_Page.getDistrict());
+        if(!Main_Page.getDistrict().equals("Your Location")){
+            textview.setText(Main_Page.getDistrict());
+        }
+
         searchButton = root.findViewById(R.id.btn_nearby);
         houseNo = root.findViewById(R.id.HouseAmount);
         searchButton.setOnClickListener(v -> {

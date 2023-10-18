@@ -55,11 +55,15 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
-import android.Manifest;
+import android.os.Handler;
+
 
 public class Main_Page extends AppCompatActivity {
     static String userr;// Username pass from Login Page
@@ -74,9 +78,13 @@ public class Main_Page extends AppCompatActivity {
     LocationListener locationListener;
     TextView tvLocation;
     Geocoder geocoder;
+    private Handler handler = new Handler();
+    private Runnable runnable;
+    int SIMULATION_INTERVAL=30000;//Simulate new house upload every 30s
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        district="Your Location";
         // Retrieve current username from last activity
         Intent intent = getIntent();
         userr = intent.getStringExtra("username");
@@ -124,7 +132,7 @@ public class Main_Page extends AppCompatActivity {
          */
         //Listener for getting GPS info
         tvLocation = findViewById(R.id.textViewMap);
-        district="dsdsadasdw";
+
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -160,6 +168,19 @@ public class Main_Page extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+        // Create a Runnable that will run your function
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Call your function here
+                simulateDataStream();
+                // Schedule the Runnable to run again in 15 seconds
+                handler.postDelayed(this, SIMULATION_INTERVAL); // 15,000 milliseconds = 15 seconds
+            }
+        };
+
+        // Schedule the first run of the Runnable after 15 seconds
+        handler.postDelayed(runnable, SIMULATION_INTERVAL); // 15,000 milliseconds = 15 seconds
     }
 
     @Override
@@ -304,7 +325,17 @@ public class Main_Page extends AppCompatActivity {
             }
         });
     }
-
+    private void simulateDataStream(){
+        Random random=new Random();
+        //Connect the firebase
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("House").child("key:HouseId-value:city;suburb;street;building_no;unit;price;bedroom;email;recommend");
+        //generate data
+        String data = "ACT"+";"+"Acton"+";"+"AVE "+random.nextInt(100)+";"+random.nextInt(15)+";"+random.nextInt(20)+";"+(300+random.nextInt(600))+";"+(1+random.nextInt(6))+";"+"email"+";"+0+";";
+        //update House data in Map form
+        ; // Replace with the actual key
+        DatabaseReference newChildRef = mDatabase.push();
+        newChildRef.setValue(data);
+    }
     /**
      * This method checks for version and permissions
      * Starts swift update
@@ -325,5 +356,11 @@ public class Main_Page extends AppCompatActivity {
             }
         }
         locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove any pending callbacks to prevent memory leaks
+        handler.removeCallbacks(runnable);
     }
 }
