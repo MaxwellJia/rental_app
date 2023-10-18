@@ -73,11 +73,19 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - Being responsible for UploadHouse fragment design. This fragment is used to let users rent out their house by uploading their * <br><br>
 
   - **Others**: (only if significant and significantly different from an "average contribution") 
-    - responsible for  part of report writing and slides preparation *
+    - responsible for part of report writing and slides preparation *
     - responsible for unit test
 
-2. **UID2, Name2**  I have xx% contribution, as follows: <br>
-  - ...
+2. **u7630421, Linsheng Zhou**  I have 25% contribution, as follows: <br>
+  - **Custom features**
+    - Data-Profile: Displaying avatars, usernames and greetings based on system time oin left side drawer menu in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L179-256)
+    - Data-GPS: Retrieving the location of virtual device triggered by FAB in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L120-162)
+    - Data-Graphical: In a pie chart, displaying the percentages of 6 types of houses classified by bedroom numbers in [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java#L32-111)
+    - Data_Deletion: Implement a deletion method for [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L140-227) and used in [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L74-75)
+3. **UID2, Name2**  I have xx% contribution, as follows: <br>
+- ...
+4. **UID2, Name2**  I have xx% contribution, as follows: <br>
+- ...
 
 
 
@@ -173,7 +181,7 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 1. *State Pattern*
    * *Objective: Login status of a user, 0 for offline and 1 for online.*
-   * *Code Locations: defined in [Class Account](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Account.java#L11); processed in [Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L70-75) and [Activity Main_Page, method logOut]([Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L271-306)
+   * *Code Locations: defined in [Class Account](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Account.java#L11); processed in [Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L70-75) and [Activity Main_Page, method logOut](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L271-306)
    * *Reasons:*
       * We want to guarantee that any account can only be logged on one device to avoid interruption of actions.
       * Once logged in, the status becomes 1 and after signing out, it becomes 0 and this account can be logged in elsewhere.
@@ -182,12 +190,18 @@ Here is a partial (short) example for the subsection `Data Structures`:*
     * *Code Locations: defined in [Class AVLTreeFactory](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AVLTreeFactory.java#13) ; processed in [Activity Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L56-58) and [Fragment Home, method applySearch(View v)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L287-289), as well as anywhere we load from and reload to FB database.
     * *Reasons:*
         * We want to guarantee that only one instance is created.
-3.`*Iterator Pattern*
+3. *Iterator Pattern*
     * *Objective: Use stack to traverse AVL tree, not by recursion.*
     * *Code Locations: defined in [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L229-285) and [class HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java#L136-190); processed using [Activity AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L83) and [Fragment Home, method applySearch(View v)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L295-296)
     * *Reasons:*
         * After deletion of a node in Account Tree, we need to transform it to raw data strings ready to store them back to FB database, so we need to visit all accounts in this AVL tree.
-        * When searching for houses, we first construct the AVL tree for houses. If price is not detected by Tokenizer and Parser, then we transform them to a list so that we can search by district and size because this House AVLTree is sorted by prices.  
+        * When searching for houses, we first construct the AVL tree for houses. If price is not detected by Tokenizer and Parser, then we transform them to a list so that we can search by district and size because this House AVLTree is sorted by prices. 
+4. *Observer  Pattern*
+   * *Objective: Notify and trigger immediate and automatic reloading of houses in Home Fragment.*
+   * *Code Locations: defined in FB database; processed in [Fragment Home, Listener addValueEventListener(new ValueEventListener(){})](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L342-383)
+   * *Reasons:*
+       * It belongs to the LoadShowData Feature. Once the content of database in our House dir changes, like someone likes or updates a new house, any user who is linked to the database reference is notified and the method onChanged() is triggered, then the front page of current user is reloaded with a toast message showing.
+
 <hr>
 
 ### Parser
@@ -261,22 +275,22 @@ Advantages:
    * Code to show and update Data[Class HomeFragment, Method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
    <br>
 
-4. [Search]. User is able to search according to suburb, price, bedroom number in search bar, we also show some possible results while user is entering to help our users. We use tokenisers and parser to do this in our app. For example, we can enter "city 500-600 6 Bedroom" in search bar to find aim house. (medium)
+4. [Search]. User is able to search according to suburb, price, bedroom number in search bar, we also show some possible results while user is entering to help our users. We use a tokenizer and parser to learn what kinds of houses the user is trying to search in our app. For example, we can enter "Acton 500-600 6 Bedroom" in search bar to find houses with 6 bedrooms which are located in Acton and has price between 500 and 600 dollars per week . (medium)
    * Code:[Class TokenParse](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java),[Class HomeFragment, method applySearch](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
 
 5. [DataStructure] We use AVL tree data structure to support our app with account and house data.
    * Code:[Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java),[Class HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java)
 
-6. [DesignPattern] We used state, template, iterator, obsever and singleton design patterns as mentioned above.
+6. [DesignPattern] We have implemented state, iterator, observer and singleton design patterns as mentioned above.
 
-7. [DataProcess] We use firebase (json) and xml(upload function options data) to retrive data as mentioned above.
+7. [DataProcess] We use Firebase realtime database (json) and local xml file(stores real addresses in AU for usage in uploading new houses) to retrive data as mentioned above.
 
-8. [Tests] We have some tests to test our functions.
+8. [Tests] We have some JUnit tests to test our non-UI functions and data structures.
    * Code:[Class HouseTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTreeTest.java),[Class AccountTreeTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTreeTest.java),[Class TokenParseTest](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java)
 
 ### Custom Features
 Feature Category: Search-related features <br>
-1. [Search-Invalid]. If you search some invalid like cit in search bar and the press search, it now can get correct results now. If the first three characters is correct and there are relative places in our database, we will show the correct place name. (medium)
+1. [Search-Invalid]. If you search some invalid like 'citoken' in search bar and the press search, we can recognize it as 'city'. If the first three characters are correct and there are relative places in our database, we will show the correct place name by extending it to correct district name. (medium)
    * Code:[Class TokenParse, Method extractLocation](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java)
 
 2. [Search-Filter]. We use the number of likes to rank the search results, the house with more likes is ranked in the top of search result.
@@ -285,43 +299,39 @@ Feature Category: Search-related features <br>
 Feature Category: Greater Data Usage, Handling and Sophistication <br>
 1. [Data-Formats]. We read json and xml files in our app.  (easy)
    * Code: [google-services.json](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/google-services.json), [addressBook.xml](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/assets/addressBook.xml)
-   * Description of your implementation: We firebase json file to load user data and house data. We also use xml files to load options data in upload function <br>
+   * Description of your implementation: We use FB json file to load user data and house data. We also use xml files to load options data in upload function <br>
 
-2. [Data-Profile]. We create user profile page in side bar at left top (easy)
-    * Code: [Class Main_Page, method loadUserProfile](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java)
-    * Description of your implementation: There are avatar, greeting messages, user email and relative information shown in side bar at left top<br>
+2. [Data-Profile]. We have created user profile page in left side drawer. (easy)
+    * Code: [Class Main_Page, method loadUserProfile](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L179-256)
+    * Description of your implementation: There are avatar, greeting messages, username and relative information shown in side drawer.<br>
    
-3. [Data-GPS]. We can show house around the location of the app by pressing button under search button at right top (easy)
-    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java)
-    * Description of your implementation: When user get in, we will get user's gps in backend, when user click the button under search button, we will show houses (Acton for example) around the location on the page.<br>
+3. [Data-GPS]. We can show houses around the location of the device by pressing button under search button at bottom right with a compass logo and clicking the search FloatingActionButton at top right with a lens logo thus users can search nearby houses(easy)
+    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L308-329) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L120-162), apply search in[Class HomeFragment, searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L109-165)
+    * Description of your implementation: When user enters Main_Page, we will get user's gps in backend, when user click the button under search button, we will show houses around the district where the device is virtually located in(Acton for example).<br>
    
-4. [Data-Graphical]. We create pie chart in sideshowfragment to show our available houses data (medium)
-    * Code: [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java)
-    * Description of your implementation: This class shows the overview house data in our app in different color
+4. [Data-Graphical]. We create pie chart in sideshowfragment to show the percentages of various sizes of houses (medium)
+    * Code: [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java#L55-104)
+    * Description of your implementation: This class shows the overview house data in our app in different color. It reads data linearly from FB database and classify them into 6 types by bedroom numbers.
 
 5. [Data-Deletion]]. Users can delete their account in our app in log in page by delete button (medium)
-    * Code: [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java)
-    * Description of your implementation: We can help our user to delete account and this account will be deleted in firebase too. <br>
+    * Code: [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L39-107) and [Class AccountTree, public void delete(String account)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L140-227)
+    * Description of your implementation: We can help our user to delete account and this account will be deleted in firebase too. This operation is done on the account AVL tree.<br>
 
 
 Feature Category: Firebase Integration <br>
-1. [FB-Auth] We use firebase to store our users data to log in (easy)
-   * Code: [Class LogIn](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java)
-   * Description of your implementation: This class retrieve data from firebase to verify users' enter username and password to let users with authentication to log in.
-
-2. [FB-Persist] We persist all our data on firebase including users' information and house information, users can get notifications if the data based has been changed  (hard)
-    * Code: [Class HomeFragment, method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
-    * Description of your implementation: We someone else upload houses in our app, user can receive notification. The like function is also link to firebase in real-time.
+1.  [FB-Persist] We persist all our data on firebase including users' information and house information, users can get notifications if the database has been changed, like some clicking likes or uploading a new house. (hard)
+    * Code: [Class HomeFragment, method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L341-383)
+    * Description of your implementation: With the help of databaseReference1.addValueEventListener(new ValueEventListener(){}), the moment the contents of house dir databse is changed, when other users perform interactions, for example, uploading a new house, a child is added in current DB reference and reloading method is immediately called. 
 
 Feature Category: User Interactivity
 1. [Interact-Micro] Users are able to like house, they can also like many times. (easy)
-    * Code: [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
+    * Code: [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L73-85)
     * Description of your implementation: Users are able to like houses and the number of like is accessed to firebase in real-time.
 
 Feature Category: Privacy
-1. [Privacy-Request] When use gps function, this must be accepted by users on the phone. (easy)
-    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java)
-    * Description of your implementation: Users must accept some conditions to use GPS for the first time use the app.
+1. [Privacy-Request] When this app is running in this device for the first time, access to GPS info must be accepted by user. (easy)
+    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L308-329) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L120-162)
+    * Description of your implementation: Users must accept some conditions to use GPS for the first time use the app. If the request is denied, the app will fail to display GSP info.
 
 <hr>
 
@@ -331,7 +341,7 @@ Feature Category: Privacy
 - State that "Suprised feature is not implemented" otherwise.
 
 The first feature is implement:
-We sort houses according to the number of likes, likes data is saved in firebase.
+We sort houses according to the number of likes. Likes data is a property of each house and is saved in firebase.
 
 <br> <hr>
 
@@ -342,7 +352,7 @@ We sort houses according to the number of likes, likes data is saved in firebase
 
 *Here is an example:*
 
-1. *It will stuck some time if your click Like button many times in a short time:*
+1. *It will stick some time if your click Like button many times in a short time:*
    - Because it takes some time to store data on firebase, you just can't press it too fast.
 
 <br> <hr>
@@ -394,12 +404,12 @@ This shall include an agreed procedure for situations including (but not limited
 
 Protocols:
 
-Protocol1: When someone is sick, the task of this person will be arranged to other people.
+Protocol1: When someone is sick, the task of this person will be arranged to other members.
 
-Protocol2: It's not reasonable to be sick for a long time, this person's contribution will be reduced if this case.
+Protocol2: However, it's not reasonable to be sick for a long time, this person's contribution will be reduced if he failed to catch up with other members after recovery.
 
-Protocol3: Teammates must attend all meetings to write code.
+Protocol3: Group mmembers must attend all meetings where we write codes and design some essential basis of our project, like the properties of each house, UI layout and parameters passed from an activity of a member to another activity of another member.
 
-Protocol4: If we have some problems, we need to have meetings. We need to find tutor or lecturer if we can't handle.
+Protocol4: If we have some disagreements, we need to have meetings to negotiate. We need to ask for tutors or even the lecturer if we can't handle.
 
-Protocol5: If someone fails to meet the initial plan and/or deadlines, this person must give enough reasons to others and give clear date to finish the job.
+Protocol5: If someone fails to meet the initial plan and/or deadlines, he must provide enough reasons to defend himself and propose a clear deadline to finish his assigned part.
