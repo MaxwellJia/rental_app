@@ -1,6 +1,9 @@
+import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.gradle.api.tasks.testing.Test
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("jacoco")
 }
 
 android {
@@ -38,6 +41,36 @@ android {
         }
     }
 }
+
+jacoco {
+    toolVersion = "0.8.7" // Use the latest version or the version that you prefer
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    group = "verification"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        xml.outputLocation.set(buildDir.resolve("jacoco/testDebugUnitTestReport.xml"))
+        html.outputLocation.set(buildDir.resolve("jacoco/testDebugUnitTestReport.html"))
+    }
+
+    sourceDirectories.setFrom(files("src/main/java"))
+    classDirectories.setFrom(fileTree("build/intermediates/javac/debug").exclude(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "android/**/*.*"
+    ))
+
+
+    executionData.setFrom(fileTree(mapOf(
+        "dir" to "build",
+        "includes" to listOf("jacoco/testDebugUnitTest.exec")
+    )))
+}
+
 
 dependencies {
     constraints {
