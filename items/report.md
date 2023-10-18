@@ -154,7 +154,7 @@ This is an important section of your report and should include all technical dec
 
 *Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.*
 
-***1***
+***1.***
 
 **Parser and Grammar:**
 
@@ -174,7 +174,7 @@ This is an important section of your report and should include all technical dec
 
 - **Event Handling:** It sets an `OnClickListener` for each item in the RecyclerView. When a user clicks on a house listing, it starts a new activity, `House_Detail_Page`, and passes data related to the selected house along with the random image resource ID (`imageid`). This event handling allows users to view detailed information about a specific house.
 
-***2***
+***2.***
 
 <hr>
 
@@ -405,6 +405,9 @@ We sort houses according to the number of likes. Likes data is a property of eac
    - testIteratorTraversal(): Test the traversal function
    - testToList(): Test toList() method: turn the result to to string
    - testEmptyTree(): Test the boundary case
+     |   |
+     |---|
+     | ![AccountTree](items/TestResult/AccountTree.JPG){height=400px}|
 
 2. Tests for HouseTree
     - Code: [HouseTreeTest, entire file](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTreeTest.java) for the [HouseTree Class, entire file](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java)
@@ -416,6 +419,9 @@ We sort houses according to the number of likes. Likes data is a property of eac
    - testBalancingAfterInsertion(): Test whether the AVL tree can keep balance after Insert
    - testIteratorException(): Test whether the tree can iterate successfully
    - testIteratorTraversal(): Test whether the tree can iterate the tree through iteration
+     |   |
+     |---|
+     | ![HouseTree](items/TestResult/HouseTree.JPG){height=400px}|
 
 3. Tests for TokenParse
     - Code: [TokenParseTest, entire file](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java) for the [TokenParse Class, entire file](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java)
@@ -426,6 +432,9 @@ We sort houses according to the number of likes. Likes data is a property of eac
     - testMinMaxPriceParsing: Test whether parser can read the demand  correctly
     - testBedroomParsing: Test whether parser can read the demand of the bedroom number correctly
     - testComplexString((): Test the complex situation eg input both price and location demand
+      |   |
+      |---|
+      | ![TokenParse](items/TestResult/TokenParse.JPG){height=400px}|
 
 
 <br> <hr>
