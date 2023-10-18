@@ -111,17 +111,17 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 
 *3.Customized Search: Users can refine their search by specifying location, price, and the number of bedrooms they desire.*
-|   |
-|---|
-| ![Search](items/media/_examples/search.png){height=400px}|
+|   |   |
+|---|---|
+| ![Search](items/media/_examples/search.png){height=400px}|![Search detail](items/media/_examples/housedetail1.png){height=400px}|
 
 *4.Listing Properties: The app provides functionality for both regular users and real estate agents to upload details about properties they want to rent out.*
-|   |
-|---|
-| ![Rent out](items/media/_examples/rentout.png){height=400px}|
+|   |   |
+|---|---|
+| ![Rent out](items/media/_examples/rentout.png){height=400px}|![Rent out fill](items/media/_examples/fill.png){height=400px}|
 
 
-### Application Use Cases and or Examples
+### Application Use Cases
 
 *Target Users: Individuals looking to rent properties*
 
@@ -139,7 +139,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
 ### Application UML
 
 ![ClassDiagram](media/_examples/COMP6442.jpg)<br>
-*[Replace the above with a class diagram. You can look at how we have linked an image here as an example of how you can do it too.]*
 
 <hr>
 
