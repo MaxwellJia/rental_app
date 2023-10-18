@@ -193,18 +193,44 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 ### Parser
 
 ### <u>Grammar(s)</u>
-*[How do you design the grammar? What are the advantages of your designs?]*
-*If there are several grammars, list them all under this section and what they relate to.*
-
 Production Rules:
 
-    <Non-Terminal> ::= <some output>
-    <Non-Terminal> ::= <some output>
+- `<SearchQuery> ::= <Location> <PriceRange> <Bedrooms>`
+- `<Location> ::= "location" ":" <SuburbName>`
+- `<PriceRange> ::= "price" ":" <MinimumPrice> "-" <MaximumPrice>`
+- `<Bedrooms> ::= "bedrooms" ":" <Number>`
+- `<SuburbName> ::= "Suburb" | "Kingston" | "Braddon" | ... (and other valid Suburb names)`
+- `<MinimumPrice> ::= <Number>`
+- `<MaximumPrice> ::= <Number>`
+- `<Number> ::= <digit>+ (representing an integer)`
 
 
 ### <u>Tokenizers and Parsers</u>
 
-*[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
+Tokenizers and parsers are used in the `TokenParse` class( https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java ) to extract and process information from user input in the context of a real estate app. They play a critical role in interpreting the user's search criteria, including location, price range, and the number of bedrooms.
+
+*Location Extraction*
+
+The `extractLocation` method (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L31-150 )tokenizes the input and identifies the location specified by the user. It employs regular expressions to check for the presence of alphabetic characters in the input. If a location is identified, it is assigned to the `location` field of the `TokenParse` class.
+
+Advantages:
+- Robust identification of location based on patterns.
+- Flexibility to recognize various location names.
+
+*Price Range Extraction*
+
+The `extractMinMaxPrice` method (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L159-195 )tokenizes the input to identify the minimum and maximum price values. It handles different input formats, including hyphen-separated ranges and single price values with context. The extracted price range is stored as a list in the `priceRange` field.
+
+Advantages:
+- Versatile recognition of price ranges.
+- Adjustment of the range for input values greater than 100.
+
+*Bedrooms Extraction*
+
+The `extractBedrooms` method (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L197-210) tokenizes the input to identify the number of bedrooms specified by the user. It extracts numeric values representing the number of bedrooms and assigns the result to the `bedrooms` field.
+
+Advantages:
+- Accurate identification of the number of bedrooms.
 
 <hr>
 
