@@ -203,6 +203,12 @@ This is an important section of your report and should include all technical dec
 
 ***2.***
 
+**House detail page design:**
+
+- **Nested UI:** House detail page uses nested UI design to make the whole able to be rolled and different elements are able to stay in the same line
+- **Class based:** House detail page receives a class called house from other page, this can help us to store and show data
+- **Realtime interaction with database** The number of likes is saved in real time to make others users able to see updated likes when they enter the page.
+
 <hr>
 
 ### Data Structures
