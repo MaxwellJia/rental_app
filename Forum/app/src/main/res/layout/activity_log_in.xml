@@ -11,9 +11,12 @@
         android:id="@+id/imageViewAvatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:scaleType="centerCrop" />
+
 
     <TextView
         android:id="@+id/title_account"
@@ -42,7 +45,7 @@
 
     <EditText
         android:id="@+id/input_account"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="340dp"
@@ -54,7 +57,7 @@
 
     <EditText
         android:id="@+id/input_password"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
