@@ -79,8 +79,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
 2. **u7630421, Linsheng Zhou**  I have 25% contribution, as follows: <br>
   - **Code Contribution in the final App**
     - Search-Filter: In [HomeFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L109-165), based on district info provided by GPS, the user can search all houses located in this district, and the results are sorted by likes decreasingly. 
-    - Data-Profile: Displaying avatars, usernames and greetings based on system time oin left side drawer menu in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L179-256)
-    - Data-GPS: Retrieving the location of virtual device triggered by FAB in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L120-162)
+    - Data-Profile: Displaying avatars, usernames and greetings based on system time oin left side drawer menu in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L200-278)
+    - Data-GPS: Retrieving the location of virtual device triggered by FAB in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L128-170)
     - Data-Graphical: In a pie chart, displaying the percentages of 6 types of houses classified by bedroom numbers in [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java#L32-111)
     - Data-Deletion: Implement a deletion method for [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L140-227) and used in [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L68-81)
     - Login: Implemented login function with user details stored in FBDB in [Class LogIn](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java) based on data structure of [Class Account](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Account.java) and [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java)
@@ -88,7 +88,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
     
     - **Code and App Design**
     - Be responsible for data structure for accounts and houses data organization
-    - Add data stream in Main_Page to other users uploading new houses with 30s-intervals
+    - Add data stream in [Main_Page](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L200-278) to other users uploading new houses with 30s-intervals
 
     - **Others**: (only if significant and significantly different from an "average contribution")
     - responsible for part of report writing and slides preparation
@@ -158,7 +158,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application Use Cases
 
-*Target Users: Individuals looking to rent properties*
+*Target Users: Individuals looking to rent properties, especially ANU students*
 
 * *Users can explore rental properties near their current location.*
 * *Users can search for properties in specific locations.*
