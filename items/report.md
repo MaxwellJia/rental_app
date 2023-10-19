@@ -336,7 +336,7 @@ Advantages:
 ### Custom Features
 Feature Category: Search-related features <br>
 1. [Search-Invalid]. If you search some invalid like 'citoken' in search bar and the press search, we can recognize it as 'city'. If the first three characters are correct and there are relative places in our database, we will show the correct place name by extending it to correct district name. (medium)
-   * Code:[Class TokenParse, Method extractLocation](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java)
+   * Code:[Class TokenParse, Method extractLocation](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L31)
 
 2. [Search-Filter]. We use the number of likes to rank the search results, the house with more likes is ranked in the top of search result.
    * Code: [Class HomeFragment, Method searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
