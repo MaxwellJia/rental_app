@@ -350,9 +350,9 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * Code: [Class Main_Page, method loadUserProfile](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L206)
     * Description of your implementation: There are avatar, greeting messages, username and relative information shown in side drawer.<br>
    
-3. [Data-GPS]. We can show houses around the location of the device by pressing button under search button at bottom right with a compass logo and clicking the search FloatingActionButton at top right with a lens logo thus users can search nearby houses(easy)
+3. [Data-GPS]. Users must set their location in app to let us get location, we recommend you to set location to Acton to get houses around you. If there are no enough houses around you, we will notify you with "Please search other location to get more" (easy)
     * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L345) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L139), apply search in[Class HomeFragment, searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L112)
-    * Description of your implementation: When user enters Main_Page, we will get user's gps in backend, when user click the button under search button, we will show houses around the district where the device is virtually located in(Acton for example).<br>
+    * Description of your implementation: Please set location of phone first (Acton for example), then just press the compass button at right bottom of the app and then press the button under search button at right top of the app to get houses around you.<br>
    
 4. [Data-Graphical]. We create pie chart in sideshowfragment to show the percentages of various sizes of houses (medium)
     * Code: [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java#L55-104)
