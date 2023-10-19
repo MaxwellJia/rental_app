@@ -23,12 +23,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
-        android:layout_marginTop="356dp"
         android:text="Account"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+
+        app:layout_constraintVertical_bias="0.55"/>
 
     <TextView
         android:id="@+id/title_password"
@@ -48,12 +51,12 @@
         android:layout_width="160dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="340dp"
         android:ems="10"
         android:hint="@string/enter_account_hint"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@id/title_account"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/title_account"
+        app:layout_constraintBottom_toBottomOf="@id/title_account" />
 
     <EditText
         android:id="@+id/input_password"
