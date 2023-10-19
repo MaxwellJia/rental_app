@@ -77,7 +77,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - responsible for unit test
 
 2. **u7630421, Linsheng Zhou**  I have 25% contribution, as follows: <br>
-  - **Features**
+  - **Code Contribution in the final App**
     - Search-Filter: In [HomeFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L109-165), based on district info provided by GPS, the user can search all houses located in this district, and the results are sorted by likes decreasingly. 
     - Data-Profile: Displaying avatars, usernames and greetings based on system time oin left side drawer menu in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L179-256)
     - Data-GPS: Retrieving the location of virtual device triggered by FAB in [Main_Page Activity](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L120-162)
@@ -85,7 +85,14 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - Data-Deletion: Implement a deletion method for [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L140-227) and used in [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L68-81)
     - Login: Implemented login function with user details stored in FBDB in [Class LogIn](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java) based on data structure of [Class Account](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Account.java) and [Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java)
     - Design patterns: [Singleton](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AVLTreeFactory.java#L13),[State](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Account.java#L11),[Iterator(AccountTree)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L229-285),[Iterator(HouseTree)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java#L136-190)
-    - 
+    
+    - **Code and App Design**
+    - Be responsible for data structure for accounts and houses data organization
+    - Add data stream in Main_Page to other users uploading new houses with 30s-intervals
+
+    - **Others**: (only if significant and significantly different from an "average contribution")
+    - responsible for part of report writing and slides preparation
+    - responsible for Meeting minutes.
 
 
 3. **u7629279, Xiangji Li**  I have 25% contribution, as follows: <br>
@@ -191,6 +198,10 @@ This is an important section of your report and should include all technical dec
 **Design Patterns:**
 
 - **Adapter Design Pattern:** The code implements the Adapter design pattern, which is a structural pattern commonly used in Android development for efficiently binding data to UI components. It allows the RecyclerView to work with the data source (`houseList`) and efficiently populate the UI views.(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseAdapter.java)
+- **Singleton Pattern:** Only a single instance of AVLTreeFactory is created.
+- **State Pattern:** Two states for login status of users, 0 for offline and 1 for online
+- **Iterator Pattern:** With the help of stack, traverse the AVL tree by hasNest() and next()
+- **Observer Pattern:** Once the FBDB changes, all users with a listener will be notified and reload the front page automatically
 
 **Technical Decisions:**
 
@@ -220,9 +231,9 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 *I used the following data structures in my project:*
 
-1. *LinkedList*
-   * *Objective: used for storing the raw data strings loaded from firebase dabase as we store them linearly there and store the search results after price comparison. Sometimes we need to search in other properties, like districts and sizes rather than price. We also display search results in recycle view, which is achieved by designing a linear adapter. *
-  * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+1. *List*
+   * *Objective: Sometimes we need to load data from FBDB but is not used for search. We only display them in Home Fragment. Or we need list to display them in the recycle view to show searching results and sort them by likes received.*
+  * *Code Locations: defined in [Class HouseAdapter](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java); processed using [adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>()](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L208-253) and [Search results](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L323-330)
   * *Reasons:*
      * *On the front page we don't need to search by price.*
      * *Since firebase database is a linear structure, if we want to read data from there, we need to load data one by one and form a list*
@@ -230,13 +241,17 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 2. *AVL Tree *
     * *Objective: used for storing, sorting and search accounts and houses for basic feature.*
-    * *Code Locations: defined in [Class Account, AccountTree and House, HouseTree]
+    * *Code Locations: defined in [AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java) and [HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java) and used in [Class Login](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L47-85), [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L52-98) and [PriceSearch](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L281-291)
     * *Reasons:*
-        * *It is more efficient than Arraylist for search with a time complexity O(h) ,where h means the height of AVL tree*
-        * *We don't need to access the item by index for xxx feature because...*
-        * For the (part), the data ... (characteristics) ...
+        * *It is more efficient than linear Arraylist for searching with a time complexity O(h) ,where h means the height of AVL tree and we can use binary search.*
+        * * The relationship among different objects is clear because they are sorted by price.
 
-3. ...
+3. *Map*
+    * *Objective: used for uploading new houses*
+    * *Code Locations: processed using [Class GalleryFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2) and ...
+    * *Reasons:*
+        * *The data structure of each house in FBDB is <key, value> where key is the timesatamp of upload time and values are in a string splited by ';'. *
+        * *We insert it in a map and then push the map into database*
 
 <hr>
 
