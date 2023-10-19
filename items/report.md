@@ -90,11 +90,11 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 3. **u7629279, Xiangji Li**  I have 25% contribution, as follows: <br>
     - **Code Contribution in the final App**
-    - Feature Token - class TokenParse: [TokenParse.java] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java), 
-    - Feature CardViewAdapter - class HouseAdapter: [HouseAdapter.java] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseAdapter.java)
-    - Feature Recycleview and SearchText - class HomeFragment: [HomeFragment.java] ((https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L161-263),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L385-485))
-    - UI Design - HomepageCardview Show: [HomeFragment.java] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L423-459)
-    - UI Design - LoginPage，HomeFragment Show: [activity_log_in.xml],[activity_main],[fragment_home],[house_cardview] ((https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_log_in.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_main.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/fragment_home.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/house_cardview.xml))
+    - Feature Token - class TokenParse: [TokenParse.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java), 
+    - Feature CardViewAdapter - class HouseAdapter: [HouseAdapter.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseAdapter.java)
+    - Feature Recycleview and SearchText - class HomeFragment: [HomeFragment.java]((https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L161-263),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L385-485))
+    - UI Design - HomepageCardview Show: [HomeFragment.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L423-459)
+    - UI Design - LoginPage，HomeFragment Show: [activity_log_in.xml],[activity_main],[fragment_home],[house_cardview]((https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_log_in.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_main.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/fragment_home.xml),(https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/house_cardview.xml))
    
     - **Code and App Design**
     - Being responsible for HomePage fragment design. Using CardView and recycleView to load data. Implemented the HouseAdapter class for managing and displaying a list of house listings in a RecyclerView.Designed the layout for individual house listings by inflating the "house_cardview" layout.
@@ -105,10 +105,22 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - responsible for part of report writing and slides preparation 
     - responsible for Meeting minutes.
    
-4. **UID2, Name2**  I have xx% contribution, as follows: <br>
-- ...
+4. **u7370733, Wangtao Jia**  I have xx% contribution, as follows: <br>
+    - **Code Contribution in the final App**
+    - Feature Show detailed information to users - [House_Detail_Page](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
+    - Interact with firebase in real time - [Save likes to database](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L96)
+    - UI design - [House detail page XML](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_house_detail_page.xml)
+    - Feature likes function in house detail page to help users interact with app - [Method like](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L75)
+    - Initial layout and code of search function [HomeFragment.java](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
 
+   - **Code and App Design**
+   - Being responsible to design and draw the whole UML diagram for this app.
+   - Being responsible to design suitable house detail page to show relative house information to users, using nested layout design to make the whole page able to be scrolled and beautiful.
+   - Being responsible to load suitable pictures for the houses
 
+   - **Others**: (only if significant and significantly different from an "average contribution")
+   - responsible for part of report writing and slides preparation
+   - responsible for writing basic and custom features in report.
 
 ## Application Description
 
@@ -358,13 +370,13 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * Code: [Class SlideshowFragment](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/slideshow/SlideshowFragment.java#L55-104)
     * Description of your implementation: This class shows the overview house data in our app in different color. It reads data linearly from FB database and classify them into 6 types by bedroom numbers.
 
-5. [Data-Deletion]]. Users can delete their account in our app in log in page by delete button (medium)
+5. [Data-Deletion]. Users can delete their account in our app in log in page by delete button (medium)
     * Code: [Class AccountDelete](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountDelete.java#L39-107) and [Class AccountTree, public void delete(String account)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java#L140-227)
     * Description of your implementation: We can help our user to delete account and this account will be deleted in firebase too. This operation is done on the account AVL tree.<br>
 
 
 Feature Category: Firebase Integration <br>
-1.  [FB-Persist] We persist all our data on firebase including users' information and house information, users can get notifications if the database has been changed, like some clicking likes or uploading a new house. (hard)
+1. [FB-Persist] We persist all our data on firebase including users' information and house information, users can get notifications if the database has been changed, like some clicking likes or uploading a new house. (hard)
     * Code: [Class HomeFragment, method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L341-383)
     * Description of your implementation: With the help of databaseReference1.addValueEventListener(new ValueEventListener(){}), the moment the contents of house dir databse is changed, when other users perform interactions, for example, uploading a new house, a child is added in current DB reference and reloading method is immediately called. 
 
