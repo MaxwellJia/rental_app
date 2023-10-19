@@ -306,27 +306,27 @@ Advantages:
 
 ### Basic Features
 1. [LogIn]. LogIn page is used in this app, only users with right password can log in (easy)
-   * Code: [Class LogIn, methods applyLogin, onCreate](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java) and [relative UML](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_log_in.xml)
+   * Code: [Class LogIn, methods applyLogin, onCreate](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/LogIn.java#L32) and [relative UML](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/res/layout/activity_log_in.xml)
    * Description of feature: 500 user data including username and password are saved in firebase, only these users can access our app through LogIn. <br>
-   * Description of your implementation: We store user data in firebase and retrieve data to verify if the entered user data is avaiable and let user get to main page if it's correct, toast user doesn't exist otherwise. <br>
+   * Description of your implementation: We store user data in firebase and retrieve data to verify if the entered user data is available and let user get to main page if it's correct, toast user doesn't exist otherwise. <br>
 
 2. [DataFiles]. We feed app 500 user data and 2278 houses data with some attributes, data is all saved in firebase. Besides, we save our options data of uploading house in local xml file. Besides, we made a like function to help users to like the house, the like data is linked to house and saved in firebase.(easy)
-   * Code to the Data File [google-services.json](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/google-services.json), [addressBook.xml](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/assets/addressBook.xml), ...
+   * Code to the Data File [google-services.json](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/google-services.json), [addressBook.xml](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/assets/addressBook.xml)
    * Link to the Firebase repo: [Firebase repo](https://console.firebase.google.com/project/ga-23s2-a5f8f/database/ga-23s2-a5f8f-default-rtdb/data/~2F)
    * [Class GalleryFragment(upload house function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/gallery/GalleryFragment.java)
-   * [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
+   * [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L75)
 
-3. [LoadShowData]. We reload our house data from firebase when firebase is updated. Data will be shown if there are any users who uploaded houses or like some houses. Also, we show houses and like information to our users and users are able to see changes if these changes database is updated.(medium)
-   * Code to show and update Data[Class HomeFragment, Method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
+3. [LoadShowData]. We reload our house data from firebase when firebase is updated and backend will upload houses automatically every 30 seconds. Data will be shown if there are any users who uploaded houses or like some houses. Also, we show houses and like information to our users and users are able to see changes if these changes database is updated.(medium)
+   * Code to show and update Data.[Class HomeFragment, Method databaseReference1.addValueEventListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L342)
    <br>
 
 4. [Search]. User is able to search according to suburb, price, bedroom number in search bar, we also show some possible results while user is entering to help our users. We use a tokenizer and parser to learn what kinds of houses the user is trying to search in our app. For example, we can enter "Acton 500-600 6 Bedroom" in search bar to find houses with 6 bedrooms which are located in Acton and has price between 500 and 600 dollars per week . (medium)
-   * Code:[Class TokenParse](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java),[Class HomeFragment, method applySearch](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
+   * Code:[Class TokenParse](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParseTest.java),[Class HomeFragment, method applySearch](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#273)
 
 5. [DataStructure] We use AVL tree data structure to support our app with account and house data.
    * Code:[Class AccountTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/AccountTree.java),[Class HouseTree](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/HouseTree.java)
 
-6. [DesignPattern] We have implemented state, iterator, observer and singleton design patterns as mentioned above.
+6. [DesignPattern] We have implemented state, iterator, observer and singleton design patterns as mentioned before in design patterns part.
 
 7. [DataProcess] We use Firebase realtime database (json) and local xml file(stores real addresses in AU for usage in uploading new houses) to retrive data as mentioned above.
 
@@ -339,7 +339,7 @@ Feature Category: Search-related features <br>
    * Code:[Class TokenParse, Method extractLocation](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/TokenParse.java#L31)
 
 2. [Search-Filter]. We use the number of likes to rank the search results, the house with more likes is ranked in the top of search result.
-   * Code: [Class HomeFragment, Method searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java)
+   * Code: [Class HomeFragment, Method searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L112)
 
 Feature Category: Greater Data Usage, Handling and Sophistication <br>
 1. [Data-Formats]. We read json and xml files in our app.  (easy)
@@ -347,11 +347,11 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
    * Description of your implementation: We use FB json file to load user data and house data. We also use xml files to load options data in upload function <br>
 
 2. [Data-Profile]. We have created user profile page in left side drawer. (easy)
-    * Code: [Class Main_Page, method loadUserProfile](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L179-256)
+    * Code: [Class Main_Page, method loadUserProfile](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L206)
     * Description of your implementation: There are avatar, greeting messages, username and relative information shown in side drawer.<br>
    
 3. [Data-GPS]. We can show houses around the location of the device by pressing button under search button at bottom right with a compass logo and clicking the search FloatingActionButton at top right with a lens logo thus users can search nearby houses(easy)
-    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L308-329) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L120-162), apply search in[Class HomeFragment, searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L109-165)
+    * Code: [Class Main_Page, methods onLocationChanged, applayUpdateGPS](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L345) and [Class Main_Page, methods onLocationChanged](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/Main_Page.java#L139), apply search in[Class HomeFragment, searchButton.setOnClickListener](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L112)
     * Description of your implementation: When user enters Main_Page, we will get user's gps in backend, when user click the button under search button, we will show houses around the district where the device is virtually located in(Acton for example).<br>
    
 4. [Data-Graphical]. We create pie chart in sideshowfragment to show the percentages of various sizes of houses (medium)
@@ -463,15 +463,15 @@ We sort houses according to the number of likes. Likes data is a property of eac
 * Your meetings should also have a reasonable date spanning across Week 6 to 11.*
 
 
-- *[Team Meeting 1] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
-- *[Team Meeting 2] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
-- *[Team Meeting 3] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting3.md)*
-- *[Team Meeting 4] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)*
-- *[Team Meeting 5] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting5.md)*
-- *[Team Meeting 6] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting6.md)*
-- *[Team Meeting 7] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting7.md)*
-- *[Team Meeting 8] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting8.md)*
-- *[Team Meeting 9] (https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting9.md)*
+- *[Team Meeting 1](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
+- *[Team Meeting 2](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
+- *[Team Meeting 3](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting3.md)*
+- *[Team Meeting 4](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting4.md)*
+- *[Team Meeting 5](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting5.md)*
+- *[Team Meeting 6](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting6.md)*
+- *[Team Meeting 7](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting7.md)*
+- *[Team Meeting 8](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting8.md)*
+- *[Team Meeting 9](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/items/meeting9.md)*
 
 <hr>
 
@@ -490,7 +490,7 @@ Protocol1: When someone is sick, the task of this person will be arranged to oth
 
 Protocol2: However, it's not reasonable to be sick for a long time, this person's contribution will be reduced if he failed to catch up with other members after recovery.
 
-Protocol3: Group mmembers must attend all meetings where we write codes and design some essential basis of our project, like the properties of each house, UI layout and parameters passed from an activity of a member to another activity of another member.
+Protocol3: Group members must attend all meetings where we write codes and design some essential basis of our project, like the properties of each house, UI layout and parameters passed from an activity of a member to another activity of another member.
 
 Protocol4: If we have some disagreements, we need to have meetings to negotiate. We need to ask for tutors or even the lecturer if we can't handle.
 
