@@ -129,24 +129,24 @@ Note that the core criteria of contribution is based on `code contribution` (the
 *1.Location-Based Search: Users can search for rental properties near their current location.*
 |   |   |
 |---|---|
-| ![Location-Based] (items/media/_examples/location1.PNG){height=400px}  | ![Location-Based] (items/media/_examples/location2.PNG){height=400px}   |
+| ![Location-Based](items/media/_examples/location1.PNG){height=400px}  | ![Location-Based](items/media/_examples/location2.PNG){height=400px}   |
 
 
 *2.View Property Details: Users can view detailed information about available rental properties.*
 |   |   |
 |---|---|
-| ![Mainpage] (items/media/_examples/mainpage1.png){height=400px}  | ![house detail] (items/media/_examples/housedetail.png){height=400px}   |
+| ![Mainpage](items/media/_examples/mainpage1.png){height=400px}  | ![house detail](items/media/_examples/housedetail.png){height=400px}   |
 
 
 *3.Customized Search: Users can refine their search by specifying location, price, and the number of bedrooms they desire.*
 |   |   |
 |---|---|
-| ![Search] (items/media/_examples/search.png){height=400px}|![Search detail] (items/media/_examples/housedetail1.png){height=400px}|
+| ![Search](items/media/_examples/search.png){height=400px}|![Search detail](items/media/_examples/housedetail1.png){height=400px}|
 
 *4.Listing Properties: The app provides functionality for both regular users and real estate agents to upload details about properties they want to rent out.*
 |   |   |
 |---|---|
-| ![Rent out] (items/media/_examples/rentout.png){height=400px}|![Rent out fill] (items/media/_examples/fill.png){height=400px}|
+| ![Rent out](items/media/_examples/rentout.png){height=400px}|![Rent out fill](items/media/_examples/fill.png){height=400px}|
 
 
 ### Application Use Cases
