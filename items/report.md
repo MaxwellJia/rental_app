@@ -1,19 +1,5 @@
 # [GA23S2 - Group 04] Report
 
-The following is a report template to help your team successfully provide all the details necessary for your report in a structured and organised manner. Please give a straightforward and concise report that best demonstrates your project. Note that a good report will give a better impression of your project to the reviewers.
-
-Note that you should have removed ALL TEMPLATE/INSTRUCTION textes in your submission (like the current sentence), otherwise it hampers the professionality in your documentation.
-
-*Here are some tips to write a good report:*
-
-* `Bullet points` are allowed and strongly encouraged for this report. Try to summarise and list the highlights of your project (rather than give long paragraphs).*
-
-* *Try to create `diagrams` for parts that could greatly benefit from it.*
-
-* *Try to make your report `well structured`, which is easier for the reviewers to capture the necessary information.*
-
-*We give instructions enclosed in square brackets [...] and examples for each sections to demonstrate what are expected for your project report. Note that they only provide part of the skeleton and your description should be more content-rich. Quick references about markdown by [CommonMark](https://commonmark.org/help/)*
-
 ## Table of Contents
 
 1. [Team Members and Roles](#team-members-and-roles)
@@ -46,19 +32,6 @@ The key area(s) of responsibilities for each member
 
 
 ## Summary of Individual Contributions
-
-Specific details of individual contribution of each member to the project.
-
-Each team member is responsible for writing **their own subsection**.
-
-A generic summary will not be acceptable and may result in a significant lose of marks.
-
-*[Summarise the contributions made by each member to the project, e.g. code implementation, code design, UI design, report writing, etc.]*
-
-*[Code Implementation. Which features did you implement? Which classes or methods was each member involved in? Provide an approximate proportion in pecentage of the contribution of each member to the whole code implementation, e.g. 30%.]*
-
-*you should ALSO provide links to the specified classes and/or functions*
-Note that the core criteria of contribution is based on `code contribution` (the technical developing of the App).
 
 1. **u7630926, Xiaochen Lu**  I have 25% contribution, as follows: <br>
   - **Code Contribution in the final App**
@@ -112,7 +85,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - responsible for part of report writing and slides preparation 
     - responsible for Meeting minutes.
    
-4. **u7370733, Wangtao Jia**  I have xx% contribution, as follows: <br>
+4. **u7370733, Wangtao Jia**  I have 25% contribution, as follows: <br>
     - **Code Contribution in the final App**
     - Feature Show detailed information to users - [House_Detail_Page](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java)
     - Interact with firebase in real time - [Save likes to database](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L96)
@@ -225,10 +198,6 @@ This is an important section of your report and should include all technical dec
 
 ### Data Structures
 
-*[What data structures did your team utilise? Where and why?]*
-
-Here is a partial (short) example for the subsection `Data Structures`:*
-
 *I used the following data structures in my project:*
 
 1. *List*
@@ -256,7 +225,6 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 <hr>
 
 ### Design Patterns
-*[What design patterns did your team utilise? Where and why?]*
 
 1. *State Pattern*
    * *Objective: Login status of a user, 0 for offline and 1 for online.*
@@ -327,16 +295,8 @@ Advantages:
 
 <hr>
 
-### Others
-
-*[What other design decisions have you made which you feel are relevant? Feel free to separate these into their own subheadings.]*
-
-<br>
-<hr>
 
 ## Implemented Features
-*[What features have you implemented? where, how, and why?]* <br>
-*List all features you have completed in their separate categories with their featureId. THe features must be one of the basic/custom features, or an approved feature from Voice Four Feature.*
 
 ### Basic Features
 1. [LogIn]. LogIn page is used in this app, only users with right password can log in (easy)
@@ -426,11 +386,6 @@ We sort houses according to the number of likes. Likes data is a property of eac
 
 ## Summary of Known Errors and Bugs
 
-*[Where are the known errors and bugs? What consequences might they lead to?]*
-*List all the known errors and bugs here. If we find bugs/errors that your team does not know of, it shows that your testing is not thorough.*
-
-*Here is an example:*
-
 1. *It will stick some time if your click Like button many times in a short time:*
    - Because it takes some time to store data on firebase, you just can't press it too fast.
 
@@ -438,9 +393,6 @@ We sort houses according to the number of likes. Likes data is a property of eac
 
 
 ## Testing Summary
-
-*[What features have you tested? What is your testing coverage?]*
-*Please provide some screenshots of your testing summary, showing the achieved testing coverage. Feel free to provide further details on your tests.*
 
 *The result of test coverage is generated by Jacoco*
 
@@ -492,10 +444,6 @@ We sort houses according to the number of likes. Likes data is a property of eac
 ## Team Management
 
 ### Meetings Records
-* Link to the minutes of your meetings like above. There must be at least 4 team meetings.
-  (each commited within 2 days aftre the meeting)
-* Your meetings should also have a reasonable date spanning across Week 6 to 11.*
-
 
 - *[Team Meeting 1](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting1.md)*
 - *[Team Meeting 2](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/tree/main/items/meeting2.md)*
@@ -510,13 +458,6 @@ We sort houses according to the number of likes. Likes data is a property of eac
 <hr>
 
 ### Conflict Resolution Protocol
-*[Write a well defined protocol your team can use to handle conflicts. That is, if your group has problems, what is the procedure for reaching consensus or solving a problem?
-(If you choose to make this an external document, link to it here)]*
-
-This shall include an agreed procedure for situations including (but not limited to):
-- e.g., if a member fails to meet the initial plan and/or deadlines
-- e.g., if your group has issues, how will your group reach consensus or solve the problem?
-- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project?
 
 Protocols:
 
