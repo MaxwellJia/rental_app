@@ -352,8 +352,8 @@ Feature Category: Firebase Integration <br>
     * Description of your implementation: With the help of databaseReference1.addValueEventListener(new ValueEventListener(){}), the moment the contents of house dir databse is changed, when other users perform interactions, for example, uploading a new house, a child is added in current DB reference and reloading method is immediately called. 
 
 Feature Category: User Interactivity
-1. [Interact-Micro] Users are able to like house, they can also like many times. (easy)
-    * Code: [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L73-85)
+1. [Interact-Micro] Users are able to like house, they can also like many times. Users can also add new houses. (easy)
+    * Code: [Class House_Detail_Page, method buttonLikes.setOnClickListener (like function)](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/House_Detail_Page.java#L73-85), [Menu Rent Out](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/gallery/GalleryFragment.java)
     * Description of your implementation: Users are able to like houses and the number of like is accessed to firebase in real-time.
 
 Feature Category: Privacy
