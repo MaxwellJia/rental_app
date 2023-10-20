@@ -192,7 +192,7 @@ The key area(s) of responsibilities for each member
 
 1. *List*
     * *Objective: Sometimes we need to load data from FBDB but it is not used for search. We only display them in Home Fragment. Or we need list to display them in the recycle view to show searching results and sort them by likes received.*
-    * *Code Locations: processed using [adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>()](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L208-253) and [Search results](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L323-330)
+    * *Code Locations: processed using [adapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>()](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L172) and [Search results](https://gitlab.cecs.anu.edu.au/u7630421/ga-23s2/-/blob/main/Forum/app/src/main/java/com/example/forum/ui/home/HomeFragment.java#L323-330)
     * *Reasons:*
         * *On the front page we don't need to search by price.*
         * *Since firebase database is a linear structure, if we want to read data from there, we need to load data one by one and form a list in memory first* 
