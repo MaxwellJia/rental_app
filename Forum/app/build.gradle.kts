@@ -137,4 +137,14 @@ dependencies {
     // 解决异步问题
     implementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
 
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+
+    implementation ("com.facebook.android:facebook-android-sdk:latest.release")
+
 }

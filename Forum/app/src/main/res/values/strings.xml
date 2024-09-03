@@ -17,4 +17,10 @@
     <string name="title_activity_house_detail_page">House_Detail_Page</string>
 
 
+    <string name="facebook_app_id">3438646686445342</string>
+    <string name="fb_login_protocol_scheme">fb3438646686445342</string>
+    <string name="facebook_client_token">103efbdd6ff879e56a430e8f4979872d</string>
+
+
+
 </resources>
