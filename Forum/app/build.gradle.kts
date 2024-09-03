@@ -100,6 +100,7 @@ dependencies {
     implementation("junit:junit:4.12")
     implementation("junit:junit:4.12")
     implementation("junit:junit:4.12")
+    implementation("androidx.test.ext:junit:1.1.5")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -117,5 +118,23 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-storage")
     implementation ("com.squareup.picasso:picasso:2.71828")
+
+// Espresso核心库
+    implementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    // 使用Intent的依赖项
+    implementation("androidx.test.espresso:espresso-intents:3.5.1")
+
+    // JUnit规则支持
+    implementation("androidx.test.ext:junit:1.1.5")
+
+    // ActivityScenarioRule需要的依赖
+    implementation("androidx.test:rules:1.5.0")
+
+    // 其他常用的测试库
+    implementation("androidx.test:runner:1.5.2")
+
+    // 解决异步问题
+    implementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
 
 }
