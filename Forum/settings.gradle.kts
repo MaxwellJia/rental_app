@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Forum"
+rootProject.name = "ga-23s2"
 include(":app")
  

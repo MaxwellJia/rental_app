@@ -80,7 +80,7 @@ public class Main_Page extends AppCompatActivity {
     Geocoder geocoder;
     private Handler handler = new Handler();
     private Runnable runnable;
-    int SIMULATION_INTERVAL=30000;//Simulate new house upload every 30s
+    int SIMULATION_INTERVAL=200000000;//Simulate new house upload every 30s
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,12 +244,15 @@ public class Main_Page extends AppCompatActivity {
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         //Avatars are stored on Firebase Storage
                         StorageReference storageRef = storage.getReference("avatars").child("image" + item[3] + ".jpeg");
+
                         storageRef.getDownloadUrl()
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         // Handle successful image download here
                                         String imageUrl = uri.toString();
+                                        Log.d("ImageUrl", "Avatar URL: " + imageUrl);
+
                                         // Load and display the image using Picasso
                                         Picasso.get().load(imageUrl).into(avatar);
                                     }

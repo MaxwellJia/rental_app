@@ -92,7 +92,7 @@ public class LogIn extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur during the read operation
+                // Handle any  errors that may occur during the read operation
                 Log.e("FirebaseError", "Error reading data from Firebase", databaseError.toException());
             }
         });
