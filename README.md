@@ -6,7 +6,10 @@ Android Studio writes this app. To use this app, you can just download My_Place.
 Hope you have fun with the app.
 
 # Main Content
-·Use the Firebase platform to build an Android APP database, and write relevant APIs for operating database
+·Use the Firebase platform to build an Android APP database, and write relevant APIs for the operating database.
+
 ·Design the front-end page of the Android APP and add relevant callable components such as buttons, text, etc.
+
 ·Use Java to write relevant code to call components and control the functions of components, such as: creating button listening events, etc.
+
 ·Write JUnit to unit test relevant codes
